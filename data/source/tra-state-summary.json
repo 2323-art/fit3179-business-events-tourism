@@ -1,0 +1,2882 @@
+[
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": null,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 7,
+    "Visitors (000)": 46,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 71,
+    "Visitors (000)": 238,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 377,
+    "Visitors (000)": 1940,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 460,
+    "Visitors (000)": 2086,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 76,
+    "Visitors (000)": 254,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 172,
+    "Expenditure ($M)": 89,
+    "Visitors (000)": 51,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 926,
+    "Expenditure ($M)": 442,
+    "Visitors (000)": 342,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1374,
+    "Expenditure ($M)": 659,
+    "Visitors (000)": 671,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 6286,
+    "Expenditure ($M)": 2109,
+    "Visitors (000)": 2252,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 7910,
+    "Expenditure ($M)": 2651,
+    "Visitors (000)": 3095,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 985,
+    "Expenditure ($M)": 466,
+    "Visitors (000)": 366,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1420,
+    "Expenditure ($M)": 690,
+    "Visitors (000)": 698,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 200,
+    "Expenditure ($M)": 35,
+    "Visitors (000)": 17,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 298,
+    "Expenditure ($M)": 52,
+    "Visitors (000)": 31,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 5236,
+    "Expenditure ($M)": 625,
+    "Visitors (000)": 198,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 5614,
+    "Expenditure ($M)": 587,
+    "Visitors (000)": 199,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 224,
+    "Expenditure ($M)": 38,
+    "Visitors (000)": 18,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 299,
+    "Expenditure ($M)": 52,
+    "Visitors (000)": 32,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 209,
+    "Expenditure ($M)": 107,
+    "Visitors (000)": 101,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 232,
+    "Expenditure ($M)": 131,
+    "Visitors (000)": 111,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1126,
+    "Expenditure ($M)": 548,
+    "Visitors (000)": 596,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1671,
+    "Expenditure ($M)": 753,
+    "Visitors (000)": 841,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 11900,
+    "Expenditure ($M)": 3155,
+    "Visitors (000)": 4536,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 13146,
+    "Expenditure ($M)": 3653,
+    "Visitors (000)": 5233,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1209,
+    "Expenditure ($M)": 580,
+    "Visitors (000)": 638,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "ACT",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1719,
+    "Expenditure ($M)": 784,
+    "Visitors (000)": 869,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 441,
+    "Visitors (000)": 655,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 425,
+    "Visitors (000)": 1984,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 1032,
+    "Visitors (000)": 3274,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 9536,
+    "Visitors (000)": 59512,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 14406,
+    "Visitors (000)": 84034,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 432,
+    "Visitors (000)": 2025,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 1197,
+    "Visitors (000)": 3661,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1608,
+    "Expenditure ($M)": 650,
+    "Visitors (000)": 557,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 2238,
+    "Expenditure ($M)": 729,
+    "Visitors (000)": 607,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 8016,
+    "Expenditure ($M)": 3489,
+    "Visitors (000)": 2986,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 9825,
+    "Expenditure ($M)": 4380,
+    "Visitors (000)": 3982,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 115481,
+    "Expenditure ($M)": 31313,
+    "Visitors (000)": 37311,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 118242,
+    "Expenditure ($M)": 30950,
+    "Visitors (000)": 39209,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 8611,
+    "Expenditure ($M)": 3723,
+    "Visitors (000)": 3200,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 10507,
+    "Expenditure ($M)": 4508,
+    "Visitors (000)": 4089,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 563,
+    "Expenditure ($M)": 100,
+    "Visitors (000)": 47,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1229,
+    "Expenditure ($M)": 114,
+    "Visitors (000)": 61,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 5214,
+    "Expenditure ($M)": 892,
+    "Visitors (000)": 324,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 6007,
+    "Expenditure ($M)": 867,
+    "Visitors (000)": 350,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 98539,
+    "Expenditure ($M)": 12043,
+    "Visitors (000)": 3697,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 105934,
+    "Expenditure ($M)": 15040,
+    "Visitors (000)": 4110,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 5512,
+    "Expenditure ($M)": 928,
+    "Visitors (000)": 343,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 6404,
+    "Expenditure ($M)": 920,
+    "Visitors (000)": 366,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 2171,
+    "Expenditure ($M)": 1191,
+    "Visitors (000)": 1259,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 3467,
+    "Expenditure ($M)": 880,
+    "Visitors (000)": 971,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 13230,
+    "Expenditure ($M)": 5413,
+    "Visitors (000)": 6584,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 15832,
+    "Expenditure ($M)": 5672,
+    "Visitors (000)": 6317,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 214020,
+    "Expenditure ($M)": 52892,
+    "Visitors (000)": 100520,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 224176,
+    "Expenditure ($M)": 60396,
+    "Visitors (000)": 127353,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 14123,
+    "Expenditure ($M)": 5848,
+    "Visitors (000)": 7205,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "New South Wales",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 16911,
+    "Expenditure ($M)": 5860,
+    "Visitors (000)": 6480,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": null,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": null,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 34,
+    "Visitors (000)": 23,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 228,
+    "Visitors (000)": 1020,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 261,
+    "Visitors (000)": 1220,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 34,
+    "Visitors (000)": 23,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 136,
+    "Expenditure ($M)": 66,
+    "Visitors (000)": 40,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 499,
+    "Expenditure ($M)": 285,
+    "Visitors (000)": 175,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1313,
+    "Expenditure ($M)": 509,
+    "Visitors (000)": 260,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 4229,
+    "Expenditure ($M)": 1725,
+    "Visitors (000)": 995,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 7728,
+    "Expenditure ($M)": 2603,
+    "Visitors (000)": 1508,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 578,
+    "Expenditure ($M)": 323,
+    "Visitors (000)": 198,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1328,
+    "Expenditure ($M)": 517,
+    "Visitors (000)": 267,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 154,
+    "Expenditure ($M)": 36,
+    "Visitors (000)": 13,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 199,
+    "Expenditure ($M)": 26,
+    "Visitors (000)": 12,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 4420,
+    "Expenditure ($M)": 527,
+    "Visitors (000)": 255,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 4787,
+    "Expenditure ($M)": 447,
+    "Visitors (000)": 210,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 178,
+    "Expenditure ($M)": 36,
+    "Visitors (000)": 14,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 206,
+    "Expenditure ($M)": 26,
+    "Visitors (000)": 12,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 170,
+    "Expenditure ($M)": 100,
+    "Visitors (000)": 41,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 653,
+    "Expenditure ($M)": 355,
+    "Visitors (000)": 211,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1513,
+    "Expenditure ($M)": 534,
+    "Visitors (000)": 288,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 8649,
+    "Expenditure ($M)": 2513,
+    "Visitors (000)": 2469,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 12515,
+    "Expenditure ($M)": 3279,
+    "Visitors (000)": 2738,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 756,
+    "Expenditure ($M)": 393,
+    "Visitors (000)": 234,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Northern Territory",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1534,
+    "Expenditure ($M)": 544,
+    "Visitors (000)": 296,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 72,
+    "Visitors (000)": 404,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 177,
+    "Visitors (000)": 1474,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 388,
+    "Visitors (000)": 2544,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 6337,
+    "Visitors (000)": 42573,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 9168,
+    "Visitors (000)": 55366,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 182,
+    "Visitors (000)": 1538,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 445,
+    "Visitors (000)": 2780,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 876,
+    "Expenditure ($M)": 422,
+    "Visitors (000)": 286,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1657,
+    "Expenditure ($M)": 711,
+    "Visitors (000)": 492,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 5565,
+    "Expenditure ($M)": 2582,
+    "Visitors (000)": 1965,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 7833,
+    "Expenditure ($M)": 3538,
+    "Visitors (000)": 2567,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 91960,
+    "Expenditure ($M)": 27683,
+    "Visitors (000)": 25935,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 97174,
+    "Expenditure ($M)": 28559,
+    "Visitors (000)": 26016,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 6053,
+    "Expenditure ($M)": 2797,
+    "Visitors (000)": 2084,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 8456,
+    "Expenditure ($M)": 3748,
+    "Visitors (000)": 2692,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 84,
+    "Expenditure ($M)": 19,
+    "Visitors (000)": 12,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 170,
+    "Expenditure ($M)": 24,
+    "Visitors (000)": 14,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1779,
+    "Expenditure ($M)": 410,
+    "Visitors (000)": 192,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1977,
+    "Expenditure ($M)": 414,
+    "Visitors (000)": 168,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 51739,
+    "Expenditure ($M)": 6115,
+    "Visitors (000)": 2154,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 55611,
+    "Expenditure ($M)": 7485,
+    "Visitors (000)": 2368,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1877,
+    "Expenditure ($M)": 425,
+    "Visitors (000)": 199,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 2023,
+    "Expenditure ($M)": 424,
+    "Visitors (000)": 174,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 960,
+    "Expenditure ($M)": 513,
+    "Visitors (000)": 702,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1827,
+    "Expenditure ($M)": 751,
+    "Visitors (000)": 780,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 7542,
+    "Expenditure ($M)": 3384,
+    "Visitors (000)": 4676,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 9613,
+    "Expenditure ($M)": 4125,
+    "Visitors (000)": 4232,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 147571,
+    "Expenditure ($M)": 44336,
+    "Visitors (000)": 83669,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 148913,
+    "Expenditure ($M)": 41011,
+    "Visitors (000)": 70742,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 8076,
+    "Expenditure ($M)": 3665,
+    "Visitors (000)": 5038,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Queensland",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 10334,
+    "Expenditure ($M)": 4355,
+    "Visitors (000)": 4429,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 28,
+    "Visitors (000)": 118,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 95,
+    "Visitors (000)": 418,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 1799,
+    "Visitors (000)": 12734,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 2788,
+    "Visitors (000)": 16385,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 112,
+    "Visitors (000)": 465,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 374,
+    "Expenditure ($M)": 113,
+    "Visitors (000)": 101,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 544,
+    "Expenditure ($M)": 187,
+    "Visitors (000)": 220,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1649,
+    "Expenditure ($M)": 721,
+    "Visitors (000)": 558,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 2483,
+    "Expenditure ($M)": 1028,
+    "Visitors (000)": 884,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 25173,
+    "Expenditure ($M)": 6527,
+    "Visitors (000)": 7617,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 25557,
+    "Expenditure ($M)": 6493,
+    "Visitors (000)": 7812,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1814,
+    "Expenditure ($M)": 770,
+    "Visitors (000)": 596,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 2756,
+    "Expenditure ($M)": 1130,
+    "Visitors (000)": 925,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 499,
+    "Expenditure ($M)": 91,
+    "Visitors (000)": 42,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 757,
+    "Expenditure ($M)": 102,
+    "Visitors (000)": 43,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 14035,
+    "Expenditure ($M)": 1281,
+    "Visitors (000)": 439,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 14721,
+    "Expenditure ($M)": 1761,
+    "Visitors (000)": 445,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 598,
+    "Expenditure ($M)": 97,
+    "Visitors (000)": 44,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 761,
+    "Expenditure ($M)": 103,
+    "Visitors (000)": 43,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 503,
+    "Expenditure ($M)": 155,
+    "Visitors (000)": 224,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 619,
+    "Expenditure ($M)": 216,
+    "Visitors (000)": 348,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 2148,
+    "Expenditure ($M)": 907,
+    "Visitors (000)": 1017,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 3240,
+    "Expenditure ($M)": 1177,
+    "Visitors (000)": 1305,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 39208,
+    "Expenditure ($M)": 9607,
+    "Visitors (000)": 20790,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 40278,
+    "Expenditure ($M)": 11042,
+    "Visitors (000)": 24642,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 2412,
+    "Expenditure ($M)": 980,
+    "Visitors (000)": 1105,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "South Australia",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 3517,
+    "Expenditure ($M)": 1289,
+    "Visitors (000)": 1358,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 9,
+    "Visitors (000)": 49,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 32,
+    "Visitors (000)": 167,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 652,
+    "Visitors (000)": 4650,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 870,
+    "Visitors (000)": 5605,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 39,
+    "Visitors (000)": 199,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 101,
+    "Expenditure ($M)": 41,
+    "Visitors (000)": 32,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 579,
+    "Expenditure ($M)": 272,
+    "Visitors (000)": 236,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1096,
+    "Expenditure ($M)": 550,
+    "Visitors (000)": 335,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 10678,
+    "Expenditure ($M)": 3095,
+    "Visitors (000)": 2969,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 13034,
+    "Expenditure ($M)": 3924,
+    "Visitors (000)": 3265,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 618,
+    "Expenditure ($M)": 286,
+    "Visitors (000)": 249,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1270,
+    "Expenditure ($M)": 609,
+    "Visitors (000)": 359,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 161,
+    "Expenditure ($M)": 21,
+    "Visitors (000)": 13,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 179,
+    "Expenditure ($M)": 31,
+    "Visitors (000)": 15,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 4971,
+    "Expenditure ($M)": 547,
+    "Visitors (000)": 262,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 5046,
+    "Expenditure ($M)": 712,
+    "Visitors (000)": 279,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 168,
+    "Expenditure ($M)": 23,
+    "Visitors (000)": 14,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 179,
+    "Expenditure ($M)": 31,
+    "Visitors (000)": 15,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 115,
+    "Expenditure ($M)": 53,
+    "Visitors (000)": 83,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 452,
+    "Expenditure ($M)": 198,
+    "Visitors (000)": 120,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 740,
+    "Expenditure ($M)": 326,
+    "Visitors (000)": 416,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 1275,
+    "Expenditure ($M)": 627,
+    "Visitors (000)": 492,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 15724,
+    "Expenditure ($M)": 4459,
+    "Visitors (000)": 7898,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 18005,
+    "Expenditure ($M)": 5340,
+    "Visitors (000)": 9132,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 786,
+    "Expenditure ($M)": 348,
+    "Visitors (000)": 463,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Tasmania",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 1449,
+    "Expenditure ($M)": 685,
+    "Visitors (000)": 517,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 100,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 934,
+    "Visitors (000)": 2108,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 1018,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 2514,
+    "Visitors (000)": 10346,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 30661,
+    "Visitors (000)": 198814,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 46413,
+    "Visitors (000)": 277366,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 1041,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 2878,
+    "Visitors (000)": 11437,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 4837,
+    "Expenditure ($M)": 2097,
+    "Visitors (000)": 1439,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 7214,
+    "Expenditure ($M)": 2908,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 24491,
+    "Expenditure ($M)": 11066,
+    "Visitors (000)": 7868,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 34535,
+    "Expenditure ($M)": 15594,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 379600,
+    "Expenditure ($M)": 106222,
+    "Visitors (000)": 112753,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 397351,
+    "Expenditure ($M)": 110281,
+    "Visitors (000)": 114539,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 26643,
+    "Expenditure ($M)": 12015,
+    "Visitors (000)": 8485,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 37084,
+    "Expenditure ($M)": 16312,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1391,
+    "Expenditure ($M)": 203,
+    "Visitors (000)": 79,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1845,
+    "Expenditure ($M)": 217,
+    "Visitors (000)": 82,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 13796,
+    "Expenditure ($M)": 2270,
+    "Visitors (000)": 700,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 14768,
+    "Expenditure ($M)": 2373,
+    "Visitors (000)": 701,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 286418,
+    "Expenditure ($M)": 32307,
+    "Visitors (000)": 7476,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 312149,
+    "Expenditure ($M)": 39191,
+    "Visitors (000)": 8272,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 14641,
+    "Expenditure ($M)": 2339,
+    "Visitors (000)": 731,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 15378,
+    "Expenditure ($M)": 2458,
+    "Visitors (000)": 726,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 6228,
+    "Expenditure ($M)": 3235,
+    "Visitors (000)": 3625,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 9059,
+    "Expenditure ($M)": 3224,
+    "Visitors (000)": 82,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 38287,
+    "Expenditure ($M)": 15851,
+    "Visitors (000)": 18914,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 49303,
+    "Expenditure ($M)": 18985,
+    "Visitors (000)": 701,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 683769,
+    "Expenditure ($M)": 173249,
+    "Visitors (000)": 320829,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 691749,
+    "Expenditure ($M)": 191826,
+    "Visitors (000)": 398391,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 41284,
+    "Expenditure ($M)": 17232,
+    "Visitors (000)": 20653,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Total",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 52462,
+    "Expenditure ($M)": 19811,
+    "Visitors (000)": 726,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 308,
+    "Visitors (000)": 745,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 235,
+    "Visitors (000)": 1570,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 708,
+    "Visitors (000)": 2980,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 8165,
+    "Visitors (000)": 55411,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 14073,
+    "Visitors (000)": 84538,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 235,
+    "Visitors (000)": 1607,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 821,
+    "Visitors (000)": 3351,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1257,
+    "Expenditure ($M)": 420,
+    "Visitors (000)": 408,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1318,
+    "Expenditure ($M)": 649,
+    "Visitors (000)": 461,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 5195,
+    "Expenditure ($M)": 2220,
+    "Visitors (000)": 1923,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 6637,
+    "Expenditure ($M)": 3368,
+    "Visitors (000)": 2812,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 80840,
+    "Expenditure ($M)": 22759,
+    "Visitors (000)": 28848,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 87240,
+    "Expenditure ($M)": 22969,
+    "Visitors (000)": 31383,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 5727,
+    "Expenditure ($M)": 2360,
+    "Visitors (000)": 2103,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 7221,
+    "Expenditure ($M)": 3504,
+    "Visitors (000)": 2953,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 193,
+    "Expenditure ($M)": 46,
+    "Visitors (000)": 30,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 375,
+    "Expenditure ($M)": 41,
+    "Visitors (000)": 26,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 2815,
+    "Expenditure ($M)": 520,
+    "Visitors (000)": 236,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 3012,
+    "Expenditure ($M)": 578,
+    "Visitors (000)": 266,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 75366,
+    "Expenditure ($M)": 8801,
+    "Visitors (000)": 2598,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 78822,
+    "Expenditure ($M)": 9676,
+    "Visitors (000)": 2827,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 3080,
+    "Expenditure ($M)": 530,
+    "Visitors (000)": 245,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 3082,
+    "Expenditure ($M)": 590,
+    "Visitors (000)": 275,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1511,
+    "Expenditure ($M)": 708,
+    "Visitors (000)": 719,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 1632,
+    "Expenditure ($M)": 770,
+    "Visitors (000)": 1179,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 8010,
+    "Expenditure ($M)": 3449,
+    "Visitors (000)": 5138,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 9649,
+    "Expenditure ($M)": 4180,
+    "Visitors (000)": 4648,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 156206,
+    "Expenditure ($M)": 39724,
+    "Visitors (000)": 86857,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 166062,
+    "Expenditure ($M)": 46718,
+    "Visitors (000)": 118748,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 8807,
+    "Expenditure ($M)": 3711,
+    "Visitors (000)": 5699,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Victoria",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 10303,
+    "Expenditure ($M)": 4329,
+    "Visitors (000)": 4836,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 41,
+    "Visitors (000)": 89,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 153,
+    "Visitors (000)": 704,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 3350,
+    "Visitors (000)": 20020,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 4605,
+    "Visitors (000)": 29087,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 0,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 0,
+    "Visitors (000)": 0,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic day",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 0,
+    "Expenditure ($M)": 153,
+    "Visitors (000)": 704,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 312,
+    "Expenditure ($M)": 296,
+    "Visitors (000)": 95,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 689,
+    "Expenditure ($M)": 266,
+    "Visitors (000)": 179,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 2062,
+    "Expenditure ($M)": 1054,
+    "Visitors (000)": 551,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 3973,
+    "Expenditure ($M)": 1561,
+    "Visitors (000)": 1041,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 35408,
+    "Expenditure ($M)": 11198,
+    "Visitors (000)": 9952,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 50011,
+    "Expenditure ($M)": 11945,
+    "Visitors (000)": 10947,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 2258,
+    "Expenditure ($M)": 1291,
+    "Visitors (000)": 610,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Domestic overnight",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 4126,
+    "Expenditure ($M)": 1606,
+    "Visitors (000)": 1085,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 114,
+    "Expenditure ($M)": 15,
+    "Visitors (000)": 7,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 156,
+    "Expenditure ($M)": 10,
+    "Visitors (000)": 8,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 2537,
+    "Expenditure ($M)": 308,
+    "Visitors (000)": 97,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 2775,
+    "Expenditure ($M)": 261,
+    "Visitors (000)": 84,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 31746,
+    "Expenditure ($M)": 2447,
+    "Visitors (000)": 849,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 41982,
+    "Expenditure ($M)": 3405,
+    "Visitors (000)": 1068,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 2569,
+    "Expenditure ($M)": 312,
+    "Visitors (000)": 100,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "International",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 2858,
+    "Expenditure ($M)": 263,
+    "Visitors (000)": 88,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 468,
+    "Expenditure ($M)": 346,
+    "Visitors (000)": 193,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "Accompany",
+    "Sample In/Out": 1,
+    "Nights (000)": 803,
+    "Expenditure ($M)": 284,
+    "Visitors (000)": 262,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 4837,
+    "Expenditure ($M)": 1469,
+    "Visitors (000)": 1339,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "Attend",
+    "Sample In/Out": 1,
+    "Nights (000)": 6510,
+    "Expenditure ($M)": 1917,
+    "Visitors (000)": 1633,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 77390,
+    "Expenditure ($M)": 19208,
+    "Visitors (000)": 40107,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "State Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 81756,
+    "Expenditure ($M)": 17742,
+    "Visitors (000)": 31816,
+    "Year": 2024
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 5116,
+    "Expenditure ($M)": 1707,
+    "Visitors (000)": 1402,
+    "Year": 2025
+  },
+  {
+    "State/Territory": "Western Australia",
+    "Type": "Total",
+    "Category": "Total",
+    "Sample In/Out": 1,
+    "Nights (000)": 6696,
+    "Expenditure ($M)": 1965,
+    "Visitors (000)": 1679,
+    "Year": 2024
+  }
+]

@@ -1,0 +1,188 @@
+{
+  "width": "container",
+  "height": 440,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "projection": {
+    "type": "equalEarth",
+    "rotate": [
+      -150,
+      0,
+      0
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/world.json",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#E8EFF5",
+        "stroke": "white",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "url": "data/routes.json",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "filled": false,
+        "strokeOpacity": 0.6
+      },
+      "encoding": {
+        "strokeWidth": {
+          "field": "properties.visitors",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              165000
+            ],
+            "range": [
+              0,
+              12
+            ]
+          },
+          "legend": {
+            "title": "Visitor trips",
+            "values": [
+              50000,
+              100000,
+              150000
+            ],
+            "format": "~s",
+            "symbolType": "stroke"
+          }
+        },
+        "stroke": {
+          "condition": {
+            "test": "datum.properties.country == 'Malaysia'",
+            "value": "#007F78"
+          },
+          "value": "#2457D6"
+        },
+        "tooltip": [
+          {
+            "field": "properties.country",
+            "type": "nominal",
+            "title": "Origin"
+          },
+          {
+            "field": "properties.visitors",
+            "type": "quantitative",
+            "title": "Visitor trips",
+            "format": ",.0f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/origins.json"
+      },
+      "mark": {
+        "type": "circle",
+        "size": 50,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "country",
+            "type": "nominal",
+            "title": "Origin"
+          },
+          {
+            "field": "visitors",
+            "type": "quantitative",
+            "title": "Visitor trips",
+            "format": ",.0f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "longitude": 149.129,
+            "latitude": -35.283,
+            "label": "Australia"
+          },
+          {
+            "longitude": 101.689,
+            "latitude": 3.14,
+            "label": "Malaysia"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "dy": 18,
+        "fontWeight": "bold",
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

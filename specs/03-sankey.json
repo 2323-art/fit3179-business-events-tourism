@@ -1,0 +1,203 @@
+{
+  "width": "container",
+  "height": 300,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "layer": [
+    {
+      "data": {
+        "url": "data/flows.json"
+      },
+      "mark": {
+        "type": "area",
+        "opacity": 0.8
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -0.03,
+              1.03
+            ]
+          }
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              21,
+              0
+            ]
+          }
+        },
+        "y2": {
+          "field": "y2"
+        },
+        "detail": {
+          "field": "link",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "traveller",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Domestic day",
+              "Domestic overnight",
+              "International"
+            ],
+            "range": [
+              "#B47716",
+              "#007F78",
+              "#2457D6"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "link",
+            "type": "nominal",
+            "title": "Flow"
+          },
+          {
+            "field": "value",
+            "type": "quantitative",
+            "title": "AUD",
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/flow-nodes.json"
+      },
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 7,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "y2"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/flow-nodes.json"
+      },
+      "transform": [
+        {
+          "filter": "datum.x == 1"
+        },
+        {
+          "calculate": "(datum.y + datum.y2)/2",
+          "as": "mid"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "color": "white",
+        "stroke": "#162B4D",
+        "strokeWidth": 0.2,
+        "fontWeight": "bold",
+        "fontSize": 12
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/flow-nodes.json"
+      },
+      "transform": [
+        {
+          "filter": "datum.x == 0"
+        },
+        {
+          "calculate": "(datum.y + datum.y2)/2",
+          "as": "mid"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "color": "white",
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "width": "container",
+  "height": 380,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0,
+      0
+    ],
+    "center": [
+      0,
+      -28
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/australia.json",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "properties.state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "properties.spend_per_resident",
+            "type": "quantitative",
+            "title": "AUD per resident",
+            "format": "$,.0f"
+          },
+          {
+            "field": "properties.spend",
+            "type": "quantitative",
+            "title": "Spending (AUD)",
+            "format": "$,.0f"
+          },
+          {
+            "field": "properties.population",
+            "type": "quantitative",
+            "title": "Residents",
+            "format": ",.0f"
+          }
+        ],
+        "color": {
+          "field": "properties.spend_per_resident",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1600
+            ],
+            "range": [
+              "#EDF4FA",
+              "#193D91"
+            ]
+          },
+          "legend": {
+            "title": "AUD per resident",
+            "format": "$,.0f",
+            "gradientLength": 220
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/states.json"
+      },
+      "mark": {
+        "type": "text",
+        "fontWeight": "bold",
+        "fontSize": 12,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "label_lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "label_lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "code",
+          "type": "nominal"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.code == 'NT'",
+            "value": "white"
+          },
+          "value": "#162B4D"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "longitude": 148.983,
+            "latitude": -35.4618,
+            "lon2": 153,
+            "lat2": -36.7
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon2"
+        },
+        "latitude2": {
+          "field": "lat2"
+        }
+      }
+    }
+  ]
+}

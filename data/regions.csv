@@ -1,0 +1,26 @@
+﻿id,parent,name,value
+Australia,,Australia,0
+NSW,Australia,NSW,0
+VIC,Australia,VIC,0
+QLD,Australia,QLD,0
+SA,Australia,SA,0
+WA,Australia,WA,0
+TAS,Australia,TAS,0
+NT,Australia,NT,0
+ACT,Australia,ACT,0
+Adelaide,SA,Adelaide,825000000.0
+Brisbane,QLD,Brisbane,1981000000.0
+Canberra - Regional ACT,ACT,ACT (all),580000000.0
+Darwin,NT,Darwin,210000000.0
+Destination Perth,WA,Perth region,1241000000.0
+Gold Coast,QLD,Gold Coast,501000000.0
+Hobart and the South,TAS,Hobart & south,175000000.0
+Melbourne,VIC,Melbourne,3112000000.0
+Regional NSW,NSW,Regional NSW,1800000000.0
+Regional NT,NT,Regional NT,184000000.0
+Regional QLD,QLD,Regional QLD,1183000000.0
+Regional SA,SA,Regional SA,154000000.0
+Regional TAS,TAS,Regional TAS,172000000.0
+Regional VIC,VIC,Regional VIC,600000000.0
+Regional WA,WA,Regional WA,466000000.0
+Sydney,NSW,Sydney,4048000000.0

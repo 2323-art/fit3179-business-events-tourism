@@ -1,0 +1,134 @@
+{
+  "width": "container",
+  "height": 300,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/waterfall.json"
+  },
+  "encoding": {
+    "x": {
+      "field": "label",
+      "type": "ordinal",
+      "sort": {
+        "field": "order",
+        "order": "ascending"
+      },
+      "title": null,
+      "axis": {
+        "labelAngle": -25,
+        "labelLimit": 160
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "size": 46
+      },
+      "encoding": {
+        "y": {
+          "field": "start",
+          "type": "quantitative",
+          "title": "Spending in Australia (AUD billions)",
+          "scale": {
+            "domain": [
+              0,
+              2.95
+            ]
+          }
+        },
+        "y2": {
+          "field": "end"
+        },
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Total",
+              "Increase",
+              "Decrease"
+            ],
+            "range": [
+              "#162B4D",
+              "#2457D6",
+              "#B47716"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "label",
+            "type": "nominal",
+            "title": "Contribution"
+          },
+          {
+            "field": "value",
+            "type": "quantitative",
+            "title": "AUD billions",
+            "format": "+.3f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "max(datum.start,datum.end)",
+          "as": "top"
+        },
+        {
+          "calculate": "datum.kind == 'Total' ? format(datum.value,'$.2f')+'b' : format(datum.value*1000,'+,.0f')+'m'",
+          "as": "display"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dy": -8,
+        "fontSize": 12,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "y": {
+          "field": "top",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "display",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

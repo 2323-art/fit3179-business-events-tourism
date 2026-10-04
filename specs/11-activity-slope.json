@@ -1,0 +1,139 @@
+{
+  "width": "container",
+  "height": 360,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/activities.json"
+  },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "labelAngle": 0
+      },
+      "scale": {
+        "padding": 0.25
+      }
+    },
+    "y": {
+      "field": "share",
+      "type": "quantitative",
+      "title": "Share of international event attendees",
+      "axis": {
+        "format": ".0%"
+      },
+      "scale": {
+        "domain": [
+          0.1,
+          1
+        ]
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": {
+          "filled": true,
+          "size": 55
+        },
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "detail": {
+          "field": "activity",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "activity",
+          "type": "nominal",
+          "scale": {
+            "range": [
+              "#2457D6",
+              "#007F78",
+              "#B47716",
+              "#805C89",
+              "#576D84"
+            ]
+          },
+          "legend": {
+            "labelLimit": 200,
+            "columns": 1
+          }
+        },
+        "tooltip": [
+          {
+            "field": "activity",
+            "type": "nominal"
+          },
+          {
+            "field": "year",
+            "type": "ordinal"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Participation",
+            "format": ".1%"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -11,
+        "fontSize": 11,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "text": {
+          "field": "share",
+          "type": "quantitative",
+          "format": ".1%"
+        },
+        "detail": {
+          "field": "activity",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.activity != 'Go shopping'"
+    }
+  ]
+}

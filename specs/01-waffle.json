@@ -1,0 +1,164 @@
+{
+  "width": "container",
+  "height": 180,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "hconcat": [
+    {
+      "width": 180,
+      "height": 180,
+      "title": "Visitor trips",
+      "data": {
+        "url": "data/waffle.json"
+      },
+      "transform": [
+        {
+          "filter": "datum.metric === \"Visitor trips\""
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 2,
+        "stroke": "white",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "ordinal",
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "ordinal",
+          "axis": null
+        },
+        "color": {
+          "field": "traveller",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Domestic day",
+              "Domestic overnight",
+              "International"
+            ],
+            "range": [
+              "#B47716",
+              "#007F78",
+              "#2457D6"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "traveller",
+            "type": "nominal",
+            "title": "Traveller"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Exact share",
+            "format": ".1%"
+          }
+        ]
+      }
+    },
+    {
+      "width": 180,
+      "height": 180,
+      "title": "Spending in Australia",
+      "data": {
+        "url": "data/waffle.json"
+      },
+      "transform": [
+        {
+          "filter": "datum.metric === \"Spending in Australia\""
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 2,
+        "stroke": "white",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "ordinal",
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "ordinal",
+          "axis": null
+        },
+        "color": {
+          "field": "traveller",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Domestic day",
+              "Domestic overnight",
+              "International"
+            ],
+            "range": [
+              "#B47716",
+              "#007F78",
+              "#2457D6"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "traveller",
+            "type": "nominal",
+            "title": "Traveller"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Exact share",
+            "format": ".1%"
+          }
+        ]
+      }
+    }
+  ],
+  "spacing": 28,
+  "resolve": {
+    "scale": {
+      "color": "shared"
+    }
+  }
+}

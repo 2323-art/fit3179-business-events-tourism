@@ -1,0 +1,1010 @@
+[
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Canada",
+    "Value": 34270,
+    "Rank": 15,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Canada",
+    "Value": 57119,
+    "Rank": 12,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "China",
+    "Value": 262817,
+    "Rank": 3,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "China",
+    "Value": 362361,
+    "Rank": 1,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "France",
+    "Value": 65448,
+    "Rank": 10,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "France",
+    "Value": 73670,
+    "Rank": 7,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Germany",
+    "Value": 48741,
+    "Rank": 12,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Germany",
+    "Value": 48849,
+    "Rank": 15,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Hong Kong",
+    "Value": 54129,
+    "Rank": 10,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Hong Kong",
+    "Value": 69053,
+    "Rank": 9,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "India",
+    "Value": 169092,
+    "Rank": 5,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "India",
+    "Value": 192110,
+    "Rank": 5,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Indonesia",
+    "Value": 34122,
+    "Rank": 16,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Indonesia",
+    "Value": 64016,
+    "Rank": 11,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Japan",
+    "Value": 63522,
+    "Rank": 8,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Japan",
+    "Value": 108401,
+    "Rank": 7,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Korea",
+    "Value": 53148,
+    "Rank": 13,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Korea",
+    "Value": 63338,
+    "Rank": 9,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Malaysia",
+    "Value": 49621,
+    "Rank": 14,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Malaysia",
+    "Value": 51670,
+    "Rank": 11,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Netherlands",
+    "Value": 8801,
+    "Rank": 18,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Netherlands",
+    "Value": 13170,
+    "Rank": 18,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "New Zealand",
+    "Value": 263643,
+    "Rank": 2,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "New Zealand",
+    "Value": 311929,
+    "Rank": 2,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Philippines",
+    "Value": 33988,
+    "Rank": 16,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Philippines",
+    "Value": 35206,
+    "Rank": 14,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Scandinavia",
+    "Value": 23846,
+    "Rank": 17,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Scandinavia",
+    "Value": 33105,
+    "Rank": 17,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Singapore",
+    "Value": 102035,
+    "Rank": 6,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Singapore",
+    "Value": 152894,
+    "Rank": 6,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "United Kingdom",
+    "Value": 220596,
+    "Rank": 4,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "United Kingdom",
+    "Value": 242544,
+    "Rank": 3,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "United States of America",
+    "Value": 242340,
+    "Rank": 4,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "United States of America",
+    "Value": 282647,
+    "Rank": 1,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Viet Nam",
+    "Value": 42157,
+    "Rank": 13,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Spend in Australia ($000)",
+    "Country of origin": "Viet Nam",
+    "Value": 77798,
+    "Rank": 8,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Canada",
+    "Value": 73713,
+    "Rank": 13,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Canada",
+    "Value": 104959,
+    "Rank": 9,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "China",
+    "Value": 402548,
+    "Rank": 2,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "China",
+    "Value": 500820,
+    "Rank": 2,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "France",
+    "Value": 99271,
+    "Rank": 12,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "France",
+    "Value": 118651,
+    "Rank": 7,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Germany",
+    "Value": 84999,
+    "Rank": 10,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Germany",
+    "Value": 101973,
+    "Rank": 11,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Hong Kong",
+    "Value": 81211,
+    "Rank": 11,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Hong Kong",
+    "Value": 102957,
+    "Rank": 10,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "India",
+    "Value": 249602,
+    "Rank": 6,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "India",
+    "Value": 278834,
+    "Rank": 5,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Indonesia",
+    "Value": 48512,
+    "Rank": 17,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Indonesia",
+    "Value": 85897,
+    "Rank": 14,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Japan",
+    "Value": 118117,
+    "Rank": 8,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Japan",
+    "Value": 197866,
+    "Rank": 7,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Korea",
+    "Value": 86661,
+    "Rank": 13,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Korea",
+    "Value": 93255,
+    "Rank": 9,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Malaysia",
+    "Value": 70793,
+    "Rank": 15,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Malaysia",
+    "Value": 78949,
+    "Rank": 12,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Netherlands",
+    "Value": 21014,
+    "Rank": 18,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Netherlands",
+    "Value": 30390,
+    "Rank": 18,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "New Zealand",
+    "Value": 401135,
+    "Rank": 3,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "New Zealand",
+    "Value": 455958,
+    "Rank": 4,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Philippines",
+    "Value": 51668,
+    "Rank": 17,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Philippines",
+    "Value": 56427,
+    "Rank": 15,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Scandinavia",
+    "Value": 50431,
+    "Rank": 16,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Scandinavia",
+    "Value": 57489,
+    "Rank": 16,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Singapore",
+    "Value": 203582,
+    "Rank": 6,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Singapore",
+    "Value": 253388,
+    "Rank": 5,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "United Kingdom",
+    "Value": 393371,
+    "Rank": 4,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "United Kingdom",
+    "Value": 463745,
+    "Rank": 3,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "United States of America",
+    "Value": 554169,
+    "Rank": 1,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "United States of America",
+    "Value": 687926,
+    "Rank": 1,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Viet Nam",
+    "Value": 71182,
+    "Rank": 14,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Total trip spend ($000)",
+    "Country of origin": "Viet Nam",
+    "Value": 119362,
+    "Rank": 8,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Canada",
+    "Value": 171,
+    "Rank": 16,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Canada",
+    "Value": 429,
+    "Rank": 10,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "China",
+    "Value": 1184,
+    "Rank": 5,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "China",
+    "Value": 1849,
+    "Rank": 1,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "France",
+    "Value": 584,
+    "Rank": 6,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "France",
+    "Value": 853,
+    "Rank": 6,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Germany",
+    "Value": 252,
+    "Rank": 16,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Germany",
+    "Value": 255,
+    "Rank": 13,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Hong Kong",
+    "Value": 297,
+    "Rank": 15,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Hong Kong",
+    "Value": 316,
+    "Rank": 11,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "India",
+    "Value": 1332,
+    "Rank": 4,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "India",
+    "Value": 1746,
+    "Rank": 3,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Indonesia",
+    "Value": 254,
+    "Rank": 14,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Indonesia",
+    "Value": 507,
+    "Rank": 9,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Japan",
+    "Value": 405,
+    "Rank": 8,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Japan",
+    "Value": 755,
+    "Rank": 7,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Korea",
+    "Value": 330,
+    "Rank": 13,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Korea",
+    "Value": 371,
+    "Rank": 10,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Malaysia",
+    "Value": 306,
+    "Rank": 14,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Malaysia",
+    "Value": 385,
+    "Rank": 9,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Netherlands",
+    "Value": 35,
+    "Rank": 18,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Netherlands",
+    "Value": 68,
+    "Rank": 18,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "New Zealand",
+    "Value": 1289,
+    "Rank": 4,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "New Zealand",
+    "Value": 1441,
+    "Rank": 2,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Philippines",
+    "Value": 312,
+    "Rank": 12,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Philippines",
+    "Value": 409,
+    "Rank": 12,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Scandinavia",
+    "Value": 148,
+    "Rank": 17,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Scandinavia",
+    "Value": 149,
+    "Rank": 17,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Singapore",
+    "Value": 431,
+    "Rank": 7,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Singapore",
+    "Value": 662,
+    "Rank": 8,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "United Kingdom",
+    "Value": 1799,
+    "Rank": 2,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "United Kingdom",
+    "Value": 1969,
+    "Rank": 1,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "United States of America",
+    "Value": 936,
+    "Rank": 5,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "United States of America",
+    "Value": 1374,
+    "Rank": 3,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Viet Nam",
+    "Value": 252,
+    "Rank": 15,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitor nights (000)",
+    "Country of origin": "Viet Nam",
+    "Value": 425,
+    "Rank": 11,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Canada",
+    "Value": 11,
+    "Rank": 14,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Canada",
+    "Value": 14,
+    "Rank": 13,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "China",
+    "Value": 66,
+    "Rank": 3,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "China",
+    "Value": 78,
+    "Rank": 2,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "France",
+    "Value": 9,
+    "Rank": 16,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "France",
+    "Value": 12,
+    "Rank": 16,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Germany",
+    "Value": 13,
+    "Rank": 12,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Germany",
+    "Value": 14,
+    "Rank": 13,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Hong Kong",
+    "Value": 16,
+    "Rank": 9,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Hong Kong",
+    "Value": 21,
+    "Rank": 8,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "India",
+    "Value": 41,
+    "Rank": 6,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "India",
+    "Value": 44,
+    "Rank": 6,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Indonesia",
+    "Value": 13,
+    "Rank": 12,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Indonesia",
+    "Value": 17,
+    "Rank": 11,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Japan",
+    "Value": 26,
+    "Rank": 7,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Japan",
+    "Value": 35,
+    "Rank": 7,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Korea",
+    "Value": 15,
+    "Rank": 10,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Korea",
+    "Value": 19,
+    "Rank": 9,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Malaysia",
+    "Value": 16,
+    "Rank": 12,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Malaysia",
+    "Value": 21,
+    "Rank": 8,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Netherlands",
+    "Value": 3,
+    "Rank": 18,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Netherlands",
+    "Value": 5,
+    "Rank": 18,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "New Zealand",
+    "Value": 160,
+    "Rank": 1,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "New Zealand",
+    "Value": 165,
+    "Rank": 1,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Philippines",
+    "Value": 14,
+    "Rank": 13,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Philippines",
+    "Value": 15,
+    "Rank": 10,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Scandinavia",
+    "Value": 8,
+    "Rank": 17,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Scandinavia",
+    "Value": 8,
+    "Rank": 17,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Singapore",
+    "Value": 53,
+    "Rank": 4,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Singapore",
+    "Value": 53,
+    "Rank": 4,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "United Kingdom",
+    "Value": 51,
+    "Rank": 5,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "United Kingdom",
+    "Value": 51,
+    "Rank": 5,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "United States of America",
+    "Value": 75,
+    "Rank": 3,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "United States of America",
+    "Value": 91,
+    "Rank": 2,
+    "Year": 2024
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Viet Nam",
+    "Value": 11,
+    "Rank": 14,
+    "Year": 2025
+  },
+  {
+    "Attribute": "Visitors (000)",
+    "Country of origin": "Viet Nam",
+    "Value": 19,
+    "Rank": 9,
+    "Year": 2024
+  }
+]

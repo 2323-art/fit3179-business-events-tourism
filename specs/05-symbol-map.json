@@ -1,0 +1,149 @@
+{
+  "width": "container",
+  "height": 380,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0,
+      0
+    ],
+    "center": [
+      0,
+      -28
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/australia.json",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#EDF1F5",
+        "stroke": "white"
+      }
+    },
+    {
+      "data": {
+        "url": "data/states.json"
+      },
+      "mark": {
+        "type": "circle",
+        "fill": "#2457D6",
+        "fillOpacity": 0.55,
+        "stroke": "#2457D6",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "visitors",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              7500000
+            ],
+            "range": [
+              0,
+              4400
+            ]
+          },
+          "legend": {
+            "title": "State visits",
+            "format": ".1s",
+            "values": [
+              1000000,
+              4000000,
+              7000000
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "type": "nominal"
+          },
+          {
+            "field": "visitors",
+            "type": "quantitative",
+            "title": "State visits",
+            "format": ",.0f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/states.json"
+      },
+      "mark": {
+        "type": "text",
+        "dy": -3,
+        "fontWeight": "bold",
+        "color": "#162B4D",
+        "fontSize": 12
+      },
+      "encoding": {
+        "longitude": {
+          "field": "label_lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "label_lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "code",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

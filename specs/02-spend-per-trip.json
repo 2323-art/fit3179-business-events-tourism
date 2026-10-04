@@ -1,0 +1,135 @@
+{
+  "width": "container",
+  "height": 220,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150,
+      "tickCount": 5
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/national.json"
+  },
+  "transform": [
+    {
+      "filter": "datum.year == 2025"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "spend_per_trip",
+          "type": "quantitative",
+          "title": "AUD spent in Australia per visitor trip",
+          "axis": {
+            "format": "$,.0f"
+          },
+          "scale": {
+            "domain": [
+              0,
+              3800
+            ]
+          }
+        },
+        "y": {
+          "field": "traveller",
+          "type": "nominal",
+          "sort": [
+            "International",
+            "Domestic overnight",
+            "Domestic day"
+          ],
+          "title": null
+        },
+        "color": {
+          "field": "traveller",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Domestic day",
+              "Domestic overnight",
+              "International"
+            ],
+            "range": [
+              "#B47716",
+              "#007F78",
+              "#2457D6"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "traveller",
+            "type": "nominal"
+          },
+          {
+            "field": "spend_per_trip",
+            "type": "quantitative",
+            "title": "AUD per trip",
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 7,
+        "fontSize": 13,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "x": {
+          "field": "spend_per_trip",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "traveller",
+          "type": "nominal",
+          "sort": [
+            "International",
+            "Domestic overnight",
+            "Domestic day"
+          ]
+        },
+        "text": {
+          "field": "spend_per_trip",
+          "type": "quantitative",
+          "format": "$,.0f"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "width": "container",
+  "height": 360,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150,
+      "tickCount": 5
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/markets.json"
+  },
+  "params": [
+    {
+      "name": "year",
+      "value": 2025,
+      "bind": {
+        "input": "select",
+        "options": [
+          2024,
+          2025
+        ],
+        "name": "Year: "
+      }
+    },
+    {
+      "name": "focus",
+      "value": "All markets",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All markets",
+          "Malaysia",
+          "China",
+          "New Zealand",
+          "Singapore",
+          "USA",
+          "UK"
+        ],
+        "name": "Highlight: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.year == year"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "size": 110,
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "visitors",
+          "type": "quantitative",
+          "title": "Visitor trips",
+          "axis": {
+            "format": "~s"
+          },
+          "scale": {
+            "domain": [
+              0,
+              185000
+            ]
+          }
+        },
+        "y": {
+          "field": "spend",
+          "type": "quantitative",
+          "title": "Spending in Australia (AUD)",
+          "axis": {
+            "format": "$~s"
+          },
+          "scale": {
+            "domain": [
+              0,
+              400000000
+            ]
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.country == 'Malaysia'",
+            "value": "#007F78"
+          },
+          "value": "#2457D6"
+        },
+        "opacity": {
+          "condition": {
+            "test": "focus == 'All markets' || datum.country == focus",
+            "value": 0.85
+          },
+          "value": 0.12
+        },
+        "tooltip": [
+          {
+            "field": "country",
+            "type": "nominal",
+            "title": "Origin"
+          },
+          {
+            "field": "visitors",
+            "type": "quantitative",
+            "title": "Visitor trips",
+            "format": ",.0f"
+          },
+          {
+            "field": "spend",
+            "type": "quantitative",
+            "title": "Spending (AUD)",
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.country == 'Malaysia' || datum.visitors > 70000 || datum.country == focus"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "dx": 6,
+        "dy": -9,
+        "align": "left",
+        "fontSize": 11,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "x": {
+          "field": "visitors",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "spend",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "country",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

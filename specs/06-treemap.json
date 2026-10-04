@@ -1,0 +1,220 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 1000,
+  "height": 380,
+  "padding": 0,
+  "autosize": "none",
+  "data": [
+    {
+      "name": "tree",
+      "url": "data/regions.json",
+      "transform": [
+        {
+          "type": "stratify",
+          "key": "id",
+          "parentKey": "parent"
+        },
+        {
+          "type": "treemap",
+          "field": "value",
+          "sort": {
+            "field": "value",
+            "order": "descending"
+          },
+          "method": "squarify",
+          "size": [
+            {
+              "signal": "width"
+            },
+            {
+              "signal": "height"
+            }
+          ],
+          "paddingInner": 3,
+          "paddingOuter": 3,
+          "paddingTop": 22
+        }
+      ]
+    },
+    {
+      "name": "leaves",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!datum.children"
+        }
+      ]
+    },
+    {
+      "name": "parents",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.depth == 1"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": [
+        "NSW",
+        "VIC",
+        "QLD",
+        "WA",
+        "SA",
+        "ACT",
+        "NT",
+        "TAS"
+      ],
+      "range": [
+        "#2457D6",
+        "#007F78",
+        "#426BA0",
+        "#4F6D58",
+        "#A06C20",
+        "#805C89",
+        "#377E8C",
+        "#6A779C"
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {
+        "data": "leaves"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "scale": "color",
+            "field": "parent"
+          },
+          "tooltip": {
+            "signal": "{'Region':datum.name, 'Spending (AUD)':format(datum.value,'$,.0f')}"
+          }
+        },
+        "update": {
+          "fillOpacity": {
+            "value": 1
+          }
+        },
+        "hover": {
+          "fillOpacity": {
+            "value": 0.7
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "leaves"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "datum.x0+7"
+          },
+          "y": {
+            "signal": "datum.y0+16"
+          },
+          "text": {
+            "field": "name"
+          },
+          "limit": {
+            "signal": "max(0, datum.x1-datum.x0-14)"
+          },
+          "opacity": {
+            "signal": "datum.y1-datum.y0>27 && datum.x1-datum.x0>55 ? 1:0"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fill": {
+            "value": "white"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "leaves"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "datum.x0+7"
+          },
+          "y": {
+            "signal": "datum.y0+33"
+          },
+          "text": {
+            "signal": "format(datum.value/1e9,'$.2f')+'b'"
+          },
+          "opacity": {
+            "signal": "datum.y1-datum.y0>45 && datum.x1-datum.x0>75 ? 1:0"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fill": {
+            "value": "white"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "parents"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "datum.x0+5"
+          },
+          "y": {
+            "signal": "datum.y0+16"
+          },
+          "text": {
+            "field": "name"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#162B4D"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "width": "container",
+  "height": 240,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#162B4D",
+      "titleColor": "#162B4D",
+      "titlePadding": 12,
+      "labelLimit": 150,
+      "tickCount": 5
+    },
+    "legend": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "orient": "bottom",
+      "title": null
+    },
+    "title": {
+      "fontSize": 14,
+      "anchor": "start",
+      "color": "#162B4D"
+    }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/per-night.json"
+  },
+  "encoding": {
+    "y": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null
+    },
+    "x": {
+      "field": "other",
+      "type": "quantitative",
+      "title": "Spending in Australia per visitor night (AUD)",
+      "scale": {
+        "domain": [
+          0,
+          180
+        ]
+      },
+      "axis": {
+        "format": "$,.0f"
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 4,
+        "color": "#B3C2D3"
+      },
+      "encoding": {
+        "x2": {
+          "field": "business"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 150,
+        "color": "#576D84",
+        "opacity": 1
+      },
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "other",
+            "type": "quantitative",
+            "title": "Other international visitors",
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 150,
+        "color": "#2457D6",
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "business",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "business",
+            "type": "quantitative",
+            "title": "Business-event visitors",
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -18,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "text": {
+          "field": "other",
+          "type": "quantitative",
+          "format": "$,.0f"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -18,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "x": {
+          "field": "business",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "business",
+          "type": "quantitative",
+          "format": "$,.0f"
+        }
+      }
+    }
+  ]
+}
