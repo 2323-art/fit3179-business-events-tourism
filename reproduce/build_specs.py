@@ -55,4 +55,49 @@ for path in OUT.glob('*.json'):
  if path.name.startswith('03-'):
   s['layer'].append({'data':data('flow-nodes'),'transform':[{'filter':'datum.x == 0'},{'calculate':"(datum.y + datum.y2)/2 - (datum.label == 'International' ? 0.6 : 0)",'as':'mid'}],'mark':{'type':'text','align':'left','dx':10,'color':'white','fontSize':11,'fontWeight':'bold'},'encoding':{'x':f('x'),'y':f('mid'),'text':f('label','N')}})
  path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
+# Strict rubric review: make the intended comparisons visible without hovering.
+def revise(name, change):
+ path=OUT/(name+'.json');s=json.loads(path.read_text(encoding='utf-8'));change(s)
+ path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
+
+def flow_review(s):
+ s['params']=[{'name':'originFocus','value':'All origins'}]
+ s['layer'][1]['mark']['strokeOpacity']=1
+ s['layer'][1]['encoding']['opacity']={'condition':{'test':"originFocus == 'All origins' || datum.properties.country == originFocus",'value':.8},'value':.1}
+ s['layer'][1]['encoding']['strokeWidth']['legend'].update({'symbolSize':700,'symbolStrokeColor':BLUE})
+ # The destination is always named. Origins receive labels and a keyboard-accessible key.
+ s['layer'][3]['data']['values']=s['layer'][3]['data']['values'][:1]
+ s['layer'].append({'data':data('origins'),'mark':{'type':'text','fontSize':12,'fontWeight':'bold','color':INK,'align':{'expr':"datum.country == 'UK' || datum.country == 'India' || datum.country == 'Malaysia' ? 'right' : 'left'"},'dx':{'expr':"datum.country == 'UK' || datum.country == 'India' || datum.country == 'Malaysia' ? -8 : 8"},'dy':{'expr':"datum.country == 'Singapore' ? 18 : datum.country == 'Malaysia' ? -8 : -10"}},'encoding':{'longitude':f('longitude'),'latitude':f('latitude'),'text':f('country','N'),'opacity':{'condition':{'test':"originFocus == 'All origins' || datum.country == originFocus",'value':1},'value':.25}}})
+revise('07-flow-map',flow_review)
+
+def scatter_review(s):
+ markets=json.loads((OUT.parent/'data/markets.json').read_text(encoding='utf-8'))
+ s['params'][1]['bind']['options']=['All markets']+sorted({r['country'] for r in markets})
+ # A named selection takes precedence over the default labels in the crowded lower left.
+ s['layer'][1]['transform'][0]['filter']="focus == 'All markets' ? (datum.country == 'Malaysia' || datum.visitors > 70000) : datum.country == focus"
+ s['layer'][1]['encoding']['tooltip']=s['layer'][0]['encoding']['tooltip']
+revise('08-market-scatter',scatter_review)
+
+def heatmap_review(s):
+ changes=json.loads((OUT.parent/'data/changes.json').read_text(encoding='utf-8'))
+ s['encoding']['y']['sort']=sorted({r['country'] for r in changes},key=lambda c:-sum(r['change'] for r in changes if r['country']==c))
+ s['transform']=[{'calculate':"abs(datum.change) < 0.0005 ? '0.0%' : format(datum.change, '+.1%')",'as':'change_label'}]
+ s['layer'][1]['encoding']['text']=f('change_label','N')
+ s['layer'].insert(1,{'transform':[{'filter':"datum.country == 'Malaysia'"}],'mark':{'type':'rect','fillOpacity':0,'stroke':TEAL,'strokeWidth':2}})
+revise('09-change-heatmap',heatmap_review)
+
+def waterfall_review(s):
+ s['layer'].insert(0,{'transform':[{'window':[{'op':'lead','field':'label','as':'next_label'}],'sort':[{'field':'order'}]},{'filter':'datum.next_label != null'}],'mark':{'type':'rule','strokeDash':[3,3],'color':'#8292A7'},'encoding':{'x2':{'field':'next_label'},'y':f('end')}})
+revise('10-waterfall',waterfall_review)
+
+# Two named endpoints, direct activity labels, and redundant line patterns make
+# this a readable slope graph even when category hues cannot be distinguished.
+save('11-activity-slope',{'data':data('activities'),'height':320,
+ 'transform':[{'filter':"datum.activity != 'Go shopping'"},{'calculate':"datum.year == 2024 ? 0.06 : 0.53",'as':'position'}],
+ 'encoding':{'x':f('position',axis=None,scale={'domain':[0,1],'nice':False}),'y':f('share',axis=None,scale={'domain':[.12,1.08],'nice':False})},
+ 'layer':[
+ {'mark':{'type':'line','point':{'filled':True,'size':55},'strokeWidth':2},'encoding':{'detail':f('activity','N'),'color':f('activity','N',scale={'range':[BLUE,TEAL,GOLD,'#805C89']},legend=None),'strokeDash':f('activity','N',legend=None),'tooltip':[tip('activity',t='N'),tip('year',t='O'),tip('share','Participation','.1%')]}},
+ {'mark':{'type':'text','dy':-12,'fontSize':12,'color':INK},'encoding':{'text':f('share',format='.1%'),'detail':f('activity','N')}},
+ {'transform':[{'filter':'datum.year == 2025'}],'mark':{'type':'text','align':'left','dx':10,'fontSize':12,'fontWeight':'bold','color':INK},'encoding':{'text':f('activity','N')}},
+ {'data':{'values':[{'position':.06,'share':1.065,'year':'2024'},{'position':.53,'share':1.065,'year':'2025'}]},'mark':{'type':'text','fontSize':13,'fontWeight':'bold','color':INK},'encoding':{'text':f('year','N')}}]})
 print('Wrote',len(list(OUT.glob('*.json'))),'readable chart specifications')

@@ -66,7 +66,7 @@
       "mark": {
         "type": "geoshape",
         "filled": false,
-        "strokeOpacity": 0.6
+        "strokeOpacity": 1
       },
       "encoding": {
         "strokeWidth": {
@@ -90,7 +90,9 @@
               150000
             ],
             "format": "~s",
-            "symbolType": "stroke"
+            "symbolType": "stroke",
+            "symbolSize": 700,
+            "symbolStrokeColor": "#2457D6"
           }
         },
         "stroke": {
@@ -112,7 +114,14 @@
             "title": "Visitor trips",
             "format": ",.0f"
           }
-        ]
+        ],
+        "opacity": {
+          "condition": {
+            "test": "originFocus == 'All origins' || datum.properties.country == originFocus",
+            "value": 0.8
+          },
+          "value": 0.1
+        }
       }
     },
     {
@@ -155,11 +164,6 @@
             "longitude": 149.129,
             "latitude": -35.283,
             "label": "Australia"
-          },
-          {
-            "longitude": 101.689,
-            "latitude": 3.14,
-            "label": "Malaysia"
           }
         ]
       },
@@ -183,6 +187,53 @@
           "type": "nominal"
         }
       }
+    },
+    {
+      "data": {
+        "url": "data/origins.json"
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#162B4D",
+        "align": {
+          "expr": "datum.country == 'UK' || datum.country == 'India' || datum.country == 'Malaysia' ? 'right' : 'left'"
+        },
+        "dx": {
+          "expr": "datum.country == 'UK' || datum.country == 'India' || datum.country == 'Malaysia' ? -8 : 8"
+        },
+        "dy": {
+          "expr": "datum.country == 'Singapore' ? 18 : datum.country == 'Malaysia' ? -8 : -10"
+        }
+      },
+      "encoding": {
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "country",
+          "type": "nominal"
+        },
+        "opacity": {
+          "condition": {
+            "test": "originFocus == 'All origins' || datum.country == originFocus",
+            "value": 1
+          },
+          "value": 0.25
+        }
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "originFocus",
+      "value": "All origins"
     }
   ]
 }

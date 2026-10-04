@@ -1,6 +1,6 @@
 {
   "width": "container",
-  "height": 360,
+  "height": 320,
   "config": {
     "font": "IBM Plex Sans",
     "view": {
@@ -34,30 +34,38 @@
   "data": {
     "url": "data/activities.json"
   },
+  "transform": [
+    {
+      "filter": "datum.activity != 'Go shopping'"
+    },
+    {
+      "calculate": "datum.year == 2024 ? 0.06 : 0.53",
+      "as": "position"
+    }
+  ],
   "encoding": {
     "x": {
-      "field": "year",
-      "type": "ordinal",
-      "title": null,
-      "axis": {
-        "labelAngle": 0
-      },
+      "field": "position",
+      "type": "quantitative",
+      "axis": null,
       "scale": {
-        "padding": 0.25
+        "domain": [
+          0,
+          1
+        ],
+        "nice": false
       }
     },
     "y": {
       "field": "share",
       "type": "quantitative",
-      "title": "Share of international event attendees",
-      "axis": {
-        "format": ".0%"
-      },
+      "axis": null,
       "scale": {
         "domain": [
-          0.1,
-          1
-        ]
+          0.12,
+          1.08
+        ],
+        "nice": false
       }
     }
   },
@@ -84,14 +92,15 @@
               "#2457D6",
               "#007F78",
               "#B47716",
-              "#805C89",
-              "#576D84"
+              "#805C89"
             ]
           },
-          "legend": {
-            "labelLimit": 200,
-            "columns": 1
-          }
+          "legend": null
+        },
+        "strokeDash": {
+          "field": "activity",
+          "type": "nominal",
+          "legend": null
         },
         "tooltip": [
           {
@@ -114,8 +123,8 @@
     {
       "mark": {
         "type": "text",
-        "dy": -11,
-        "fontSize": 11,
+        "dy": -12,
+        "fontSize": 12,
         "color": "#162B4D"
       },
       "encoding": {
@@ -129,11 +138,55 @@
           "type": "nominal"
         }
       }
-    }
-  ],
-  "transform": [
+    },
     {
-      "filter": "datum.activity != 'Go shopping'"
+      "transform": [
+        {
+          "filter": "datum.year == 2025"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "text": {
+          "field": "activity",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "position": 0.06,
+            "share": 1.065,
+            "year": "2024"
+          },
+          {
+            "position": 0.53,
+            "share": 1.065,
+            "year": "2025"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "text": {
+          "field": "year",
+          "type": "nominal"
+        }
+      }
     }
   ]
 }

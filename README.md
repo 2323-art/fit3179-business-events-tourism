@@ -6,6 +6,12 @@ An original FIT3179 DV2 data story about Australia's business-event visitors, cr
 
 The main question is who generates visitor spending, where it lands, and how international markets changed between 2024 and 2025. The audience is a general Malaysian readership interested in Australian tourism and business events. The page is a single scrolling story, with four chapters, twelve charts and three distinct map idioms.
 
+## Review refinements (5 October 2026)
+
+Eight keyboard-accessible origin buttons identify map routes. Scatter commentary follows the selected year and any of eighteen markets. The heatmap retains mean-change ordering, one-decimal percentages and a Malaysia outline. The waterfall has cumulative connectors; the activity slope has direct labels and distinct line patterns. National table previews show 2025 only and warn against comparing historical domestic rows across the survey break. Statistical inputs are unchanged.
+
+Responsive checks cover 1440, 1024, 390 and 320px, all twelve charts/tables and preservation of selections on resize. Rebuild readable specifications with `reproduce/build_specs.py`.
+
 ## Run locally
 
 Serve this directory with any static HTTP server and open `index.html` through that server. Opening the file directly can prevent browsers from loading JSON. All libraries and fonts are included locally. No account, API key, build system or remote chart service is needed to view the page.

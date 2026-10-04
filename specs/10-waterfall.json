@@ -51,6 +51,44 @@
   },
   "layer": [
     {
+      "transform": [
+        {
+          "window": [
+            {
+              "op": "lead",
+              "field": "label",
+              "as": "next_label"
+            }
+          ],
+          "sort": [
+            {
+              "field": "order"
+            }
+          ]
+        },
+        {
+          "filter": "datum.next_label != null"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          3,
+          3
+        ],
+        "color": "#8292A7"
+      },
+      "encoding": {
+        "x2": {
+          "field": "next_label"
+        },
+        "y": {
+          "field": "end",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
       "mark": {
         "type": "bar",
         "size": 46

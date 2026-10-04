@@ -52,11 +52,26 @@
     "y": {
       "field": "country",
       "type": "nominal",
-      "sort": {
-        "field": "change",
-        "op": "mean",
-        "order": "descending"
-      },
+      "sort": [
+        "China",
+        "Malaysia",
+        "India",
+        "New Zealand",
+        "Korea",
+        "UK",
+        "Germany",
+        "Philippines",
+        "Scandinavia",
+        "Hong Kong",
+        "France",
+        "USA",
+        "Singapore",
+        "Japan",
+        "Indonesia",
+        "Canada",
+        "Netherlands",
+        "Viet Nam"
+      ],
       "title": null
     }
   },
@@ -122,15 +137,27 @@
       }
     },
     {
+      "transform": [
+        {
+          "filter": "datum.country == 'Malaysia'"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "fillOpacity": 0,
+        "stroke": "#007F78",
+        "strokeWidth": 2
+      }
+    },
+    {
       "mark": {
         "type": "text",
         "fontSize": 12
       },
       "encoding": {
         "text": {
-          "field": "change",
-          "type": "quantitative",
-          "format": "+.0%"
+          "field": "change_label",
+          "type": "nominal"
         },
         "color": {
           "condition": {
@@ -140,6 +167,12 @@
           "value": "#162B4D"
         }
       }
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "abs(datum.change) < 0.0005 ? '0.0%' : format(datum.change, '+.1%')",
+      "as": "change_label"
     }
   ]
 }

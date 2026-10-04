@@ -55,12 +55,24 @@
         "input": "select",
         "options": [
           "All markets",
-          "Malaysia",
+          "Canada",
           "China",
+          "France",
+          "Germany",
+          "Hong Kong",
+          "India",
+          "Indonesia",
+          "Japan",
+          "Korea",
+          "Malaysia",
+          "Netherlands",
           "New Zealand",
+          "Philippines",
+          "Scandinavia",
           "Singapore",
+          "UK",
           "USA",
-          "UK"
+          "Viet Nam"
         ],
         "name": "Highlight: "
       }
@@ -146,7 +158,7 @@
     {
       "transform": [
         {
-          "filter": "datum.country == 'Malaysia' || datum.visitors > 70000 || datum.country == focus"
+          "filter": "focus == 'All markets' ? (datum.country == 'Malaysia' || datum.visitors > 70000) : datum.country == focus"
         }
       ],
       "mark": {
@@ -173,7 +185,26 @@
         "text": {
           "field": "country",
           "type": "nominal"
-        }
+        },
+        "tooltip": [
+          {
+            "field": "country",
+            "type": "nominal",
+            "title": "Origin"
+          },
+          {
+            "field": "visitors",
+            "type": "quantitative",
+            "title": "Visitor trips",
+            "format": ",.0f"
+          },
+          {
+            "field": "spend",
+            "type": "quantitative",
+            "title": "Spending (AUD)",
+            "format": "$,.0f"
+          }
+        ]
       }
     }
   ]
