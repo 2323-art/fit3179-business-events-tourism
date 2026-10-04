@@ -151,9 +151,13 @@
       ],
       "mark": {
         "type": "text",
-        "dx": 6,
+        "dx": {
+          "expr": "datum.country == 'New Zealand' ? -6 : 6"
+        },
         "dy": -9,
-        "align": "left",
+        "align": {
+          "expr": "datum.country == 'New Zealand' ? 'right' : 'left'"
+        },
         "fontSize": 11,
         "color": "#162B4D"
       },

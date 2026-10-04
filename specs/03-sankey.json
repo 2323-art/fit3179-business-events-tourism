@@ -172,7 +172,7 @@
           "filter": "datum.x == 0"
         },
         {
-          "calculate": "(datum.y + datum.y2)/2",
+          "calculate": "(datum.y + datum.y2)/2 - (datum.label == 'International' ? 0.6 : 0)",
           "as": "mid"
         }
       ],

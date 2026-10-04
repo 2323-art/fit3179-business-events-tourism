@@ -44,12 +44,15 @@ for path in OUT.glob('*.json'):
  if path.name.startswith('07-'):
   s['layer'][1]['encoding']['strokeWidth']['legend']['symbolType']='stroke'
   s['layer'][1]['encoding']['strokeWidth']['legend']['format']='~s'
+ if path.name.startswith('08-'):
+  s['layer'][1]['mark']['align']={'expr':"datum.country == 'New Zealand' ? 'right' : 'left'"}
+  s['layer'][1]['mark']['dx']={'expr':"datum.country == 'New Zealand' ? -6 : 6"}
  if path.name.startswith('09-'):
   s['layer'][0]['encoding']['color']['scale']['interpolate']='rgb'
   s['layer'][1]['encoding']['color']['condition']['test']='abs(datum.change) > 0.48'
  if path.name.startswith('11-'):
   s['transform']=[{'filter':"datum.activity != 'Go shopping'"}]
  if path.name.startswith('03-'):
-  s['layer'].append({'data':data('flow-nodes'),'transform':[{'filter':'datum.x == 0'},{'calculate':'(datum.y + datum.y2)/2','as':'mid'}],'mark':{'type':'text','align':'left','dx':10,'color':'white','fontSize':11,'fontWeight':'bold'},'encoding':{'x':f('x'),'y':f('mid'),'text':f('label','N')}})
+  s['layer'].append({'data':data('flow-nodes'),'transform':[{'filter':'datum.x == 0'},{'calculate':"(datum.y + datum.y2)/2 - (datum.label == 'International' ? 0.6 : 0)",'as':'mid'}],'mark':{'type':'text','align':'left','dx':10,'color':'white','fontSize':11,'fontWeight':'bold'},'encoding':{'x':f('x'),'y':f('mid'),'text':f('label','N')}})
  path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
 print('Wrote',len(list(OUT.glob('*.json'))),'readable chart specifications')
