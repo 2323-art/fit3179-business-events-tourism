@@ -60,6 +60,25 @@ def revise(name, change):
  path=OUT/(name+'.json');s=json.loads(path.read_text(encoding='utf-8'));change(s)
  path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
 
+def spending_labels(s):
+ s['height']=360
+ for layer in [s['layer'][2],s['layer'][3]]:
+  layer['transform'].append({'calculate':"datum.label + '\\nA$' + format(datum.value / 1e9, '.2f') + 'b'",'as':'direct_label'})
+  layer['mark'].update({'color':'#07101C','fontSize':12,'fontWeight':'bold','lineBreak':'\n','lineHeight':14,'baseline':'middle','dy':-7})
+  layer['mark'].pop('stroke',None);layer['mark'].pop('strokeWidth',None)
+  layer['encoding']['text']=f('direct_label','N')
+revise('03-sankey',spending_labels)
+revise('02-spend-per-trip',lambda s:s.update(height=300))
+
+def territory_callout(s):
+ s['layer'][1]['transform']=[{'calculate':"indexof(['ACT','NT','NSW'], datum.code) >= 0 ? datum.code + '\\nA$' + format(datum.spend_per_resident, ',.0f') : datum.code",'as':'map_label'}]
+ s['layer'][1]['mark'].update({'lineBreak':'\n','lineHeight':14,'align':'center','dx':{'expr':"datum.code == 'ACT' ? -4 : 0"}})
+ s['layer'][1]['encoding']['text']=f('map_label','N')
+ # Keep the value callout in bounds without enlarging the ACT geography.
+ s['layer'][1]['encoding']['longitude']={'field':'label_lon','type':'quantitative'}
+ s['layer'][1]['encoding']['tooltip']=[tip('state','State',t='N'),tip('spend_per_resident','AUD per resident','$,.0f')]
+revise('04-choropleth',territory_callout)
+
 def flow_review(s):
  s['params']=[{'name':'originFocus','value':'All origins'}]
  s['layer'][1]['mark']['strokeOpacity']=1

@@ -12,6 +12,8 @@ Eight keyboard-accessible origin buttons identify map routes. Scatter commentary
 
 Responsive checks cover 1440, 1024, 390 and 320px, all twelve charts/tables and preservation of selections on resize. Rebuild readable specifications with `reproduce/build_specs.py`.
 
+A subsequent independent review added high-contrast Sankey amounts and an explicit international-spending split, direct NT/ACT/NSW map values, compact wide-caption text and shared caption/action alignment across paired figures. These refinements preserve every statistical input and all twelve chart types.
+
 ## Run locally
 
 Serve this directory with any static HTTP server and open `index.html` through that server. Opening the file directly can prevent browsers from loading JSON. All libraries and fonts are included locally. No account, API key, build system or remote chart service is needed to view the page.

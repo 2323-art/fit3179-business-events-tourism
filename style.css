@@ -8,3 +8,16 @@
 /* Review refinements: a keyboard-accessible origin key and readable chart notes. */
 .origin-key{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 20px}.origin-key button{font:inherit;font-size:12px;line-height:1.4;min-height:36px;border:1px solid var(--line);background:white;color:var(--ink);padding:7px 12px;cursor:pointer}.origin-key button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:white}.origin-key button[data-origin="Malaysia"]{border-left:4px solid var(--teal)}.control-hint{font-size:13px;color:var(--muted);margin:14px 0 6px}#market-summary{min-height:88px}.band #chart12{min-height:350px}figcaption{font-size:13px}.chart-tools,.chart-tools a{font-size:12px}.state-key{font-size:12px}.legend{font-size:12px}.delegate-pass figcaption{font-size:12px}@media(max-width:760px){.band #chart12{min-height:240px}#market-summary{min-height:0}.origin-key button{font-size:12px}}
 @media(max-width:760px){.opening{grid-template-columns:minmax(0,1fr)}.hero-copy{min-width:0}h1{font-size:clamp(64px,22.5vw,88px)}}
+/* Independent marking review: readable measure below full-width charts. */ .wide figcaption{max-width:72ch}.wide .chart-intro{max-width:76ch}
+
+/* Shared slots preserve sight-lines across each pair, even when copy wraps. */
+@media(min-width:761px){
+ .two-col:has(>figure){row-gap:0;align-items:stretch}
+ .two-col>figure{display:grid;grid-template-rows:subgrid;grid-row:span 6;row-gap:0}
+ .two-col>figure>h3{grid-row:1}
+ .two-col>figure>.chart-intro{grid-row:2;min-height:0}
+ .two-col>figure>.legend,.two-col>figure>.mini-legend{grid-row:3}
+ .two-col>figure>.chart{grid-row:4;align-self:start}
+ .two-col>figure>figcaption{grid-row:5}
+ .two-col>figure>.chart-tools{grid-row:6;align-self:end}
+}

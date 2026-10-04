@@ -1,6 +1,6 @@
 {
   "width": "container",
-  "height": 300,
+  "height": 360,
   "config": {
     "font": "IBM Plex Sans",
     "view": {
@@ -136,17 +136,23 @@
         {
           "calculate": "(datum.y + datum.y2)/2",
           "as": "mid"
+        },
+        {
+          "calculate": "datum.label + '\\nA$' + format(datum.value / 1e9, '.2f') + 'b'",
+          "as": "direct_label"
         }
       ],
       "mark": {
         "type": "text",
         "align": "right",
         "dx": -10,
-        "color": "white",
-        "stroke": "#162B4D",
-        "strokeWidth": 0.2,
+        "color": "#07101C",
         "fontWeight": "bold",
-        "fontSize": 12
+        "fontSize": 12,
+        "lineBreak": "\n",
+        "lineHeight": 14,
+        "baseline": "middle",
+        "dy": -7
       },
       "encoding": {
         "x": {
@@ -158,7 +164,7 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "label",
+          "field": "direct_label",
           "type": "nominal"
         }
       }
@@ -174,15 +180,23 @@
         {
           "calculate": "(datum.y + datum.y2)/2 - (datum.label == 'International' ? 0.6 : 0)",
           "as": "mid"
+        },
+        {
+          "calculate": "datum.label + '\\nA$' + format(datum.value / 1e9, '.2f') + 'b'",
+          "as": "direct_label"
         }
       ],
       "mark": {
         "type": "text",
         "align": "left",
         "dx": 10,
-        "color": "white",
-        "fontSize": 11,
-        "fontWeight": "bold"
+        "color": "#07101C",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "lineBreak": "\n",
+        "lineHeight": 14,
+        "baseline": "middle",
+        "dy": -7
       },
       "encoding": {
         "x": {
@@ -194,7 +208,7 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "label",
+          "field": "direct_label",
           "type": "nominal"
         }
       }

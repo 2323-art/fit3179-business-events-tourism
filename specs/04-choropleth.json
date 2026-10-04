@@ -116,7 +116,13 @@
         "type": "text",
         "fontWeight": "bold",
         "fontSize": 12,
-        "color": "#162B4D"
+        "color": "#162B4D",
+        "lineBreak": "\n",
+        "lineHeight": 14,
+        "align": "center",
+        "dx": {
+          "expr": "datum.code == 'ACT' ? -4 : 0"
+        }
       },
       "encoding": {
         "longitude": {
@@ -128,7 +134,7 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "code",
+          "field": "map_label",
           "type": "nominal"
         },
         "color": {
@@ -137,8 +143,27 @@
             "value": "white"
           },
           "value": "#162B4D"
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "spend_per_resident",
+            "type": "quantitative",
+            "title": "AUD per resident",
+            "format": "$,.0f"
+          }
+        ]
+      },
+      "transform": [
+        {
+          "calculate": "indexof(['ACT','NT','NSW'], datum.code) >= 0 ? datum.code + '\\nA$' + format(datum.spend_per_resident, ',.0f') : datum.code",
+          "as": "map_label"
         }
-      }
+      ]
     },
     {
       "data": {
