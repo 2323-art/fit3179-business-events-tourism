@@ -81,6 +81,10 @@ Every displayed data table has JSON and CSV versions in `data/`. `provenance.jso
 
 ## Implementation and accessibility
 
+Updated 12 October 2026 after reviewing relevant original course material across indexed Weeks 2–10 and the unconfirmed-week foundations. Figure 08 now keeps both 2024 and 2025 values visible for the chosen market. Its selector also outlines the same market in Figure 09 without replacing the heatmap's change colours. The default overview uses Malaysia as an explicitly labelled starting example; Reset market view restores 2025 / all markets. The separately labelled top-eight origin map remains a local 2025 view. The waffle key includes numeric trip/spending shares for reading without colour.
+
+All 36 market/year combinations were checked at 1440, 1024, 768, 390 and 320px, including comparison values, linked selection, keyboard reset and resize retention. Existing table, route, alignment and annotation checks also passed. Opening, market and activity views were inspected in greyscale. These checks do not constitute formal accessibility certification or a guaranteed assignment grade.
+
 Vega 5.33.0, Vega-Lite 5.23.0 and Vega-Embed 6.29.0 render the charts. Figure 06 uses Vega's hierarchy/treemap transform; the others use Vega-Lite. Specifications are readable JSON, created for this story. No finished visualisation has been copied or reskinned. `app.js` adjusts sizes for the available column width and preserves selector values on resize. Source data remain unchanged.
 
 The Australia maps use an Albers-style conic equal-area projection with standard parallels −18° and −36°. The international map uses a Pacific-centred Equal Earth projection. GeoJSON input is supported by current Vega-Lite; it need not be converted to TopoJSON.

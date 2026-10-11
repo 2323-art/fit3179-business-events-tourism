@@ -139,14 +139,14 @@
     {
       "transform": [
         {
-          "filter": "datum.country == 'Malaysia'"
+          "filter": "datum.country == marketFocus"
         }
       ],
       "mark": {
         "type": "rect",
         "fillOpacity": 0,
-        "stroke": "#007F78",
-        "strokeWidth": 2
+        "stroke": "#162B4D",
+        "strokeWidth": 3
       }
     },
     {
@@ -173,6 +173,12 @@
     {
       "calculate": "abs(datum.change) < 0.0005 ? '0.0%' : format(datum.change, '+.1%')",
       "as": "change_label"
+    }
+  ],
+  "params": [
+    {
+      "name": "marketFocus",
+      "value": "Malaysia"
     }
   ]
 }

@@ -120,3 +120,11 @@ save('11-activity-slope',{'data':data('activities'),'height':320,
  {'transform':[{'filter':'datum.year == 2025'}],'mark':{'type':'text','align':'left','dx':10,'fontSize':12,'fontWeight':'bold','color':INK},'encoding':{'text':f('activity','N')}},
  {'data':{'values':[{'position':.06,'share':1.065,'year':'2024'},{'position':.53,'share':1.065,'year':'2025'}]},'mark':{'type':'text','fontSize':13,'fontWeight':'bold','color':INK},'encoding':{'text':f('year','N')}}]})
 print('Wrote',len(list(OUT.glob('*.json'))),'readable chart specifications')
+
+# Week 10: outline the selected market without replacing the heatmap's magnitude colours.
+p=OUT/'09-change-heatmap.json';s=json.loads(p.read_text(encoding='utf-8'))
+s['params']=[{'name':'marketFocus','value':'Malaysia'}]
+s['layer'][1]['transform']=[{'filter':'datum.country == marketFocus'}]
+s['layer'][1]['mark']['stroke']=INK
+s['layer'][1]['mark']['strokeWidth']=3
+p.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')

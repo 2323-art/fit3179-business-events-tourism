@@ -21,3 +21,17 @@
  .two-col>figure>figcaption{grid-row:5}
  .two-col>figure>.chart-tools{grid-row:6;align-self:end}
 }
+
+/* Simultaneous year detail reduces memory demands; linked outlines retain colour meaning. */
+.market-comparison{margin:12px 0 4px;padding:16px;background:var(--pale);border-top:2px solid var(--ink)}
+.comparison-heading{display:flex;align-items:start;justify-content:space-between;gap:14px}
+.comparison-heading h4{margin:0;font-size:14px;line-height:1.4}
+.comparison-heading button{font:inherit;font-size:12px;white-space:nowrap;color:var(--ink);background:white;border:1px solid var(--line);padding:5px 8px;cursor:pointer}
+.market-comparison p{font-size:12px;line-height:1.5;margin:8px 0}
+.market-comparison table{width:100%;table-layout:fixed;font-variant-numeric:tabular-nums}
+.market-comparison th,.market-comparison td{padding:6px 3px;white-space:normal;text-align:right;position:static}
+.market-comparison th:first-child{width:38%;text-align:left;font-weight:400}
+.market-comparison .comparison-note{margin-bottom:0;color:var(--muted)}
+.waffle-key{font-size:12px;margin:12px 0}.waffle-key p{color:var(--muted);font-size:11px;margin:0 0 6px}
+.waffle-key>div{display:flex;justify-content:space-between;gap:8px;margin:3px 0}.waffle-key span{display:flex;align-items:center;gap:6px}.waffle-key i{width:9px;height:9px;flex-shrink:0}.waffle-key strong{font-weight:400;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:400px){.market-comparison{padding:12px}.comparison-heading{flex-wrap:wrap}.waffle-key{font-size:11px}}

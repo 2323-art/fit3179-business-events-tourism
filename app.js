@@ -4,6 +4,22 @@ window.chartViews={};window.chartFailures=[];
 let marketRows=[];
 const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
 const formatMoney=n=>'A$'+new Intl.NumberFormat('en-AU',{maximumFractionDigits:1}).format(n/1e6)+'m';
+const formatChange=n=>new Intl.NumberFormat('en-AU',{style:'percent',maximumFractionDigits:1,signDisplay:'exceptZero'}).format(Math.abs(n)<.0005?0:n);
+function updateComparison(focus){
+ const country=focus==='All markets'?'Malaysia':focus;
+ const before=marketRows.find(r=>r.country===country&&r.year===2024),after=marketRows.find(r=>r.country===country&&r.year===2025);
+ if(!before||!after)return;
+ document.getElementById('comparison-title').textContent=country+' · 2024 and 2025';
+ document.getElementById('comparison-context').textContent=focus==='All markets'?'Malaysia is the starting example. Choose a market above to compare both years here.':'Both years stay visible while you switch the scatterplot year.';
+ const body=document.getElementById('comparison-rows');body.replaceChildren();
+ for(const [key,label] of [['visitors','Visitor trips'],['nights','Visitor nights'],['spend','Spend (A$m)']]){
+  const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=label;tr.append(th);
+  for(const row of [before,after]){const td=document.createElement('td');td.textContent=key==='spend'?(row[key]/1e6).toLocaleString('en-AU',{minimumFractionDigits:1,maximumFractionDigits:1}):formatTrips(row[key]);tr.append(td)}body.append(tr);
+ }
+ document.getElementById('change-summary').textContent=`${country}, 2024 → 2025: visitor trips ${formatChange(after.visitors/before.visitors-1)}, nights ${formatChange(after.nights/before.nights-1)} and spending ${formatChange(after.spend/before.spend-1)}. The outlined row follows the market selector; all other rows remain visible.`;
+ const heatmap=window.chartViews['09-change-heatmap'];
+ if(heatmap&&heatmap.signal('marketFocus')!==country)heatmap.signal('marketFocus',country).runAsync().catch(console.error);
+}
 function updateMarketSummary(){
  const view=window.chartViews['08-market-scatter'];if(!view||!marketRows.length)return;
  const year=Number(view.signal('year')),focus=view.signal('focus'),rows=marketRows.filter(r=>r.year===year);
@@ -11,9 +27,12 @@ function updateMarketSummary(){
  const row=rows.find(r=>r.country===focus);
  document.getElementById('market-heading').textContent=year+' · '+(row?row.country+' in focus':spendLeader.country+' leads on spending');
  document.getElementById('market-summary').textContent=row?`${row.country}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend)} spent in Australia in ${year}. The faded dots retain the other markets for comparison.`:`In ${year}, ${spendLeader.country} led spending with ${formatMoney(spendLeader.spend)}; ${tripLeader.country} led visitor volume with about ${formatTrips(tripLeader.visitors)} trips. Choose a year or any of the 18 markets below.`;
+ updateComparison(focus);
 }
 async function renderChart(name,index){
  const el=document.getElementById('chart'+String(index+1).padStart(2,'0'));
+ el.setAttribute('aria-busy','true');
+ if(!el.querySelector('svg'))el.innerHTML='<p class="chart-status" role="status">Loading chart…</p>';
  try{
   const spec=await (await fetch('specs/'+name+'.json')).json();
   const width=Math.max(230,el.clientWidth);
@@ -27,6 +46,7 @@ async function renderChart(name,index){
   window.chartViews[name]=result.view;
   if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);updateMarketSummary()}
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or CSV below.</p>';console.error(name,error)}
+ finally{el.setAttribute('aria-busy','false')}
 }
 async function showTable(name){
  let rows=await (await fetch('data/'+name+'.json')).json();
@@ -43,6 +63,10 @@ async function showTable(name){
 document.querySelectorAll('.chart-tools').forEach(el=>{const b=document.createElement('button');b.textContent='Read data table';b.addEventListener('click',()=>showTable(el.dataset.table));const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv';csv.textContent='CSV';csv.setAttribute('download','');const spec=document.createElement('a');spec.href='specs/'+el.dataset.chart+'.json';spec.textContent='Chart specification';el.append(b,csv,spec)});
 document.getElementById('close-dialog').addEventListener('click',()=>document.getElementById('data-dialog').close());
 document.getElementById('data-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
+document.getElementById('reset-market').addEventListener('click',async()=>{
+ const view=window.chartViews['08-market-scatter'];if(!view)return;
+ await view.signal('year',2025).signal('focus','All markets').runAsync();updateMarketSummary();
+});
 async function start(){
  await document.fonts.ready;
  try{
@@ -53,7 +77,7 @@ async function start(){
    button.addEventListener('click',async()=>{const view=window.chartViews['07-flow-map'];if(!view)return;await view.signal('originFocus',row.country).runAsync();document.querySelectorAll('#origin-key button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));});document.getElementById('origin-key').append(button);
   }
  }catch(error){console.error('Could not load comparison controls',error)}
- await Promise.all(charts.map(renderChart));document.documentElement.dataset.chartsReady='true';
+ await Promise.all(charts.map(renderChart));updateMarketSummary();document.documentElement.dataset.chartsReady='true';
 }
 start();let resizeTimer,previousWidth=innerWidth,renderQueue=Promise.resolve();
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
