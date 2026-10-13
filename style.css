@@ -41,3 +41,39 @@ body p,body figcaption,.methods li{font-family:'IBM Plex Sans',Arial,sans-serif;
 .hero-copy>p:not(.eyebrow),.wide .chart-intro,.wide figcaption{max-width:min(100%,52ch)}
 .methods-links{max-width:none}.origin-key button[data-origin="Malaysia"]{border-left:1px solid var(--line)}
 .other{background:#59626D}.market-comparison th:first-child{width:46%}
+
+/* Course typography, PDF pp. 6–7 and 11–12: readable screen type and ordered hierarchy.
+   15 CSS pixels = 11.25 points; ratios below are this site's design choices. */
+:root{--type-small:.9375rem;--type-body:1rem;--type-lead:1.25rem;--type-chart:1.5rem;--type-section:2.25rem}
+html{font-size:100%}body{font-size:var(--type-body);line-height:1.6}
+h1{font-size:clamp(4rem,6.2vw,5rem);line-height:1.05}
+h2,.chapter-heading h2,.closing h2,.methods h2{font-size:var(--type-section);line-height:1.2}
+h3,.delegate-pass h2{font-size:var(--type-chart);line-height:1.3}
+.standfirst{font-size:var(--type-lead);line-height:1.5}
+.chapter-no{font-size:3rem;line-height:1.2}
+.chart-intro,.chapter-heading>p,.delegate-pass>p,.definition,.method-note,.methods,.closing>p:last-child,dialog p{font-size:var(--type-body);line-height:1.6}
+.methods h3{font-size:var(--type-chart);line-height:1.3}
+.comparison-heading h4{font-size:1.125rem;line-height:1.4}
+.eyebrow,.wordmark,.wordmark span,nav a,.read-on,.pass-top,.legend,.mini-legend,
+figcaption,.delegate-pass figcaption,.chart-tools,.chart-tools a,.method-note a,
+.figure-tag,.state-key,.methods-links,footer,.control-hint,.origin-key button,
+.vega-bindings,.comparison-heading button,.market-comparison p,.waffle-key,.waffle-key p,
+table,.chart-status,.chart-error{font-size:var(--type-small);line-height:1.5}
+.wordmark{letter-spacing:.06em}.eyebrow,.pass-top{letter-spacing:.08em}
+.market-comparison{overflow-x:auto}.comparison-heading{flex-wrap:wrap}
+.waffle-key>div{flex-wrap:wrap}.waffle-key>div>strong{margin-left:15px}
+.vega-bind{flex-wrap:wrap}.vega-bind select{max-width:100%}
+#vg-tooltip-element{font-family:'IBM Plex Sans',Arial,sans-serif;font-size:var(--type-small);line-height:1.5;max-width:min(32rem,92vw)}
+#vg-tooltip-element table{font-size:inherit}#vg-tooltip-element td{white-space:normal}
+@media(max-width:980px){
+ .two-col:has(>figure){grid-template-columns:minmax(0,1fr);gap:38px}
+ .two-col>figure{display:block}
+ .opening{grid-template-columns:minmax(0,1fr);gap:32px}.delegate-pass{width:100%;max-width:600px;justify-self:start}
+}
+@media(max-width:760px){
+ .masthead{flex-direction:column;align-items:stretch}nav{display:flex;flex-wrap:wrap;gap:10px 22px}
+ h1{font-size:clamp(4rem,20vw,5rem)}
+ .chapter-heading{grid-template-columns:44px minmax(0,1fr)}
+ .figure-heading{display:block}.dialog-head{flex-wrap:wrap}
+ .market-comparison{padding:12px}.market-comparison th:first-child{width:40%}
+}

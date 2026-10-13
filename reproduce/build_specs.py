@@ -232,3 +232,52 @@ for path in OUT.glob('*.json'):
    for v in node:country_tips(v)
  country_tips(s)
  path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
+
+# Typography course notes: the 11–12 point screen recommendation is applied
+# as a 15 pixel minimum, with 16 pixel chart titles and explanatory annotations.
+def readable_type(node):
+ if isinstance(node,dict):
+  for key,value in list(node.items()):
+   if key.endswith('FontSize') or key=='fontSize':
+    if isinstance(value,(int,float)):node[key]=max(15,value)
+    elif isinstance(value,dict) and isinstance(value.get('value'),(int,float)):value['value']=max(15,value['value'])
+   elif key=='lineHeight' and isinstance(value,(int,float)):node[key]=max(18,value)
+   else:readable_type(value)
+ elif isinstance(node,list):
+  for value in node:readable_type(value)
+for path in OUT.glob('*.json'):
+ s=json.loads(path.read_text(encoding='utf-8'));readable_type(s);n=path.name[:2]
+ if n!='06':
+  s['config']['text']={'fontSize':16,'lineHeight':20,'color':INK}
+  s['config']['axis'].update(labelFontSize=15,titleFontSize=15,labelColor='#4E6078',labelPadding=7,titlePadding=14,labelOverlap=True)
+  s['config']['legend'].update(labelFontSize=15,titleFontSize=15,labelLimit=240)
+  s['config']['title'].update(fontSize=16,lineHeight=20)
+ if n=='01':s['hconcat'][1]['title']=['Spending in','Australia']
+ if n=='02':
+  s['layer'][0]['encoding']['x']['axis']['tickCount']=3
+  s['layer'][0]['encoding']['x']['title']=['Spending per trip','in Australian dollars']
+  s['layer'][0]['encoding']['y']['axis']={'labelExpr':"datum.label == 'Domestic overnight' ? ['Domestic', 'overnight'] : datum.label",'labelLineHeight':18}
+  s['layer'][1]['mark'].update(align='right',dx=-8,color='white',fontWeight='bold')
+ if n=='03':
+  s['height']=420
+  for layer in s['layer'][2:]:
+   layer['mark'].update(fontSize=16,lineHeight=20)
+   layer['transform'][-1]['calculate']="(datum.label == 'Domestic overnight' ? 'Domestic\\novernight' : datum.label == 'Outside Australia' ? 'Overseas' : datum.label) + '\\n' + format(datum.value/1e9,'.2f') + ' billion'"
+ if n=='04':
+  s['layer'][1]['mark'].update(fontSize=15,lineHeight=18,dx={'expr':"datum.code == 'ACT' ? -46 : -5"},dy=-16)
+  s['layer'][1]['transform'][1]['calculate']="datum.code == 'NT' ? 'Northern\\nTerritory\\n$' + format(datum.spend_per_resident, ',.0f') : 'Australian\\nCapital Territory\\n$' + format(datum.spend_per_resident, ',.0f')"
+ if n=='05':s['layer'][2]['mark'].update(fontSize=15,lineHeight=18)
+ if n=='06':
+  s['marks'][1]['encode']['update']['y']={'signal':'datum.y0+20'}
+  s['marks'][2]['encode']['update']['opacity']={'signal':'datum.x1-datum.x0 > length(('+full_name('datum.name')+'))*9 ? 1:0'}
+ if n=='08':s['layer'][0]['encoding']['x']['axis']['tickCount']=3
+ if n=='09':
+  s['height']=520
+  s['encoding']['y']['axis']['labelLimit']=180
+  s['layer'][0]['encoding']['color']['legend'].update(gradientLength=120,title=['Change,','2024 to 2025'])
+ if n=='10':s['encoding']['x']['axis']['labelOverlap']=False
+ if n=='11':
+  s['layer'][1]['mark']['dy']=-22
+  s['layer'][2]['mark'].update(fontSize=16,lineHeight=20)
+  s['layer'][2]['transform'][-1]['calculate']="datum.activity == 'National/state parks' ? 'National and\\nstate parks' : datum.activity == 'Go to the beach' ? 'Go to the\\nbeach' : datum.activity"
+ path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')

@@ -8,6 +8,14 @@ The main question is who generates visitor spending, where it lands, and how int
 
 ## Review refinements (5 October 2026)
 
+### Font size and hierarchy — 13 October 2026
+
+The original course typography guidance recommends 11–12 point text for digital displays and a clear hierarchy of titles, headings, annotations and secondary labels. The website uses a 16 pixel body size, a 15 pixel supporting-text minimum, 24 pixel chart headings, 36 pixel section headings and a 64–80 pixel main title. These particular heading ratios are design choices; the notes do not prescribe a fixed numerical scale. Body leading is 1.6, supporting text 1.5, and the ten-word paragraph line ceiling is retained.
+
+Chart text uses the same readable minimum at every viewport. Paired figures stack earlier on narrower screens, long labels wrap, and legends receive more space. Secondary chart text has a quieter colour while annotations remain prominent. Source data and existing colour meanings are unchanged.
+
+Sources: `FIT2179 Course Notes 11 Typography.pdf`, PDF file pages 6–9 and 11–12; `FIT2179 Course Notes 9 Layout.pdf`, pages 4–6; `FIT3179_Week04 – Visual hiearchy and figure-ground.pdf`, page 6. These original course documents are retained in the private knowledge base, not redistributed with the website.
+
 ### Readability update — 13 October 2026
 
 Paragraphs and captions use IBM Plex Sans. Their rendered word positions are measured after font loading, text changes and window resizing, keeping each line to at most ten words. Country and state names, source names, currency units and million/billion values are written out in the visualisation and data tables; original dataset keys remain unchanged.

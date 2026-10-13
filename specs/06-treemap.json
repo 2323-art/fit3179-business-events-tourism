@@ -118,7 +118,7 @@
             "signal": "datum.x0+7"
           },
           "y": {
-            "signal": "datum.y0+16"
+            "signal": "datum.y0+20"
           },
           "text": {
             "signal": "replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(datum.name,\"USA\",\"United States\"),\"UK\",\"United Kingdom\"),\"NSW\",\"New South Wales\"),\"VIC\",\"Victoria\"),\"QLD\",\"Queensland\"),\"WA\",\"Western Australia\"),\"SA\",\"South Australia\"),\"ACT\",\"Australian Capital Territory\"),\"NT\",\"Northern Territory\"),\"TAS\",\"Tasmania\")"
@@ -133,7 +133,7 @@
             "value": "IBM Plex Sans"
           },
           "fontSize": {
-            "value": 12
+            "value": 15
           },
           "fill": {
             "value": "white"
@@ -170,10 +170,10 @@
             "signal": "max(0,datum.x1-datum.x0-10)"
           },
           "opacity": {
-            "signal": "datum.x1-datum.x0 > length((datum.name == \"USA\" ? \"United States\" : datum.name == \"UK\" ? \"United Kingdom\" : datum.name == \"NSW\" ? \"New South Wales\" : datum.name == \"VIC\" ? \"Victoria\" : datum.name == \"QLD\" ? \"Queensland\" : datum.name == \"WA\" ? \"Western Australia\" : datum.name == \"SA\" ? \"South Australia\" : datum.name == \"ACT\" ? \"Australian Capital Territory\" : datum.name == \"NT\" ? \"Northern Territory\" : datum.name == \"TAS\" ? \"Tasmania\" : datum.name))*7 ? 1:0"
+            "signal": "datum.x1-datum.x0 > length((datum.name == \"USA\" ? \"United States\" : datum.name == \"UK\" ? \"United Kingdom\" : datum.name == \"NSW\" ? \"New South Wales\" : datum.name == \"VIC\" ? \"Victoria\" : datum.name == \"QLD\" ? \"Queensland\" : datum.name == \"WA\" ? \"Western Australia\" : datum.name == \"SA\" ? \"South Australia\" : datum.name == \"ACT\" ? \"Australian Capital Territory\" : datum.name == \"NT\" ? \"Northern Territory\" : datum.name == \"TAS\" ? \"Tasmania\" : datum.name))*9 ? 1:0"
           },
           "fontSize": {
-            "value": 12
+            "value": 15
           }
         }
       }

@@ -1,32 +1,41 @@
 {
   "width": "container",
-  "height": 420,
+  "height": 520,
   "config": {
     "font": "IBM Plex Sans",
     "view": {
       "stroke": null
     },
     "axis": {
-      "labelFontSize": 12,
-      "titleFontSize": 12,
+      "labelFontSize": 15,
+      "titleFontSize": 15,
       "titleFontWeight": "normal",
       "gridColor": "#DFE6EE",
       "domain": false,
       "tickColor": "#B3C2D3",
-      "labelColor": "#162B4D",
+      "labelColor": "#4E6078",
       "titleColor": "#162B4D",
-      "titlePadding": 12,
-      "labelLimit": 150
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
     },
     "legend": {
-      "labelFontSize": 12,
-      "titleFontSize": 12,
+      "labelFontSize": 15,
+      "titleFontSize": 15,
       "orient": "bottom",
-      "title": null
+      "title": null,
+      "labelLimit": 240
     },
     "title": {
-      "fontSize": 14,
+      "fontSize": 16,
       "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
       "color": "#162B4D"
     }
   },
@@ -75,7 +84,7 @@
       "title": null,
       "axis": {
         "labelExpr": "datum.label == \"USA\" ? \"United States\" : datum.label == \"UK\" ? \"United Kingdom\" : datum.label == \"NSW\" ? \"New South Wales\" : datum.label == \"VIC\" ? \"Victoria\" : datum.label == \"QLD\" ? \"Queensland\" : datum.label == \"WA\" ? \"Western Australia\" : datum.label == \"SA\" ? \"South Australia\" : datum.label == \"ACT\" ? \"Australian Capital Territory\" : datum.label == \"NT\" ? \"Northern Territory\" : datum.label == \"TAS\" ? \"Tasmania\" : datum.label",
-        "labelLimit": 160
+        "labelLimit": 180
       }
     }
   },
@@ -105,9 +114,12 @@
             "interpolate": "rgb"
           },
           "legend": {
-            "title": "Change, 2024 → 2025",
+            "title": [
+              "Change,",
+              "2024 to 2025"
+            ],
             "format": "+.0%",
-            "gradientLength": 190
+            "gradientLength": 120
           }
         },
         "tooltip": [
@@ -162,7 +174,7 @@
     {
       "mark": {
         "type": "text",
-        "fontSize": 12
+        "fontSize": 15
       },
       "encoding": {
         "text": {

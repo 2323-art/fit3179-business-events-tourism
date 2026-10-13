@@ -7,27 +7,36 @@
       "stroke": null
     },
     "axis": {
-      "labelFontSize": 12,
-      "titleFontSize": 12,
+      "labelFontSize": 15,
+      "titleFontSize": 15,
       "titleFontWeight": "normal",
       "gridColor": "#DFE6EE",
       "domain": false,
       "tickColor": "#B3C2D3",
-      "labelColor": "#162B4D",
+      "labelColor": "#4E6078",
       "titleColor": "#162B4D",
-      "titlePadding": 12,
+      "titlePadding": 14,
       "labelLimit": 150,
-      "tickCount": 5
+      "tickCount": 5,
+      "labelPadding": 7,
+      "labelOverlap": true
     },
     "legend": {
-      "labelFontSize": 12,
-      "titleFontSize": 12,
+      "labelFontSize": 15,
+      "titleFontSize": 15,
       "orient": "bottom",
-      "title": null
+      "title": null,
+      "labelLimit": 240
     },
     "title": {
-      "fontSize": 14,
+      "fontSize": 16,
       "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
       "color": "#162B4D"
     }
   },
@@ -51,11 +60,12 @@
           "field": "spend_per_trip",
           "type": "quantitative",
           "title": [
-            "Spending per visitor trip",
-            "(Australian dollars)"
+            "Spending per trip",
+            "in Australian dollars"
           ],
           "axis": {
-            "format": "$,.0f"
+            "format": "$,.0f",
+            "tickCount": 3
           },
           "scale": {
             "domain": [
@@ -72,7 +82,11 @@
             "Domestic overnight",
             "Domestic day"
           ],
-          "title": null
+          "title": null,
+          "axis": {
+            "labelExpr": "datum.label == 'Domestic overnight' ? ['Domestic', 'overnight'] : datum.label",
+            "labelLineHeight": 18
+          }
         },
         "color": {
           "field": "traveller",
@@ -108,10 +122,11 @@
     {
       "mark": {
         "type": "text",
-        "align": "left",
-        "dx": 7,
-        "fontSize": 13,
-        "color": "#162B4D"
+        "align": "right",
+        "dx": -8,
+        "fontSize": 15,
+        "color": "white",
+        "fontWeight": "bold"
       },
       "encoding": {
         "x": {
