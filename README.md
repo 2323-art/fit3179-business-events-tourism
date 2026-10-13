@@ -8,6 +8,14 @@ The main question is who generates visitor spending, where it lands, and how int
 
 ## Review refinements (5 October 2026)
 
+### Consistent colour meanings and legends — 14 October 2026
+
+`data/colour-semantics.json` records the category colours used by the charts and their legends. Each category colour has one meaning across the story: visitor classes retain gold/teal/blue; states have a separate shared palette in the symbol map and treemap; activities have their own colours and redundant line patterns; purple/orange consistently show increases/decreases. Slate grey identifies other international visitors. The choropleth retains a separate ordered greyscale for spending per resident. Text, outlines and basemaps are structural elements, not additional category encodings.
+
+Colour legends replace repeated traveller labels in the Sankey, state labels on the symbol map and treemap, and activity labels alongside the lines. Essential geographic labels, endpoint names, region identities that fit and a few key values remain where a category legend cannot replace them. State legend buttons highlight the same state in both views and show its destination spending below the treemap; keyboard selection and resize retention are supported.
+
+Course guidance: `FIT2179 Course Notes 8 Colour.pdf`, PDF pages 5–8 and 10–11; `FIT2179 Course Notes 3 Marks and Channels.pdf`, PDF pages 3 and 6; `Munzner - Chapter 6 - Rules of Thumb.pdf`, PDF page 24. The eight-state palette is supported by selection and textual detail rather than requiring colour memorisation. No claim is made that all hues remain distinguishable under every colour-vision deficiency.
+
 ### White space and chart hierarchy — 13 October 2026
 
 Captions follow their own charts instead of occupying forced shared rows. Detail, figure and chapter spacing follow a consistent progression; panel tops and column edges retain common sight-lines. Surplus minimum heights were removed.

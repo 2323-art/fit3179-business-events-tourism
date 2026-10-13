@@ -81,6 +81,15 @@ table,.chart-status,.chart-error{font-size:var(--type-small);line-height:1.5}
 .chart,.delegate-pass .chart,.band #chart12{min-height:0}
 .chart svg{display:block}
 .chart .vega-embed{display:block}
+.semantic-legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:0 0 20px;font-size:var(--type-small);line-height:1.5}
+.semantic-legend .legend-item{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.legend-swatch{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:1px solid #162b4d33}
+.legend-swatch.line-swatch{width:44px;height:12px;flex-basis:44px;border:0}
+.semantic-legend button{font:inherit;text-align:left;color:var(--ink);background:white;border:1px solid var(--line);padding:7px 10px;cursor:pointer;min-height:38px}
+.semantic-legend button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:1px;font-weight:600}
+.semantic-legend[data-legend="states"]{gap:10px}
+.state-detail{margin-top:16px;border-left:2px solid var(--line);padding-left:16px;font-size:var(--type-small)}
+.state-detail p{margin:0}.state-detail ul{padding-left:20px;margin:8px 0 0}.state-detail li{margin:6px 0}
 figcaption{margin:16px 0 0}
 .chart-tools{margin-top:var(--space-detail)}
 .wide,.band .wide,.markets-row{margin-top:var(--space-view)}

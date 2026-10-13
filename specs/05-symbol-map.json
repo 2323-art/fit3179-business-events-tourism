@@ -77,9 +77,7 @@
       },
       "mark": {
         "type": "circle",
-        "fill": "#59626D",
-        "fillOpacity": 0.55,
-        "stroke": "#59626D",
+        "fillOpacity": 1,
         "strokeWidth": 1.5
       },
       "encoding": {
@@ -115,7 +113,10 @@
               4000000,
               7000000
             ],
-            "labelExpr": "format(datum.value / 1e6, '.0f')"
+            "labelExpr": "format(datum.value / 1e6, '.0f')",
+            "symbolFillColor": "#FFFFFF",
+            "symbolStrokeColor": "#162B4D",
+            "symbolStrokeWidth": 1.5
           }
         },
         "tooltip": [
@@ -129,45 +130,51 @@
             "title": "State visits",
             "format": ",.0f"
           }
-        ]
+        ],
+        "color": {
+          "field": "code",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "NSW",
+              "VIC",
+              "QLD",
+              "WA",
+              "SA",
+              "ACT",
+              "NT",
+              "TAS"
+            ],
+            "range": [
+              "#A6364F",
+              "#795637",
+              "#748128",
+              "#C56B93",
+              "#5E608B",
+              "#386453",
+              "#9A8468",
+              "#4F7F91"
+            ]
+          },
+          "legend": null
+        },
+        "opacity": {
+          "condition": {
+            "test": "stateFocus == 'All states' || datum.code == stateFocus",
+            "value": 1
+          },
+          "value": 0.18
+        },
+        "stroke": {
+          "value": "#FFFFFF"
+        }
       }
-    },
+    }
+  ],
+  "params": [
     {
-      "data": {
-        "url": "data/states.json"
-      },
-      "mark": {
-        "type": "text",
-        "dy": -3,
-        "fontWeight": "bold",
-        "color": "#162B4D",
-        "fontSize": 15,
-        "lineBreak": "\n",
-        "lineHeight": 18
-      },
-      "encoding": {
-        "longitude": {
-          "field": "label_lon",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "label_lat",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "state_label",
-          "type": "nominal"
-        }
-      },
-      "transform": [
-        {
-          "filter": "indexof(['NSW','VIC','QLD'], datum.code)>=0"
-        },
-        {
-          "calculate": "datum.code == 'NSW' ? 'New South\\nWales' : datum.code == 'QLD' ? 'Queensland' : 'Victoria'",
-          "as": "state_label"
-        }
-      ]
+      "name": "stateFocus",
+      "value": "All states"
     }
   ]
 }

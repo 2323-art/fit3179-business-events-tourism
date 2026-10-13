@@ -284,3 +284,54 @@ for path in OUT.glob('*.json'):
   s['layer'][2]['mark'].update(fontSize=16,lineHeight=20)
   s['layer'][2]['transform'][-1]['calculate']="datum.activity == 'National/state parks' ? 'National and\\nstate parks' : datum.activity == 'Go to the beach' ? 'Go to the\\nbeach' : datum.activity"
  path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
+
+# Colour roles are shared with the HTML legends; no data colour has two meanings.
+STATE_COLOURS={'NSW':'#A6364F','VIC':'#795637','QLD':'#748128','WA':'#C56B93','SA':'#5E608B','ACT':'#386453','NT':'#9A8468','TAS':'#4F7F91'}
+ACTIVITY_COLOURS={'Dine out':'#008B9C','Sightseeing':'#6E3D60','Go to the beach':'#526F24','National/state parks':'#A4513A'}
+ACTIVITY_DASHES=[[],[8,4],[3,3],[10,3,2,3]]
+semantics={
+ 'travellers':[{'key':k,'label':k,'colour':c} for k,c in zip(types,colors)],
+ 'states':[{'key':k,'label':names[k],'colour':c} for k,c in STATE_COLOURS.items()],
+ 'activities':[{'key':k,'label':'National and state parks' if k=='National/state parks' else k,'colour':c,'dash':ACTIVITY_DASHES[i]} for i,(k,c) in enumerate(ACTIVITY_COLOURS.items())],
+ 'change':[{'key':'Increase','label':'Increase','colour':INCREASE},{'key':'Decrease','label':'Decrease','colour':DECREASE}],
+ 'otherVisitors':[{'key':'Other','label':'Other international visitors','colour':NEUTRAL}],
+ 'quantitative':{'spendingPerResident':['#F0F0F0','#343434']},
+ 'note':'UI text, basemaps, borders and selection outlines are structural, not category colours.'}
+(OUT.parent/'data/colour-semantics.json').write_text(json.dumps(semantics,indent=2),encoding='utf-8')
+for path in OUT.glob('*.json'):
+ s=json.loads(path.read_text(encoding='utf-8'));n=path.name[:2]
+ if n=='02':s['layer']=s['layer'][:1] # The headline already states the key value.
+ if n=='03':
+  # Traveller colours move to a legend; destination labels still explain ribbon endpoints.
+  s['layer']=[layer for layer in s['layer'] if not any(t.get('filter')=='datum.x == 0' for t in layer.get('transform',[]))]
+ if n=='05':
+  s['params']=[{'name':'stateFocus','value':'All states'}]
+  layer=s['layer'][1];layer['mark'].pop('fill',None);layer['mark'].pop('stroke',None)
+  layer['mark'].update(fillOpacity=1,strokeWidth=1.5)
+  layer['encoding']['color']=f('code','N',scale={'domain':list(STATE_COLOURS),'range':list(STATE_COLOURS.values())},legend=None)
+  layer['encoding']['opacity']={'condition':{'test':"stateFocus == 'All states' || datum.code == stateFocus",'value':1},'value':.18}
+  layer['encoding']['stroke']={'value':'#FFFFFF'}
+  layer['encoding']['size']['legend'].update(symbolFillColor='#FFFFFF',symbolStrokeColor=INK,symbolStrokeWidth=1.5)
+  s['layer']=s['layer'][:2]
+ if n=='06':
+  s['signals']=[{'name':'stateFocus','value':'All states'}]
+  s['scales']=[{'name':'stateColour','type':'ordinal','domain':list(STATE_COLOURS),'range':list(STATE_COLOURS.values())}]
+  s['data'][0]['transform'][1].update(paddingTop=4,paddingInner=4,paddingOuter=5)
+  s['marks'][0]['encode']['enter']['fill']={'scale':'stateColour','field':'parent'}
+  s['marks'][0]['encode']['update']['fillOpacity']={'signal':"stateFocus == 'All states' || datum.parent == stateFocus ? 1 : .18"}
+  s['marks'][0]['encode'].pop('hover',None)
+  # Retain only region identities that fit; the legend replaces all state headings.
+  s['data'][3]['transform']=[{'type':'filter','expr':'datum.y1-datum.y0 > 28 && datum.x1-datum.x0 > length(('+full_region('datum.name')+'))*9+16'}]
+  s['marks']=s['marks'][:2]
+  label=s['marks'][1]['encode']['update'];label.pop('limit',None)
+  label['opacity']={'signal':"stateFocus == 'All states' || datum.parent == stateFocus ? 1 : 0"}
+  label['fill']={'signal':"indexof(['QLD','WA','NT'], datum.parent) >= 0 ? '#101820' : '#FFFFFF'"}
+ if n=='10':s['layer'][1]['encoding']['color']['scale']['range']=[BLUE,INCREASE,DECREASE]
+ if n=='11':
+  s['transform'][1]['calculate']='datum.year == 2024 ? 0.08 : 0.92'
+  layer=s['layer'][0]
+  layer['encoding']['color']=f('activity','N',scale={'domain':list(ACTIVITY_COLOURS),'range':list(ACTIVITY_COLOURS.values())},legend=None)
+  layer['encoding']['strokeDash']=f('activity','N',scale={'domain':list(ACTIVITY_COLOURS),'range':ACTIVITY_DASHES},legend=None)
+  s['layer'][3]['data']['values'][0]['position']=.08;s['layer'][3]['data']['values'][1]['position']=.92
+  s['layer'].pop(2) # Activity identities are carried by the colour-and-pattern legend.
+ path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')

@@ -2,6 +2,7 @@
 const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
 window.chartViews={};window.chartFailures=[];
 let marketRows=[];
+let colourSemantics,regionRows=[],selectedState='All states';
 const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
 const formatMoney=n=>new Intl.NumberFormat('en-AU',{maximumFractionDigits:1}).format(n/1e6)+' million Australian dollars';
 const displayName=value=>typeof value==='string'?value.replace(/\b(USA|UK|NSW|VIC|QLD|WA|SA|NT|ACT|TAS)\b/g,key=>({'USA':'United States','UK':'United Kingdom','NSW':'New South Wales','VIC':'Victoria','QLD':'Queensland','WA':'Western Australia','SA':'South Australia','NT':'Northern Territory','ACT':'Australian Capital Territory','TAS':'Tasmania'}[key])).replace('National/state parks','National and state parks').replace('Other + rounding','Other markets and rounding'):value;
@@ -44,7 +45,6 @@ async function renderChart(name,index){
   else if(index===5){spec.width=width;spec.height=width<500?460:380}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
   else if(index===9&&width<500){spec.layer[1].mark.size=16;spec.layer[2].transform[0].filter="datum.kind == 'Total'";spec.layer[2].transform[1].calculate='2.85';spec.layer[2].transform[2].calculate="format(datum.value,'.2f') + '\\nbillion'";spec.layer[2].mark.lineBreak='\n';spec.layer[2].mark.lineHeight=18;spec.encoding.x.axis.labelAngle=-60;spec.height=360}
-  else if(index===10&&width<500){spec.height=360;spec.transform[1].calculate='datum.year == 2024 ? 0.06 : 0.36';spec.layer[3].data.values[1].position=.36}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
   if(index===3)spec.height=Math.min(400,width*.98);
@@ -53,6 +53,7 @@ async function renderChart(name,index){
   if(index===11)spec.height=200;
   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',tooltip:{theme:'light'},loader:vega.loader({baseURL:document.baseURI})});
   window.chartViews[name]=result.view;
+  if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
   if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);updateMarketSummary()}
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
@@ -80,6 +81,8 @@ async function start(){
  await document.fonts.ready;
  try{
   marketRows=await (await fetch('data/markets.json')).json();
+  [colourSemantics,regionRows]=await Promise.all(['colour-semantics','regions'].map(async name=>(await fetch('data/'+name+'.json')).json()));
+  buildColourLegends();
   const origins=await (await fetch('data/origins.json')).json();
   for(const row of [{country:'All origins'},...origins]){
    const button=document.createElement('button');button.type='button';button.dataset.origin=row.country;button.setAttribute('aria-pressed',String(row.country==='All origins'));button.textContent=displayName(row.country)+(row.visitors?' · '+formatTrips(row.visitors):'');
@@ -87,6 +90,40 @@ async function start(){
   }
  }catch(error){console.error('Could not load comparison controls',error)}
  await Promise.all(charts.map(renderChart));updateMarketSummary();document.documentElement.dataset.chartsReady='true';
+}
+function buildColourLegends(){
+ for(const host of document.querySelectorAll('[data-legend]')){
+  const kind=host.dataset.legend;
+  const entries=kind==='international'?[colourSemantics.travellers[2]]:kind==='waterfall'?[{...colourSemantics.travellers[2],label:'International spending total'},...colourSemantics.change]:colourSemantics[kind];
+  if(kind==='states'){
+   const reset=document.createElement('button');reset.type='button';reset.textContent='All states and territories';reset.dataset.state='All states';reset.setAttribute('aria-pressed',String(selectedState==='All states'));reset.addEventListener('click',()=>selectState('All states'));host.append(reset);
+  }
+  for(const entry of entries){
+   const item=document.createElement(kind==='states'?'button':'span');item.className='legend-item';item.dataset.colour=entry.colour;item.dataset.meaning=entry.label;
+   const swatch=document.createElement('span');swatch.className='legend-swatch';swatch.setAttribute('aria-hidden','true');
+   if(entry.dash){
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 44 12');svg.setAttribute('width','44');svg.setAttribute('height','12');
+    const line=document.createElementNS(svg.namespaceURI,'line');for(const [k,v] of Object.entries({x1:0,x2:44,y1:6,y2:6,stroke:entry.colour,'stroke-width':3,'stroke-dasharray':entry.dash.join(' ')}))line.setAttribute(k,v);svg.append(line);swatch.append(svg);swatch.classList.add('line-swatch');
+   }else swatch.style.backgroundColor=entry.colour;
+   item.append(swatch,document.createTextNode(entry.label));
+   if(kind==='states'){item.type='button';item.dataset.state=entry.key;item.setAttribute('aria-pressed','false');item.addEventListener('click',()=>selectState(entry.key));}
+   host.append(item);
+  }
+ }
+}
+async function selectState(state){
+ selectedState=state;
+ await Promise.all(['05-symbol-map','06-treemap'].map(name=>window.chartViews[name]?.signal('stateFocus',state).runAsync()));
+ document.querySelectorAll('[data-state]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.state===state)));
+ const detail=document.getElementById('state-detail');detail.replaceChildren();
+ const intro=document.createElement('p');intro.textContent=state==='All states'?'Select a state in the legend to see its destinations and spending.':displayName(state)+' · destination spending in 2025';detail.append(intro);
+ if(state!=='All states'){
+  const list=document.createElement('ul');
+  for(const row of regionRows.filter(r=>r.parent===state).sort((a,b)=>b.value-a.value)){
+   const item=document.createElement('li');item.textContent=displayName(row.name).replace('Hobart & south','Hobart and the South')+': '+formatMoney(row.value);list.append(item);
+  }detail.append(list);
+ }
+ scheduleProse();
 }
 // Measure real word positions, preserving inline links and emphasis. A character
 // width alone cannot guarantee ten words when a sentence contains short words.

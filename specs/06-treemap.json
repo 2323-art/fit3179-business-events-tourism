@@ -30,9 +30,9 @@
               "signal": "height"
             }
           ],
-          "paddingInner": 3,
-          "paddingOuter": 3,
-          "paddingTop": 22
+          "paddingInner": 4,
+          "paddingOuter": 5,
+          "paddingTop": 4
         }
       ]
     },
@@ -62,12 +62,37 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum.value >= 1.9e9"
+          "expr": "datum.y1-datum.y0 > 28 && datum.x1-datum.x0 > length((replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(datum.name,\"USA\",\"United States\"),\"UK\",\"United Kingdom\"),\"NSW\",\"New South Wales\"),\"VIC\",\"Victoria\"),\"QLD\",\"Queensland\"),\"WA\",\"Western Australia\"),\"SA\",\"South Australia\"),\"ACT\",\"Australian Capital Territory\"),\"NT\",\"Northern Territory\"),\"TAS\",\"Tasmania\")))*9+16"
         }
       ]
     }
   ],
-  "scales": [],
+  "scales": [
+    {
+      "name": "stateColour",
+      "type": "ordinal",
+      "domain": [
+        "NSW",
+        "VIC",
+        "QLD",
+        "WA",
+        "SA",
+        "ACT",
+        "NT",
+        "TAS"
+      ],
+      "range": [
+        "#A6364F",
+        "#795637",
+        "#748128",
+        "#C56B93",
+        "#5E608B",
+        "#386453",
+        "#9A8468",
+        "#4F7F91"
+      ]
+    }
+  ],
   "marks": [
     {
       "type": "rect",
@@ -89,7 +114,8 @@
             "field": "y1"
           },
           "fill": {
-            "value": "#59626D"
+            "scale": "stateColour",
+            "field": "parent"
           },
           "tooltip": {
             "signal": "{'Region':replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(datum.name,\"USA\",\"United States\"),\"UK\",\"United Kingdom\"),\"NSW\",\"New South Wales\"),\"VIC\",\"Victoria\"),\"QLD\",\"Queensland\"),\"WA\",\"Western Australia\"),\"SA\",\"South Australia\"),\"ACT\",\"Australian Capital Territory\"),\"NT\",\"Northern Territory\"),\"TAS\",\"Tasmania\"), 'State or territory':datum.parent == \"USA\" ? \"United States\" : datum.parent == \"UK\" ? \"United Kingdom\" : datum.parent == \"NSW\" ? \"New South Wales\" : datum.parent == \"VIC\" ? \"Victoria\" : datum.parent == \"QLD\" ? \"Queensland\" : datum.parent == \"WA\" ? \"Western Australia\" : datum.parent == \"SA\" ? \"South Australia\" : datum.parent == \"ACT\" ? \"Australian Capital Territory\" : datum.parent == \"NT\" ? \"Northern Territory\" : datum.parent == \"TAS\" ? \"Tasmania\" : datum.parent, 'Spending (Australian dollars)':format(datum.value,'$,.0f')}"
@@ -97,12 +123,7 @@
         },
         "update": {
           "fillOpacity": {
-            "value": 1
-          }
-        },
-        "hover": {
-          "fillOpacity": {
-            "value": 0.7
+            "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : .18"
           }
         }
       }
@@ -123,11 +144,8 @@
           "text": {
             "signal": "replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(datum.name,\"USA\",\"United States\"),\"UK\",\"United Kingdom\"),\"NSW\",\"New South Wales\"),\"VIC\",\"Victoria\"),\"QLD\",\"Queensland\"),\"WA\",\"Western Australia\"),\"SA\",\"South Australia\"),\"ACT\",\"Australian Capital Territory\"),\"NT\",\"Northern Territory\"),\"TAS\",\"Tasmania\")"
           },
-          "limit": {
-            "signal": "max(0, datum.x1-datum.x0-14)"
-          },
           "opacity": {
-            "signal": "datum.y1-datum.y0>27 && datum.x1-datum.x0>55 ? 1:0"
+            "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : 0"
           },
           "font": {
             "value": "IBM Plex Sans"
@@ -136,47 +154,16 @@
             "value": 15
           },
           "fill": {
-            "value": "white"
+            "signal": "indexof(['QLD','WA','NT'], datum.parent) >= 0 ? '#101820' : '#FFFFFF'"
           }
         }
       }
-    },
+    }
+  ],
+  "signals": [
     {
-      "type": "text",
-      "from": {
-        "data": "parents"
-      },
-      "encode": {
-        "update": {
-          "x": {
-            "signal": "datum.x0+5"
-          },
-          "y": {
-            "signal": "datum.y0+16"
-          },
-          "text": {
-            "signal": "datum.name == \"USA\" ? \"United States\" : datum.name == \"UK\" ? \"United Kingdom\" : datum.name == \"NSW\" ? \"New South Wales\" : datum.name == \"VIC\" ? \"Victoria\" : datum.name == \"QLD\" ? \"Queensland\" : datum.name == \"WA\" ? \"Western Australia\" : datum.name == \"SA\" ? \"South Australia\" : datum.name == \"ACT\" ? \"Australian Capital Territory\" : datum.name == \"NT\" ? \"Northern Territory\" : datum.name == \"TAS\" ? \"Tasmania\" : datum.name"
-          },
-          "font": {
-            "value": "IBM Plex Sans"
-          },
-          "fontWeight": {
-            "value": "bold"
-          },
-          "fill": {
-            "value": "#162B4D"
-          },
-          "limit": {
-            "signal": "max(0,datum.x1-datum.x0-10)"
-          },
-          "opacity": {
-            "signal": "datum.x1-datum.x0 > length((datum.name == \"USA\" ? \"United States\" : datum.name == \"UK\" ? \"United Kingdom\" : datum.name == \"NSW\" ? \"New South Wales\" : datum.name == \"VIC\" ? \"Victoria\" : datum.name == \"QLD\" ? \"Queensland\" : datum.name == \"WA\" ? \"Western Australia\" : datum.name == \"SA\" ? \"South Australia\" : datum.name == \"ACT\" ? \"Australian Capital Territory\" : datum.name == \"NT\" ? \"Northern Territory\" : datum.name == \"TAS\" ? \"Tasmania\" : datum.name))*9 ? 1:0"
-          },
-          "fontSize": {
-            "value": 15
-          }
-        }
-      }
+      "name": "stateFocus",
+      "value": "All states"
     }
   ]
 }

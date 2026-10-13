@@ -1,0 +1,124 @@
+{
+  "travellers": [
+    {
+      "key": "Domestic day",
+      "label": "Domestic day",
+      "colour": "#B47716"
+    },
+    {
+      "key": "Domestic overnight",
+      "label": "Domestic overnight",
+      "colour": "#007F78"
+    },
+    {
+      "key": "International",
+      "label": "International",
+      "colour": "#2457D6"
+    }
+  ],
+  "states": [
+    {
+      "key": "NSW",
+      "label": "New South Wales",
+      "colour": "#A6364F"
+    },
+    {
+      "key": "VIC",
+      "label": "Victoria",
+      "colour": "#795637"
+    },
+    {
+      "key": "QLD",
+      "label": "Queensland",
+      "colour": "#748128"
+    },
+    {
+      "key": "WA",
+      "label": "Western Australia",
+      "colour": "#C56B93"
+    },
+    {
+      "key": "SA",
+      "label": "South Australia",
+      "colour": "#5E608B"
+    },
+    {
+      "key": "ACT",
+      "label": "Australian Capital Territory",
+      "colour": "#386453"
+    },
+    {
+      "key": "NT",
+      "label": "Northern Territory",
+      "colour": "#9A8468"
+    },
+    {
+      "key": "TAS",
+      "label": "Tasmania",
+      "colour": "#4F7F91"
+    }
+  ],
+  "activities": [
+    {
+      "key": "Dine out",
+      "label": "Dine out",
+      "colour": "#008B9C",
+      "dash": []
+    },
+    {
+      "key": "Sightseeing",
+      "label": "Sightseeing",
+      "colour": "#6E3D60",
+      "dash": [
+        8,
+        4
+      ]
+    },
+    {
+      "key": "Go to the beach",
+      "label": "Go to the beach",
+      "colour": "#526F24",
+      "dash": [
+        3,
+        3
+      ]
+    },
+    {
+      "key": "National/state parks",
+      "label": "National and state parks",
+      "colour": "#A4513A",
+      "dash": [
+        10,
+        3,
+        2,
+        3
+      ]
+    }
+  ],
+  "change": [
+    {
+      "key": "Increase",
+      "label": "Increase",
+      "colour": "#762A83"
+    },
+    {
+      "key": "Decrease",
+      "label": "Decrease",
+      "colour": "#C45118"
+    }
+  ],
+  "otherVisitors": [
+    {
+      "key": "Other",
+      "label": "Other international visitors",
+      "colour": "#59626D"
+    }
+  ],
+  "quantitative": {
+    "spendingPerResident": [
+      "#F0F0F0",
+      "#343434"
+    ]
+  },
+  "note": "UI text, basemaps, borders and selection outlines are structural, not category colours."
+}

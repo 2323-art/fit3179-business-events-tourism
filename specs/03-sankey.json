@@ -177,50 +177,6 @@
           "type": "nominal"
         }
       }
-    },
-    {
-      "data": {
-        "url": "data/flow-nodes.json"
-      },
-      "transform": [
-        {
-          "filter": "datum.x == 0"
-        },
-        {
-          "calculate": "(datum.y + datum.y2)/2 - (datum.label == 'International' ? 0.6 : 0)",
-          "as": "mid"
-        },
-        {
-          "calculate": "(datum.label == 'Domestic overnight' ? 'Domestic\\novernight' : datum.label == 'Outside Australia' ? 'Overseas' : datum.label) + '\\n' + format(datum.value/1e9,'.2f') + ' billion'",
-          "as": "direct_label"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 10,
-        "color": "#07101C",
-        "fontSize": 16,
-        "fontWeight": "bold",
-        "lineBreak": "\n",
-        "lineHeight": 20,
-        "baseline": "middle",
-        "dy": -7
-      },
-      "encoding": {
-        "x": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "mid",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "direct_label",
-          "type": "nominal"
-        }
-      }
     }
   ]
 }

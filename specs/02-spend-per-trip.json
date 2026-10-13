@@ -118,41 +118,6 @@
           }
         ]
       }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "align": "right",
-        "dx": -8,
-        "fontSize": 15,
-        "color": "white",
-        "fontWeight": "bold"
-      },
-      "encoding": {
-        "x": {
-          "field": "spend_per_trip",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "traveller",
-          "type": "nominal",
-          "sort": [
-            "International",
-            "Domestic overnight",
-            "Domestic day"
-          ]
-        },
-        "text": {
-          "field": "spend_per_trip",
-          "type": "quantitative",
-          "format": "$,.0f"
-        }
-      },
-      "transform": [
-        {
-          "filter": "datum.traveller == 'International'"
-        }
-      ]
     }
   ]
 }

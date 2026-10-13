@@ -48,7 +48,7 @@
       "filter": "datum.activity != 'Go shopping'"
     },
     {
-      "calculate": "datum.year == 2024 ? 0.06 : 0.53",
+      "calculate": "datum.year == 2024 ? 0.08 : 0.92",
       "as": "position"
     }
   ],
@@ -94,11 +94,52 @@
           "type": "nominal"
         },
         "color": {
-          "value": "#59626D"
+          "field": "activity",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Dine out",
+              "Sightseeing",
+              "Go to the beach",
+              "National/state parks"
+            ],
+            "range": [
+              "#008B9C",
+              "#6E3D60",
+              "#526F24",
+              "#A4513A"
+            ]
+          },
+          "legend": null
         },
         "strokeDash": {
           "field": "activity",
           "type": "nominal",
+          "scale": {
+            "domain": [
+              "Dine out",
+              "Sightseeing",
+              "Go to the beach",
+              "National/state parks"
+            ],
+            "range": [
+              [],
+              [
+                8,
+                4
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                10,
+                3,
+                2,
+                3
+              ]
+            ]
+          },
           "legend": null
         },
         "tooltip": [
@@ -150,42 +191,15 @@
       ]
     },
     {
-      "transform": [
-        {
-          "filter": "datum.year == 2025"
-        },
-        {
-          "calculate": "datum.activity == 'National/state parks' ? 'National and\\nstate parks' : datum.activity == 'Go to the beach' ? 'Go to the\\nbeach' : datum.activity",
-          "as": "activity_label"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 10,
-        "fontSize": 16,
-        "fontWeight": "bold",
-        "color": "#162B4D",
-        "lineBreak": "\n",
-        "lineHeight": 20
-      },
-      "encoding": {
-        "text": {
-          "field": "activity_label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
       "data": {
         "values": [
           {
-            "position": 0.06,
+            "position": 0.08,
             "share": 1.065,
             "year": "2024"
           },
           {
-            "position": 0.53,
+            "position": 0.92,
             "share": 1.065,
             "year": "2025"
           }
