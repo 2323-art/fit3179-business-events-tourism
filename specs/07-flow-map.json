@@ -215,10 +215,10 @@
         "fontWeight": "bold",
         "color": "#162B4D",
         "align": {
-          "expr": "datum.country == 'UK' || datum.country == 'India' || datum.country == 'Malaysia' ? 'right' : 'left'"
+          "expr": "datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' ? 'right' : 'left'"
         },
         "dx": {
-          "expr": "datum.country == 'UK' || datum.country == 'India' || datum.country == 'Malaysia' ? -8 : 8"
+          "expr": "datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' ? -8 : 8"
         },
         "dy": {
           "expr": "datum.country == 'Singapore' ? 18 : datum.country == 'Malaysia' ? -8 : -10"

@@ -270,6 +270,9 @@ for path in OUT.glob('*.json'):
  if n=='06':
   s['marks'][1]['encode']['update']['y']={'signal':'datum.y0+20'}
   s['marks'][2]['encode']['update']['opacity']={'signal':'datum.x1-datum.x0 > length(('+full_name('datum.name')+'))*9 ? 1:0'}
+ if n=='07':
+  s['layer'][4]['mark']['align']={'expr':"datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' ? 'right' : 'left'"}
+  s['layer'][4]['mark']['dx']={'expr':"datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' ? -8 : 8"}
  if n=='08':s['layer'][0]['encoding']['x']['axis']['tickCount']=3
  if n=='09':
   s['height']=520
