@@ -8,6 +8,14 @@ The main question is who generates visitor spending, where it lands, and how int
 
 ## Review refinements (5 October 2026)
 
+### White space and chart hierarchy — 13 October 2026
+
+Captions follow their own charts instead of occupying forced shared rows. Detail, figure and chapter spacing follow a consistent progression; panel tops and column edges retain common sight-lines. Surplus minimum heights were removed.
+
+On wide screens, the spending-flow diagram, population-adjusted choropleth and activity comparison span three equal grid units, with supporting comparisons spanning two. Their plotting areas are taller. The linked scatterplot and heatmap retain equal widths for joint exploration; the detailed treemap, flow map and waterfall retain a full row. Below 1,101 pixels, unequal pairs stack to preserve readable labels. These proportions and pixel spacings are design choices, not numerical course requirements. Data and scale domains are unchanged.
+
+Source guidance: `FIT2179 Course Notes 9 Layout.pdf`, PDF pages 2 and 4–6; `FIT3179_Week04 – Visual hiearchy and figure-ground.pdf`, PDF pages 3 and 6; `Munzner - Chapter 7 - Arrange Tables.pdf`, PDF pages 31–32. Private course originals are not distributed in this repository.
+
 ### Font size and hierarchy — 13 October 2026
 
 The original course typography guidance recommends 11–12 point text for digital displays and a clear hierarchy of titles, headings, annotations and secondary labels. The website uses a 16 pixel body size, a 15 pixel supporting-text minimum, 24 pixel chart headings, 36 pixel section headings and a 64–80 pixel main title. These particular heading ratios are design choices; the notes do not prescribe a fixed numerical scale. Body leading is 1.6, supporting text 1.5, and the ten-word paragraph line ceiling is retained.

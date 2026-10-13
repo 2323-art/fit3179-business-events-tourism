@@ -45,7 +45,12 @@ async function renderChart(name,index){
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
   else if(index===9&&width<500){spec.layer[1].mark.size=16;spec.layer[2].transform[0].filter="datum.kind == 'Total'";spec.layer[2].transform[1].calculate='2.85';spec.layer[2].transform[2].calculate="format(datum.value,'.2f') + '\\nbillion'";spec.layer[2].mark.lineBreak='\n';spec.layer[2].mark.lineHeight=18;spec.encoding.x.axis.labelAngle=-60;spec.height=360}
   else if(index===10&&width<500){spec.height=360;spec.transform[1].calculate='datum.year == 2024 ? 0.06 : 0.36';spec.layer[3].data.values[1].position=.36}
-  if(index===3||index===4)spec.height=Math.min(380,width*.88);
+  // Give the explanatory idioms more area than their contextual comparisons.
+  if(index===1)spec.height=240;
+  if(index===3)spec.height=Math.min(400,width*.98);
+  if(index===4)spec.height=Math.min(280,width*.78);
+  if(index===10)spec.height=360;
+  if(index===11)spec.height=200;
   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',tooltip:{theme:'light'},loader:vega.loader({baseURL:document.baseURI})});
   window.chartViews[name]=result.view;
   if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);updateMarketSummary()}

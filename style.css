@@ -10,17 +10,8 @@
 @media(max-width:760px){.opening{grid-template-columns:minmax(0,1fr)}.hero-copy{min-width:0}h1{font-size:clamp(64px,22.5vw,88px)}}
 /* Independent marking review: readable measure below full-width charts. */ .wide figcaption{max-width:72ch}.wide .chart-intro{max-width:76ch}
 
-/* Shared slots preserve sight-lines across each pair, even when copy wraps. */
-@media(min-width:761px){
- .two-col:has(>figure){row-gap:0;align-items:stretch}
- .two-col>figure{display:grid;grid-template-rows:subgrid;grid-row:span 6;row-gap:0}
- .two-col>figure>h3{grid-row:1}
- .two-col>figure>.chart-intro{grid-row:2;min-height:0}
- .two-col>figure>.legend,.two-col>figure>.mini-legend{grid-row:3}
- .two-col>figure>.chart{grid-row:4;align-self:start}
- .two-col>figure>figcaption{grid-row:5}
- .two-col>figure>.chart-tools{grid-row:6;align-self:end}
-}
+/* Each caption belongs to its own chart; shared caption rows created empty bands. */
+.two-col:has(>figure){align-items:start}
 
 /* Simultaneous year detail reduces memory demands; linked outlines retain colour meaning. */
 .market-comparison{margin:12px 0 4px;padding:16px;background:var(--pale);border-top:2px solid var(--ink)}
@@ -76,4 +67,38 @@ table,.chart-status,.chart-error{font-size:var(--type-small);line-height:1.5}
  .chapter-heading{grid-template-columns:44px minmax(0,1fr)}
  .figure-heading{display:block}.dialog-head{flex-wrap:wrap}
  .market-comparison{padding:12px}.market-comparison th:first-child{width:40%}
+}
+
+/* Layout notes, PDF pp. 2, 4–6: hierarchy, sight-lines and proximity.
+   Five equal grid units support primary (three) and contextual (two) spans.
+   Pixel spacing and the 3:2 allocation are design choices, not course thresholds. */
+:root{--space-detail:12px;--space-group:24px;--space-view:48px;--space-section:80px}
+.chapter{padding:var(--space-section) 0}
+.chapter-heading{margin-bottom:32px}
+.chapter-heading h2{margin-bottom:0}
+.two-col:has(>figure){gap:var(--space-view)}
+.chart-intro,#market-summary{min-height:0;margin-bottom:var(--space-group)}
+.chart,.delegate-pass .chart,.band #chart12{min-height:0}
+.chart svg{display:block}
+.chart .vega-embed{display:block}
+figcaption{margin:16px 0 0}
+.chart-tools{margin-top:var(--space-detail)}
+.wide,.band .wide,.markets-row{margin-top:var(--space-view)}
+.chapter-heading+.wide{margin-top:0}
+.method-note{margin-top:var(--space-view)}
+.band figure{padding:var(--space-group)}
+.closing{margin-top:var(--space-view);padding-top:32px}
+@media(min-width:1101px){
+ .two-col.chart-hierarchy{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:24px}
+ .chart-hierarchy>.primary-view{grid-column:span 3}
+ .chart-hierarchy>.supporting-view{grid-column:span 2}
+}
+@media(max-width:1100px){
+ .two-col.chart-hierarchy{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:760px){
+ :root{--space-view:40px;--space-section:48px}
+ .band figure{padding:16px}
+ .chapter-heading{margin-bottom:28px}
+ .chart-intro{margin-bottom:20px}
 }
