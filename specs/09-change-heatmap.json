@@ -72,7 +72,11 @@
         "Netherlands",
         "Viet Nam"
       ],
-      "title": null
+      "title": null,
+      "axis": {
+        "labelExpr": "datum.label == \"USA\" ? \"United States\" : datum.label == \"UK\" ? \"United Kingdom\" : datum.label == \"NSW\" ? \"New South Wales\" : datum.label == \"VIC\" ? \"Victoria\" : datum.label == \"QLD\" ? \"Queensland\" : datum.label == \"WA\" ? \"Western Australia\" : datum.label == \"SA\" ? \"South Australia\" : datum.label == \"ACT\" ? \"Australian Capital Territory\" : datum.label == \"NT\" ? \"Northern Territory\" : datum.label == \"TAS\" ? \"Tasmania\" : datum.label",
+        "labelLimit": 160
+      }
     }
   },
   "layer": [
@@ -93,9 +97,9 @@
               0.65
             ],
             "range": [
-              "#915114",
+              "#C45118",
               "#FFFFFF",
-              "#2457D6"
+              "#762A83"
             ],
             "clamp": true,
             "interpolate": "rgb"
@@ -108,7 +112,7 @@
         },
         "tooltip": [
           {
-            "field": "country",
+            "field": "country_full",
             "type": "nominal"
           },
           {
@@ -134,7 +138,13 @@
             "format": ",.0f"
           }
         ]
-      }
+      },
+      "transform": [
+        {
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_full"
+        }
+      ]
     },
     {
       "transform": [
@@ -161,12 +171,17 @@
         },
         "color": {
           "condition": {
-            "test": "abs(datum.change) > 0.48",
+            "test": "abs(datum.change) > 0.45",
             "value": "white"
           },
           "value": "#162B4D"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.country == marketFocus"
+        }
+      ]
     }
   ],
   "transform": [

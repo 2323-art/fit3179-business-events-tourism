@@ -8,6 +8,14 @@ The main question is who generates visitor spending, where it lands, and how int
 
 ## Review refinements (5 October 2026)
 
+### Readability update — 13 October 2026
+
+Paragraphs and captions use IBM Plex Sans. Their rendered word positions are measured after font loading, text changes and window resizing, keeping each line to at most ten words. Country and state names, source names, currency units and million/billion values are written out in the visualisation and data tables; original dataset keys remain unchanged.
+
+Gold means domestic day visitors, teal domestic overnight visitors, and blue international business-event visitors. Purple consistently means increase and orange decrease in both change diagrams. The spending-per-resident map uses a sequential grey scale. Other charts use neutral marks, position, area, outlines or line patterns without assigning unrelated meanings to the visitor-category colours. Labels focus on key findings and selected markets, with exact details retained in tooltips and tables.
+
+Five-width browser checks cover 1440, 1024, 768, 390 and 320 pixels, all thirty-six market/year combinations, nine origin controls including the overview, all twelve data tables, mobile callout bounds and selection retention on resize. Statistical input files are unchanged. This revision does not carry forward an earlier estimated grade as a new assessment.
+
 Eight keyboard-accessible origin buttons identify map routes. Scatter commentary follows the selected year and any of eighteen markets. The heatmap retains mean-change ordering, one-decimal percentages and a Malaysia outline. The waterfall has cumulative connectors; the activity slope has direct labels and distinct line patterns. National table previews show 2025 only and warn against comparing historical domestic rows across the survey break. Statistical inputs are unchanged.
 
 Responsive checks cover 1440, 1024, 390 and 320px, all twelve charts/tables and preservation of selections on resize. Rebuild readable specifications with `reproduce/build_specs.py`.

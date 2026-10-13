@@ -74,7 +74,28 @@
           "USA",
           "Viet Nam"
         ],
-        "name": "Highlight: "
+        "name": "Highlight: ",
+        "labels": [
+          "All markets",
+          "Canada",
+          "China",
+          "France",
+          "Germany",
+          "Hong Kong",
+          "India",
+          "Indonesia",
+          "Japan",
+          "Korea",
+          "Malaysia",
+          "Netherlands",
+          "New Zealand",
+          "Philippines",
+          "Scandinavia",
+          "Singapore",
+          "United Kingdom",
+          "United States",
+          "Viet Nam"
+        ]
       }
     }
   ],
@@ -97,7 +118,8 @@
           "type": "quantitative",
           "title": "Visitor trips",
           "axis": {
-            "format": "~s"
+            "format": ",.0f",
+            "tickCount": 3
           },
           "scale": {
             "domain": [
@@ -109,9 +131,13 @@
         "y": {
           "field": "spend",
           "type": "quantitative",
-          "title": "Spending in Australia (AUD)",
+          "title": [
+            "Spending in Australia",
+            "(million Australian dollars)"
+          ],
           "axis": {
-            "format": "$~s"
+            "labelExpr": "format(datum.value / 1e6, '.0f')",
+            "tickCount": 4
           },
           "scale": {
             "domain": [
@@ -121,10 +147,6 @@
           }
         },
         "color": {
-          "condition": {
-            "test": "datum.country == 'Malaysia'",
-            "value": "#007F78"
-          },
           "value": "#2457D6"
         },
         "opacity": {
@@ -136,7 +158,7 @@
         },
         "tooltip": [
           {
-            "field": "country",
+            "field": "country_full",
             "type": "nominal",
             "title": "Origin"
           },
@@ -149,16 +171,30 @@
           {
             "field": "spend",
             "type": "quantitative",
-            "title": "Spending (AUD)",
+            "title": "Spending (Australian dollars)",
             "format": "$,.0f"
           }
         ]
-      }
+      },
+      "transform": [
+        {
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_full"
+        }
+      ]
     },
     {
       "transform": [
         {
-          "filter": "focus == 'All markets' ? (datum.country == 'Malaysia' || datum.visitors > 70000) : datum.country == focus"
+          "filter": "focus == 'All markets' ? datum.country == 'Malaysia' : datum.country == focus"
+        },
+        {
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_name"
+        },
+        {
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_full"
         }
       ],
       "mark": {
@@ -183,12 +219,12 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "country",
+          "field": "country_name",
           "type": "nominal"
         },
         "tooltip": [
           {
-            "field": "country",
+            "field": "country_full",
             "type": "nominal",
             "title": "Origin"
           },
@@ -201,7 +237,7 @@
           {
             "field": "spend",
             "type": "quantitative",
-            "title": "Spending (AUD)",
+            "title": "Spending (Australian dollars)",
             "format": "$,.0f"
           }
         ]

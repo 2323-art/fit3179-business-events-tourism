@@ -35,3 +35,9 @@
 .waffle-key{font-size:12px;margin:12px 0}.waffle-key p{color:var(--muted);font-size:11px;margin:0 0 6px}
 .waffle-key>div{display:flex;justify-content:space-between;gap:8px;margin:3px 0}.waffle-key span{display:flex;align-items:center;gap:6px}.waffle-key i{width:9px;height:9px;flex-shrink:0}.waffle-key strong{font-weight:400;white-space:nowrap;font-variant-numeric:tabular-nums}
 @media(max-width:400px){.market-comparison{padding:12px}.comparison-heading{flex-wrap:wrap}.waffle-key{font-size:11px}}
+
+/* Reader feedback: sans-serif prose and a short, left-aligned reading measure. */
+body p,body figcaption,.methods li{font-family:'IBM Plex Sans',Arial,sans-serif;max-width:min(100%,52ch);text-align:left}
+.hero-copy>p:not(.eyebrow),.wide .chart-intro,.wide figcaption{max-width:min(100%,52ch)}
+.methods-links{max-width:none}.origin-key button[data-origin="Malaysia"]{border-left:1px solid var(--line)}
+.other{background:#59626D}.market-comparison th:first-child{width:46%}

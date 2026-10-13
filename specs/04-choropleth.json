@@ -71,13 +71,13 @@
           {
             "field": "properties.spend_per_resident",
             "type": "quantitative",
-            "title": "AUD per resident",
+            "title": "Australian dollars per resident",
             "format": "$,.0f"
           },
           {
             "field": "properties.spend",
             "type": "quantitative",
-            "title": "Spending (AUD)",
+            "title": "Spending (Australian dollars)",
             "format": "$,.0f"
           },
           {
@@ -96,12 +96,15 @@
               1600
             ],
             "range": [
-              "#EDF4FA",
-              "#193D91"
+              "#F0F0F0",
+              "#343434"
             ]
           },
           "legend": {
-            "title": "AUD per resident",
+            "title": [
+              "Australian dollars",
+              "per resident"
+            ],
             "format": "$,.0f",
             "gradientLength": 220
           }
@@ -115,14 +118,15 @@
       "mark": {
         "type": "text",
         "fontWeight": "bold",
-        "fontSize": 12,
+        "fontSize": 11,
         "color": "#162B4D",
         "lineBreak": "\n",
         "lineHeight": 14,
         "align": "center",
         "dx": {
-          "expr": "datum.code == 'ACT' ? -4 : 0"
-        }
+          "expr": "datum.code == 'ACT' ? -30 : 0"
+        },
+        "dy": -10
       },
       "encoding": {
         "longitude": {
@@ -153,14 +157,17 @@
           {
             "field": "spend_per_resident",
             "type": "quantitative",
-            "title": "AUD per resident",
+            "title": "Australian dollars per resident",
             "format": "$,.0f"
           }
         ]
       },
       "transform": [
         {
-          "calculate": "indexof(['ACT','NT','NSW'], datum.code) >= 0 ? datum.code + '\\nA$' + format(datum.spend_per_resident, ',.0f') : datum.code",
+          "filter": "datum.code == 'NT' || datum.code == 'ACT'"
+        },
+        {
+          "calculate": "datum.code == 'NT' ? 'Northern\\nTerritory\\n$' + format(datum.spend_per_resident, ',.0f') : 'Australian\\nCapital Territory\\n$' + format(datum.spend_per_resident, ',.0f')",
           "as": "map_label"
         }
       ]

@@ -96,7 +96,7 @@
           {
             "field": "value",
             "type": "quantitative",
-            "title": "AUD",
+            "title": "Australian dollars",
             "format": "$,.0f"
           }
         ]
@@ -138,7 +138,7 @@
           "as": "mid"
         },
         {
-          "calculate": "datum.label + '\\nA$' + format(datum.value / 1e9, '.2f') + 'b'",
+          "calculate": "datum.label + '\\n' + format(datum.value / 1e9, '.2f') + ' billion'",
           "as": "direct_label"
         }
       ],
@@ -182,7 +182,7 @@
           "as": "mid"
         },
         {
-          "calculate": "datum.label + '\\nA$' + format(datum.value / 1e9, '.2f') + 'b'",
+          "calculate": "datum.label + '\\n' + format(datum.value / 1e9, '.2f') + ' billion'",
           "as": "direct_label"
         }
       ],

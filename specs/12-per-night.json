@@ -44,7 +44,10 @@
     "x": {
       "field": "other",
       "type": "quantitative",
-      "title": "Spending in Australia per visitor night (AUD)",
+      "title": [
+        "Spending per visitor night",
+        "(Australian dollars)"
+      ],
       "scale": {
         "domain": [
           0,
@@ -73,7 +76,7 @@
       "mark": {
         "type": "circle",
         "size": 150,
-        "color": "#576D84",
+        "color": "#59626D",
         "opacity": 1
       },
       "encoding": {
@@ -121,7 +124,12 @@
           "type": "quantitative",
           "format": "$,.0f"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.year == 2025"
+        }
+      ]
     },
     {
       "mark": {
@@ -139,7 +147,12 @@
           "type": "quantitative",
           "format": "$,.0f"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.year == 2025"
+        }
+      ]
     }
   ]
 }

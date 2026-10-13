@@ -89,22 +89,18 @@
               100000,
               150000
             ],
-            "format": "~s",
+            "format": ",.0f",
             "symbolType": "stroke",
             "symbolSize": 700,
             "symbolStrokeColor": "#2457D6"
           }
         },
         "stroke": {
-          "condition": {
-            "test": "datum.properties.country == 'Malaysia'",
-            "value": "#007F78"
-          },
           "value": "#2457D6"
         },
         "tooltip": [
           {
-            "field": "properties.country",
+            "field": "country_full",
             "type": "nominal",
             "title": "Origin"
           },
@@ -122,7 +118,13 @@
           },
           "value": 0.1
         }
-      }
+      },
+      "transform": [
+        {
+          "calculate": "datum.properties.country == \"USA\" ? \"United States\" : datum.properties.country == \"UK\" ? \"United Kingdom\" : datum.properties.country == \"NSW\" ? \"New South Wales\" : datum.properties.country == \"VIC\" ? \"Victoria\" : datum.properties.country == \"QLD\" ? \"Queensland\" : datum.properties.country == \"WA\" ? \"Western Australia\" : datum.properties.country == \"SA\" ? \"South Australia\" : datum.properties.country == \"ACT\" ? \"Australian Capital Territory\" : datum.properties.country == \"NT\" ? \"Northern Territory\" : datum.properties.country == \"TAS\" ? \"Tasmania\" : datum.properties.country",
+          "as": "country_full"
+        }
+      ]
     },
     {
       "data": {
@@ -144,7 +146,7 @@
         },
         "tooltip": [
           {
-            "field": "country",
+            "field": "country_full",
             "type": "nominal",
             "title": "Origin"
           },
@@ -155,7 +157,13 @@
             "format": ",.0f"
           }
         ]
-      }
+      },
+      "transform": [
+        {
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_full"
+        }
+      ]
     },
     {
       "data": {
@@ -217,7 +225,7 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "country",
+          "field": "country_name",
           "type": "nominal"
         },
         "opacity": {
@@ -227,7 +235,16 @@
           },
           "value": 0.25
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"
+        },
+        {
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_name"
+        }
+      ]
     }
   ],
   "params": [

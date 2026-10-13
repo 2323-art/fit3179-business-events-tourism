@@ -50,7 +50,10 @@
         "x": {
           "field": "spend_per_trip",
           "type": "quantitative",
-          "title": "AUD spent in Australia per visitor trip",
+          "title": [
+            "Spending per visitor trip",
+            "(Australian dollars)"
+          ],
           "axis": {
             "format": "$,.0f"
           },
@@ -96,7 +99,7 @@
           {
             "field": "spend_per_trip",
             "type": "quantitative",
-            "title": "AUD per trip",
+            "title": "Australian dollars per trip",
             "format": "$,.0f"
           }
         ]
@@ -129,7 +132,12 @@
           "type": "quantitative",
           "format": "$,.0f"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.traveller == 'International'"
+        }
+      ]
     }
   ]
 }

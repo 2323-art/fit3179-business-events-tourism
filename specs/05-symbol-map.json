@@ -68,9 +68,9 @@
       },
       "mark": {
         "type": "circle",
-        "fill": "#2457D6",
+        "fill": "#59626D",
         "fillOpacity": 0.55,
-        "stroke": "#2457D6",
+        "stroke": "#59626D",
         "strokeWidth": 1.5
       },
       "encoding": {
@@ -96,13 +96,17 @@
             ]
           },
           "legend": {
-            "title": "State visits",
-            "format": ".1s",
+            "title": [
+              "State visits",
+              "(millions)"
+            ],
+            "format": ",.0f",
             "values": [
               1000000,
               4000000,
               7000000
-            ]
+            ],
+            "labelExpr": "format(datum.value / 1e6, '.0f')"
           }
         },
         "tooltip": [
@@ -128,7 +132,9 @@
         "dy": -3,
         "fontWeight": "bold",
         "color": "#162B4D",
-        "fontSize": 12
+        "fontSize": 11,
+        "lineBreak": "\n",
+        "lineHeight": 12
       },
       "encoding": {
         "longitude": {
@@ -140,10 +146,19 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "code",
+          "field": "state_label",
           "type": "nominal"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "indexof(['NSW','VIC','QLD'], datum.code)>=0"
+        },
+        {
+          "calculate": "datum.code == 'NSW' ? 'New South\\nWales' : datum.code == 'QLD' ? 'Queensland' : 'Victoria'",
+          "as": "state_label"
+        }
+      ]
     }
   ]
 }

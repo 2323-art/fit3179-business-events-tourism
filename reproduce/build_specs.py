@@ -128,3 +128,107 @@ s['layer'][1]['transform']=[{'filter':'datum.country == marketFocus'}]
 s['layer'][1]['mark']['stroke']=INK
 s['layer'][1]['mark']['strokeWidth']=3
 p.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
+
+# User feedback, 13 October: full wording, selective labels and stable colour semantics.
+INCREASE='#762A83';DECREASE='#C45118';NEUTRAL='#59626D'
+names={'USA':'United States','UK':'United Kingdom','NSW':'New South Wales','VIC':'Victoria','QLD':'Queensland','WA':'Western Australia','SA':'South Australia','ACT':'Australian Capital Territory','NT':'Northern Territory','TAS':'Tasmania'}
+def full_name(expr):
+ return ' : '.join(f'{expr} == {json.dumps(k)} ? {json.dumps(v)}' for k,v in names.items())+' : '+expr
+def full_region(expr):
+ for short,long in names.items():expr='replace('+expr+','+json.dumps(short)+','+json.dumps(long)+')'
+ return expr
+
+def wording(node):
+ if isinstance(node,dict):
+  for k,v in list(node.items()):
+   if k in ('title','label') and isinstance(v,str):
+    node[k]=v.replace('AUD','Australian dollars').replace('Spend (','Spending (')
+   elif k=='format' and isinstance(v,str) and 's' in v:node[k]=',.0f'
+   else:wording(v)
+ elif isinstance(node,list):
+  for item in node:wording(item)
+
+for path in OUT.glob('*.json'):
+ s=json.loads(path.read_text(encoding='utf-8'));n=path.name[:2]
+ wording(s)
+ if n=='02':
+  s['layer'][0]['encoding']['x']['title']=['Spending per visitor trip','(Australian dollars)']
+  s['layer'][1]['transform']=[{'filter':"datum.traveller == 'International'"}]
+ if n=='03':
+  for layer in s['layer'][2:]:
+   layer['transform'][-1]['calculate']="datum.label + '\\n' + format(datum.value / 1e9, '.2f') + ' billion'"
+ if n=='04':
+  s['layer'][0]['encoding']['color']['scale']['range']=['#F0F0F0','#343434']
+  s['layer'][0]['encoding']['color']['legend']['title']=['Australian dollars','per resident']
+  layer=s['layer'][1]
+  layer['transform']=[{'filter':"datum.code == 'NT' || datum.code == 'ACT'"},{'calculate':"datum.code == 'NT' ? 'Northern\\nTerritory\\n$' + format(datum.spend_per_resident, ',.0f') : 'Australian\\nCapital Territory\\n$' + format(datum.spend_per_resident, ',.0f')",'as':'map_label'}]
+  layer['mark'].update({'fontSize':11,'dx':{'expr':"datum.code == 'ACT' ? -30 : 0"},'dy':-10})
+ if n=='05':
+  s['layer'][1]['mark'].update(fill=NEUTRAL,stroke=NEUTRAL)
+  s['layer'][1]['encoding']['size']['legend'].update(title=['State visits','(millions)'],labelExpr="format(datum.value / 1e6, '.0f')")
+  s['layer'][2]['transform']=[{'filter':"indexof(['NSW','VIC','QLD'], datum.code)>=0"},{'calculate':"datum.code == 'NSW' ? 'New South\\nWales' : datum.code == 'QLD' ? 'Queensland' : 'Victoria'",'as':'state_label'}]
+  s['layer'][2]['encoding']['text']=f('state_label','N')
+  s['layer'][2]['mark'].update(fontSize=11,lineBreak='\n',lineHeight=12)
+ if n=='06':
+  s['scales']=[]
+  s['marks'][0]['encode']['enter']['fill']={'value':NEUTRAL}
+  s['marks'][0]['encode']['enter']['tooltip']={'signal':"{'Region':"+full_region('datum.name')+", 'State or territory':"+full_name('datum.parent')+", 'Spending (Australian dollars)':format(datum.value,'$,.0f')}"}
+  # Region identity and enclosing group carry the hierarchy; hue adds no extra variable.
+  s['data'].append({'name':'labelled','source':'leaves','transform':[{'type':'filter','expr':'datum.value >= 1.9e9'}]})
+  s['marks'][1]['from']['data']='labelled'
+  s['marks'][1]['encode']['update']['text']={'signal':full_region('datum.name')}
+  s['marks'][3]['encode']['update'].update(text={'signal':full_name('datum.name')},limit={'signal':'max(0,datum.x1-datum.x0-10)'},opacity={'signal':'datum.x1-datum.x0 > length(('+full_name('datum.name')+'))*7 ? 1:0'},fontSize={'value':12})
+  s['marks'].pop(2)
+ if n=='07':
+  s['layer'][1]['encoding']['stroke']={'value':BLUE}
+  s['layer'][1]['encoding']['strokeWidth']['legend'].update(title='Visitor trips',format=',.0f')
+  s['layer'][4]['transform']=[{'filter':"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},{'calculate':full_name('datum.country'),'as':'country_name'}]
+  s['layer'][4]['encoding']['text']=f('country_name','N')
+ if n=='08':
+  s['params'][1]['bind']['labels']=[names.get(v,v) for v in s['params'][1]['bind']['options']]
+  s['layer'][0]['encoding']['color']={'value':BLUE}
+  s['layer'][0]['encoding']['y']['axis']={'labelExpr':"format(datum.value / 1e6, '.0f')",'tickCount':4}
+  s['layer'][0]['encoding']['y']['title']=['Spending in Australia','(million Australian dollars)']
+  s['layer'][0]['encoding']['x']['axis']={'format':',.0f','tickCount':3}
+  s['layer'][1]['transform'][0]['filter']="focus == 'All markets' ? datum.country == 'Malaysia' : datum.country == focus"
+  s['layer'][1]['transform'].append({'calculate':full_name('datum.country'),'as':'country_name'})
+  s['layer'][1]['encoding']['text']=f('country_name','N')
+ if n=='09':
+  s['encoding']['y']['axis']={'labelExpr':full_name('datum.label'),'labelLimit':160}
+  s['layer'][0]['encoding']['color']['scale']['range']=[DECREASE,'#FFFFFF',INCREASE]
+  s['layer'][2]['transform']=[{'filter':'datum.country == marketFocus'}]
+  s['layer'][2]['encoding']['color']['condition']['test']='abs(datum.change) > 0.45'
+ if n=='10':
+  s['encoding']['x']['axis'].update(labelExpr=full_name("datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label"),labelLimit=200)
+  s['layer'][1]['encoding']['color']['scale']['range']=[NEUTRAL,INCREASE,DECREASE]
+  s['layer'][1]['encoding']['y']['title']=['Spending in Australia','(billion Australian dollars)']
+  s['layer'][1]['transform']=[{'calculate':full_name("datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label"),'as':'contribution_label'}]
+  s['layer'][1]['encoding']['tooltip'][0]['field']='contribution_label'
+  s['layer'][2]['transform'].insert(0,{'filter':"datum.kind == 'Total' || datum.label == 'China'"})
+  s['layer'][2]['transform'][1]['calculate']="max(datum.start,datum.end) + (datum.kind == 'Total' ? 0.18 : 0)"
+  s['layer'][2]['transform'][-1]['calculate']="datum.kind == 'Total' ? format(datum.value,'.2f')+' billion' : format(datum.value*1000,'+,.0f')+' million'"
+  s['layer'][2]['mark']['align']={'expr':"datum.label == '2025' ? 'right' : datum.label == '2024' ? 'left' : 'center'"}
+ if n=='11':
+  s['layer'][0]['encoding']['color']={'value':NEUTRAL}
+  s['layer'][0]['transform']=[{'calculate':"datum.activity == 'National/state parks' ? 'National and state parks' : datum.activity",'as':'activity_full'}]
+  s['layer'][0]['encoding']['tooltip'][0]['field']='activity_full'
+  s['layer'][1]['transform']=[{'filter':"datum.activity == 'Sightseeing'"}]
+  s['layer'][2]['transform'].append({'calculate':"datum.activity == 'National/state parks' ? 'National and\\nstate parks' : datum.activity",'as':'activity_label'})
+  s['layer'][2]['encoding']['text']=f('activity_label','N')
+  s['layer'][2]['mark'].update(lineBreak='\n',lineHeight=14)
+ if n=='12':
+  s['encoding']['x']['title']=['Spending per visitor night','(Australian dollars)']
+  s['layer'][1]['mark']['color']=NEUTRAL
+  for layer in s['layer'][3:]:layer['transform']=[{'filter':'datum.year == 2025'}]
+ # Expand country names in tooltips without changing source keys or interactive signals.
+ def country_tips(node):
+  if isinstance(node,dict):
+   enc=node.get('encoding',{})
+   for t in enc.get('tooltip',[]) if isinstance(enc.get('tooltip'),list) else []:
+    if t.get('field') in ('country','properties.country'):
+     raw=t['field'];field='country_full';node.setdefault('transform',[]).append({'calculate':full_name('datum.'+raw),'as':field});t['field']=field
+   for v in list(node.values()):country_tips(v)
+  elif isinstance(node,list):
+   for v in node:country_tips(v)
+ country_tips(s)
+ path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
