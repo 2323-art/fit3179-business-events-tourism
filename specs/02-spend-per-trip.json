@@ -61,7 +61,7 @@
           "type": "quantitative",
           "title": [
             "Spending per trip",
-            "in Australian dollars"
+            "in AUD"
           ],
           "axis": {
             "format": "$,.0f",
@@ -113,7 +113,7 @@
           {
             "field": "spend_per_trip",
             "type": "quantitative",
-            "title": "Australian dollars per trip",
+            "title": "AUD per trip",
             "format": "$,.0f"
           }
         ]

@@ -61,8 +61,28 @@
       "source": "leaves",
       "transform": [
         {
+          "type": "formula",
+          "expr": "datum.name == \"Perth region\" ? \"Perth region\" : (datum.name == \"Hobart & south\" ? \"Hobart and\\nthe South\" : (datum.name == \"ACT (all)\" ? \"Australian Capital\\nTerritory\" : (datum.name == \"Regional TAS\" ? \"Regional\\nTasmania\" : (datum.name == \"Regional NT\" ? \"Regional\\nNorthern Territory\" : (datum.name == \"Regional SA\" ? \"Regional\\nSouth Australia\" : (datum.name == \"Regional WA\" ? \"Regional\\nWestern Australia\" : (datum.name == \"Regional VIC\" ? \"Regional\\nVictoria\" : (datum.name == \"Regional QLD\" ? \"Regional\\nQueensland\" : (datum.name == \"Regional NSW\" ? \"Regional\\nNew South\\nWales\" : (datum.name))))))))))",
+          "as": "label_text"
+        },
+        {
+          "type": "formula",
+          "expr": "length(split(datum.label_text, '\\n'))",
+          "as": "label_lines"
+        },
+        {
           "type": "filter",
-          "expr": "datum.y1-datum.y0 > 28 && datum.x1-datum.x0 > length((replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(datum.name,\"USA\",\"United States\"),\"UK\",\"United Kingdom\"),\"NSW\",\"New South Wales\"),\"VIC\",\"Victoria\"),\"QLD\",\"Queensland\"),\"WA\",\"Western Australia\"),\"SA\",\"South Australia\"),\"ACT\",\"Australian Capital Territory\"),\"NT\",\"Northern Territory\"),\"TAS\",\"Tasmania\")))*9+16"
+          "expr": "datum.y1-datum.y0 > datum.label_lines*18+8 && datum.x1-datum.x0 > max(length(split(datum.label_text,'\\n')[0]), length(split(datum.label_text,'\\n')[1] || ''), length(split(datum.label_text,'\\n')[2] || ''))*7.3+14"
+        }
+      ]
+    },
+    {
+      "name": "value_labelled",
+      "source": "labelled",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.y1-datum.y0 > datum.label_lines*18+30 && datum.x1-datum.x0 > (width < 500 ? 64 : 92)"
         }
       ]
     }
@@ -136,13 +156,13 @@
       "encode": {
         "update": {
           "x": {
-            "signal": "datum.x0+7"
+            "signal": "datum.x0+4"
           },
           "y": {
-            "signal": "datum.y0+20"
+            "signal": "datum.y0+19"
           },
           "text": {
-            "signal": "replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(datum.name,\"USA\",\"United States\"),\"UK\",\"United Kingdom\"),\"NSW\",\"New South Wales\"),\"VIC\",\"Victoria\"),\"QLD\",\"Queensland\"),\"WA\",\"Western Australia\"),\"SA\",\"South Australia\"),\"ACT\",\"Australian Capital Territory\"),\"NT\",\"Northern Territory\"),\"TAS\",\"Tasmania\")"
+            "field": "label_text"
           },
           "opacity": {
             "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : 0"
@@ -155,6 +175,55 @@
           },
           "fill": {
             "signal": "indexof(['QLD','WA','NT'], datum.parent) >= 0 ? '#101820' : '#FFFFFF'"
+          },
+          "lineBreak": {
+            "value": "\n"
+          },
+          "lineHeight": {
+            "value": 18
+          },
+          "limit": {
+            "signal": "datum.x1-datum.x0-8"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "value_labelled"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "datum.x0+4"
+          },
+          "y": {
+            "signal": "datum.y0+datum.label_lines*18+23"
+          },
+          "text": {
+            "signal": "(width < 500 ? '' : 'AUD ') + format(datum.value/1e9,'.2f') + 'bn'"
+          },
+          "opacity": {
+            "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : 0"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "value": 15
+          },
+          "fill": {
+            "signal": "indexof(['QLD','WA','NT'], datum.parent) >= 0 ? '#101820' : '#FFFFFF'"
+          },
+          "lineBreak": {
+            "value": "\n"
+          },
+          "lineHeight": {
+            "value": 18
+          },
+          "limit": {
+            "signal": "datum.x1-datum.x0-8"
           }
         }
       }

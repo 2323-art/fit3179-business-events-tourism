@@ -14,7 +14,7 @@ function updateComparison(focus){
  document.getElementById('comparison-title').textContent=displayName(country)+' · 2024 and 2025';
  document.getElementById('comparison-context').textContent=focus==='All markets'?'Malaysia is the starting example. Choose a market above to compare both years here.':'Both years stay visible while you switch the scatterplot year.';
  const body=document.getElementById('comparison-rows');body.replaceChildren();
- for(const [key,label] of [['visitors','Visitor trips'],['nights','Visitor nights'],['spend','Spending (million Australian dollars)']]){
+ for(const [key,label] of [['visitors','Visitor trips'],['nights','Visitor nights'],['spend','Spending (AUD millions)']]){
   const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=label;tr.append(th);
   for(const row of [before,after]){const td=document.createElement('td');td.textContent=key==='spend'?(row[key]/1e6).toLocaleString('en-AU',{minimumFractionDigits:1,maximumFractionDigits:1}):formatTrips(row[key]);tr.append(td)}body.append(tr);
  }
@@ -28,8 +28,8 @@ function updateMarketSummary(){
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
  document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads on spending');
- document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend)} spent in Australia in ${year}. The faded dots retain the other markets for comparison.`:`In ${year}, ${displayName(spendLeader.country)} led spending with ${formatMoney(spendLeader.spend)}; ${displayName(tripLeader.country)} led visitor volume with about ${formatTrips(tripLeader.visitors)} trips. Choose a year or any of the 18 markets below.`;
- updateComparison(focus);
+ document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. The faded dots retain the other markets for comparison.`:`In ${year}, ${displayName(spendLeader.country)} led spending with ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')}; ${displayName(tripLeader.country)} led visitor volume with about ${formatTrips(tripLeader.visitors)} trips. Choose a year or any of the 18 markets below.`;
+ updateComparison(focus);scheduleProse();
 }
 async function renderChart(name,index){
  const el=document.getElementById('chart'+String(index+1).padStart(2,'0'));
@@ -38,18 +38,18 @@ async function renderChart(name,index){
  try{
   const spec=await (await fetch('specs/'+name+'.json')).json();
   const width=Math.max(230,el.clientWidth);
-  if(index===1&&width<500)spec.layer[0].encoding.x.title=['Spending per trip','in Australian','dollars'];
+  if(index===1)spec.layer[0].encoding.x.title='Spending per trip (AUD)';
   if(index===6&&width<500)spec.layer[1].encoding.strokeWidth.legend.columns=1;
   if(index===8&&width<500)spec.layer[2].transform=[{filter:'false'}];
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
-  else if(index===5){spec.width=width;spec.height=width<500?460:380}
+  else if(index===5){spec.width=width;spec.height=width<800?540:380}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
-  else if(index===9&&width<500){spec.layer[1].mark.size=16;spec.layer[2].transform[0].filter="datum.kind == 'Total'";spec.layer[2].transform[1].calculate='2.85';spec.layer[2].transform[2].calculate="format(datum.value,'.2f') + '\\nbillion'";spec.layer[2].mark.lineBreak='\n';spec.layer[2].mark.lineHeight=18;spec.encoding.x.axis.labelAngle=-60;spec.height=360}
+  else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?134:180));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other markets*' ? ['Other','markets*'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=100;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
   if(index===3)spec.height=Math.min(400,width*.98);
-  if(index===4)spec.height=Math.min(280,width*.78);
-  if(index===10)spec.height=360;
+  if(index===4)spec.height=Math.min(360,width*.9);
+  if(index===10)spec.height=380;
   if(index===11)spec.height=200;
   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',tooltip:{theme:'light'},loader:vega.loader({baseURL:document.baseURI})});
   window.chartViews[name]=result.view;
@@ -125,34 +125,18 @@ async function selectState(state){
  }
  scheduleProse();
 }
-// Measure real word positions, preserving inline links and emphasis. A character
-// width alone cannot guarantee ten words when a sentence contains short words.
-function proseWordLines(element){
- const lines=new Map(),walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT);
- let node;
- while(node=walker.nextNode()){
-  for(const match of node.textContent.matchAll(/\S+/g)){
-   const range=document.createRange();range.setStart(node,match.index);range.setEnd(node,match.index+match[0].length);
-   const rect=range.getClientRects()[0];if(!rect||!rect.width)continue;
-   const top=Math.round(rect.top);lines.set(top,(lines.get(top)||0)+1);
-  }
- }
- return [...lines.values()];
-}
+// Align the top of neighbouring chart views without forcing equal chart heights.
 function fitProse(){
- for(const el of document.querySelectorAll('p:not(.methods-links),figcaption,.methods li')){
-  if(!el.getClientRects().length)continue;
-  el.style.removeProperty('max-width');
-  let width=el.getBoundingClientRect().width;
-  for(let i=0;i<50&&Math.max(0,...proseWordLines(el))>10;i++){
-   width*=.96;el.style.maxWidth=width+'px';
-  }
+ for(const row of document.querySelectorAll('.two-col:has(>figure)')){
+  const views=[...row.children].filter(e=>e.tagName==='FIGURE').map(f=>f.querySelector(':scope > .chart')).filter(Boolean);
+  for(const view of views)view.style.marginTop='';
+  if(views.length!==2||Math.abs(views[0].closest('figure').getBoundingClientRect().left-views[1].closest('figure').getBoundingClientRect().left)<1)continue;
+  const tops=views.map(v=>v.getBoundingClientRect().top),target=Math.max(...tops);
+  views.forEach((v,i)=>v.style.marginTop=(target-tops[i])+'px');
  }
 }
 let proseFrame;
 function scheduleProse(){cancelAnimationFrame(proseFrame);proseFrame=requestAnimationFrame(fitProse)}
-const proseObserver=new MutationObserver(records=>{if(records.some(r=>r.target.closest?.('p,figcaption,.methods li')))scheduleProse()});
-proseObserver.observe(document.body,{childList:true,characterData:true,subtree:true});
 document.fonts.ready.then(scheduleProse);addEventListener('resize',scheduleProse);
 start().then(scheduleProse);let resizeTimer,previousWidth=innerWidth,renderQueue=Promise.resolve();
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
@@ -161,6 +145,6 @@ addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;c
   Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all(charts.map(renderChart));
   if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).runAsync();
   if(originFocus!==undefined&&window.chartViews['07-flow-map'])await window.chartViews['07-flow-map'].signal('originFocus',originFocus).runAsync();
-  updateMarketSummary();
+  updateMarketSummary();scheduleProse();
  }).catch(console.error);
  },200)});

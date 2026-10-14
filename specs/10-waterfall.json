@@ -1,6 +1,5 @@
 {
-  "width": "container",
-  "height": 300,
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "config": {
     "font": "IBM Plex Sans",
     "view": {
@@ -16,7 +15,7 @@
       "labelColor": "#4E6078",
       "titleColor": "#162B4D",
       "titlePadding": 14,
-      "labelLimit": 150,
+      "labelLimit": 170,
       "labelPadding": 7,
       "labelOverlap": true
     },
@@ -31,7 +30,11 @@
       "fontSize": 16,
       "anchor": "start",
       "color": "#162B4D",
-      "lineHeight": 20
+      "lineHeight": 20,
+      "subtitleFontSize": 15,
+      "subtitleLineHeight": 20,
+      "subtitleColor": "#4E6078",
+      "offset": 14
     },
     "text": {
       "fontSize": 16,
@@ -39,36 +42,115 @@
       "color": "#162B4D"
     }
   },
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "url": "data/waterfall.json"
   },
-  "encoding": {
-    "x": {
-      "field": "label",
-      "type": "ordinal",
-      "sort": {
-        "field": "order",
-        "order": "ascending"
-      },
-      "title": null,
-      "axis": {
-        "labelAngle": -25,
-        "labelLimit": 200,
-        "labelExpr": "datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"USA\" ? \"United States\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"UK\" ? \"United Kingdom\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"NSW\" ? \"New South Wales\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"VIC\" ? \"Victoria\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"QLD\" ? \"Queensland\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"WA\" ? \"Western Australia\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"SA\" ? \"South Australia\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"ACT\" ? \"Australian Capital Territory\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"NT\" ? \"Northern Territory\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"TAS\" ? \"Tasmania\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label",
-        "labelOverlap": false
-      }
-    }
-  },
-  "layer": [
+  "transform": [
     {
+      "calculate": "datum.label == 'USA' ? 'United States' : datum.label == 'Other + rounding' ? 'Other markets*' : datum.label",
+      "as": "display_name"
+    }
+  ],
+  "spacing": 36,
+  "vconcat": [
+    {
+      "title": {
+        "text": "National totals",
+        "subtitle": "Zero-based spending scale"
+      },
+      "height": 86,
       "transform": [
+        {
+          "filter": "datum.kind == 'Total'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "label",
+          "type": "ordinal",
+          "title": null,
+          "sort": [
+            "2024",
+            "2025"
+          ],
+          "axis": {
+            "labelAngle": 0
+          }
+        },
+        "x": {
+          "field": "end",
+          "type": "quantitative",
+          "title": "Spending in Australia (AUD billions)",
+          "scale": {
+            "domain": [
+              0,
+              3
+            ],
+            "nice": false
+          },
+          "axis": {
+            "tickCount": 4
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 24,
+            "color": "#2457D6"
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "display_name",
+                "title": "Origin / group"
+              },
+              {
+                "field": "value",
+                "title": "Amount (AUD billions)",
+                "format": "+.3f"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "dx": -8,
+            "color": "white",
+            "fontWeight": "bold",
+            "fontSize": 15
+          },
+          "encoding": {
+            "text": {
+              "field": "end",
+              "format": ".2f"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "How the total changed",
+        "subtitle": [
+          "Enlarged cumulative scale: each step is a gain or loss.",
+          "Signed labels show each contribution in AUD millions."
+        ]
+      },
+      "height": 350,
+      "transform": [
+        {
+          "filter": "datum.kind != 'Total'"
+        },
         {
           "window": [
             {
               "op": "lead",
-              "field": "label",
-              "as": "next_label"
+              "field": "display_name",
+              "as": "next_name"
             }
           ],
           "sort": [
@@ -76,123 +158,138 @@
               "field": "order"
             }
           ]
-        },
-        {
-          "filter": "datum.next_label != null"
         }
       ],
-      "mark": {
-        "type": "rule",
-        "strokeDash": [
-          3,
-          3
-        ],
-        "color": "#8292A7"
-      },
       "encoding": {
-        "x2": {
-          "field": "next_label"
+        "y": {
+          "field": "display_name",
+          "type": "ordinal",
+          "sort": {
+            "field": "order",
+            "order": "ascending"
+          },
+          "title": null,
+          "axis": {
+            "labelAngle": 0,
+            "labelLimit": 170,
+            "labelPadding": 8
+          }
         },
-        "y": {
-          "field": "end",
-          "type": "quantitative"
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "bar",
-        "size": 46
-      },
-      "encoding": {
-        "y": {
+        "x": {
           "field": "start",
           "type": "quantitative",
-          "title": [
-            "Spending in Australia",
-            "(billion Australian dollars)"
-          ],
+          "title": "Cumulative spending (AUD billions)",
           "scale": {
             "domain": [
-              0,
-              2.95
-            ]
-          }
-        },
-        "y2": {
-          "field": "end"
-        },
-        "color": {
-          "field": "kind",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Total",
-              "Increase",
-              "Decrease"
+              2.3,
+              2.8
             ],
-            "range": [
-              "#2457D6",
-              "#762A83",
-              "#C45118"
-            ]
+            "zero": false,
+            "nice": false
           },
-          "legend": null
-        },
-        "tooltip": [
-          {
-            "field": "contribution_label",
-            "type": "nominal",
-            "title": "Contribution"
-          },
-          {
-            "field": "value",
-            "type": "quantitative",
-            "title": "Australian dollars billions",
-            "format": "+.3f"
+          "axis": {
+            "tickCount": 5,
+            "format": ".1f"
           }
-        ]
+        }
       },
-      "transform": [
+      "layer": [
         {
-          "calculate": "datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"USA\" ? \"United States\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"UK\" ? \"United Kingdom\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"NSW\" ? \"New South Wales\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"VIC\" ? \"Victoria\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"QLD\" ? \"Queensland\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"WA\" ? \"Western Australia\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"SA\" ? \"South Australia\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"ACT\" ? \"Australian Capital Territory\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"NT\" ? \"Northern Territory\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label == \"TAS\" ? \"Tasmania\" : datum.label == 'Other + rounding' ? 'Other markets and rounding' : datum.label",
-          "as": "contribution_label"
+          "transform": [
+            {
+              "filter": "datum.next_name != null"
+            }
+          ],
+          "mark": {
+            "type": "rule",
+            "strokeDash": [
+              3,
+              3
+            ],
+            "color": "#8292A7"
+          },
+          "encoding": {
+            "x": {
+              "field": "end"
+            },
+            "y2": {
+              "field": "next_name"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "bar",
+            "size": 22
+          },
+          "encoding": {
+            "x2": {
+              "field": "end"
+            },
+            "color": {
+              "field": "kind",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Total",
+                  "Increase",
+                  "Decrease"
+                ],
+                "range": [
+                  "#2457D6",
+                  "#762A83",
+                  "#C45118"
+                ]
+              },
+              "legend": null
+            },
+            "tooltip": [
+              {
+                "field": "display_name",
+                "title": "Origin / group"
+              },
+              {
+                "field": "value",
+                "title": "Amount (AUD billions)",
+                "format": "+.3f"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {
+              "calculate": "format(datum.value*1000,'+.1f')",
+              "as": "change_label"
+            },
+            {
+              "calculate": "max(datum.start,datum.end)",
+              "as": "label_x"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 7,
+            "fontSize": 15,
+            "color": "#162B4D"
+          },
+          "encoding": {
+            "x": {
+              "field": "label_x"
+            },
+            "text": {
+              "field": "change_label"
+            }
+          }
         }
       ]
-    },
-    {
-      "transform": [
-        {
-          "filter": "datum.kind == 'Total' || datum.label == 'China'"
-        },
-        {
-          "calculate": "max(datum.start,datum.end) + (datum.kind == 'Total' ? 0.18 : 0)",
-          "as": "top"
-        },
-        {
-          "calculate": "datum.kind == 'Total' ? format(datum.value,'.2f')+' billion' : format(datum.value*1000,'+,.0f')+' million'",
-          "as": "display"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "dy": -8,
-        "fontSize": 15,
-        "color": "#162B4D",
-        "align": {
-          "expr": "datum.label == '2025' ? 'right' : datum.label == '2024' ? 'left' : 'center'"
-        }
-      },
-      "encoding": {
-        "y": {
-          "field": "top",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "display",
-          "type": "nominal"
-        }
-      }
     }
-  ]
+  ],
+  "resolve": {
+    "scale": {
+      "x": "independent",
+      "y": "independent"
+    }
+  }
 }

@@ -1,6 +1,6 @@
 {
   "width": "container",
-  "height": 380,
+  "height": 360,
   "config": {
     "font": "IBM Plex Sans",
     "view": {
@@ -167,6 +167,11 @@
         },
         "stroke": {
           "value": "#FFFFFF"
+        },
+        "order": {
+          "field": "visitors",
+          "type": "quantitative",
+          "sort": "descending"
         }
       }
     }

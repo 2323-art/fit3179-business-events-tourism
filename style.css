@@ -98,9 +98,9 @@ figcaption{margin:16px 0 0}
 .band figure{padding:var(--space-group)}
 .closing{margin-top:var(--space-view);padding-top:32px}
 @media(min-width:1101px){
- .two-col.chart-hierarchy{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:24px}
- .chart-hierarchy>.primary-view{grid-column:span 3}
- .chart-hierarchy>.supporting-view{grid-column:span 2}
+ .two-col.chart-hierarchy{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
+ .chart-hierarchy>.primary-view{grid-column:span 1}
+ .chart-hierarchy>.supporting-view{grid-column:span 1}
 }
 @media(max-width:1100px){
  .two-col.chart-hierarchy{grid-template-columns:minmax(0,1fr)}
@@ -111,3 +111,17 @@ figcaption{margin:16px 0 0}
  .chapter-heading{margin-bottom:28px}
  .chart-intro{margin-bottom:20px}
 }
+
+/* Presentation revision: consistent sight lines, legible prose and compact support. */
+body p,body figcaption,.methods li{max-width:min(100%,62ch);min-width:0}
+.two-col>figure>p,.two-col>figure>figcaption{width:100%;max-width:100%}
+.hero-copy>p:not(.eyebrow){max-width:52ch}
+.wide .chart-intro,.wide figcaption{max-width:76ch}
+.chart-intro{margin-bottom:18px}
+#chart05 + .semantic-legend{margin-top:16px}
+.semantic-legend[data-legend="states"] button{padding:5px 8px;min-height:34px}
+.wide figcaption{columns:2;column-gap:32px;max-width:none}
+.state-detail ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+.chart svg text{font-variant-numeric:tabular-nums}
+.two-col>figure{display:flex;flex-direction:column}
+@media(max-width:760px){.wide figcaption{columns:1;max-width:62ch}.state-detail ul{grid-template-columns:1fr}}

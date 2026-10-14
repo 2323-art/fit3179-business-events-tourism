@@ -6,7 +6,12 @@ An original FIT3179 DV2 data story about Australia's business-event visitors, cr
 
 The main question is who generates visitor spending, where it lands, and how international markets changed between 2024 and 2025. The audience is a general Malaysian readership interested in Australian tourism and business events. The page is a single scrolling story, with four chapters, twelve charts and three distinct map idioms.
 
-## Review refinements (5 October 2026)
+## Review refinements
+
+### Presentation fixes — 14 October 2026
+
+Smaller state circles draw above larger ones, keeping the Australian Capital Territory visible. The scatterplot labels each year’s spending and visit leaders alongside Malaysia. The treemap wraps key region names, the Sankey labels source totals and its international split, and the slopegraph names activities directly. The waterfall retains an honest zero-based overview and adds enlarged floating changes with signed values. AUD, bn and m are introduced in the opening definitions. Readability, data tables, linked controls, keyboard operation and selection retention are verified across desktop and mobile widths.
+
 
 ### Consistent colour meanings and legends — 14 October 2026
 
@@ -14,15 +19,15 @@ The main question is who generates visitor spending, where it lands, and how int
 
 `data/colour-semantics.json` records the category colours used by the charts and their legends. Each category colour has one meaning across the story: visitor classes retain gold/teal/blue; states have a separate shared palette in the symbol map and treemap; activities have their own colours and redundant line patterns; purple/orange consistently show increases/decreases. Slate grey identifies other international visitors. The choropleth retains a separate ordered greyscale for spending per resident. Text, outlines and basemaps are structural elements, not additional category encodings.
 
-Colour legends replace repeated traveller labels in the Sankey, state labels on the symbol map and treemap, and activity labels alongside the lines. Essential geographic labels, endpoint names, region identities that fit and a few key values remain where a category legend cannot replace them. State legend buttons highlight the same state in both views and show its destination spending below the treemap; keyboard selection and resize retention are supported.
+Colour legends retain the category key. Direct source totals and the international split annotate the Sankey; wrapped region names and selected values annotate the treemap; activity names sit beside their lines. Essential geographic labels and headline comparisons remain visible without interaction. State legend buttons highlight the same state in both views and show its destination spending below the treemap; keyboard selection and resize retention are supported.
 
 Course guidance: `FIT2179 Course Notes 8 Colour.pdf`, PDF pages 5–8 and 10–11; `FIT2179 Course Notes 3 Marks and Channels.pdf`, PDF pages 3 and 6; `Munzner - Chapter 6 - Rules of Thumb.pdf`, PDF page 24. The eight-state palette is supported by selection and textual detail rather than requiring colour memorisation. No claim is made that all hues remain distinguishable under every colour-vision deficiency.
 
-### White space and chart hierarchy — 13 October 2026
+### White space and chart hierarchy — updated 14 October 2026
 
 Captions follow their own charts instead of occupying forced shared rows. Detail, figure and chapter spacing follow a consistent progression; panel tops and column edges retain common sight-lines. Surplus minimum heights were removed.
 
-On wide screens, the spending-flow diagram, population-adjusted choropleth and activity comparison span three equal grid units, with supporting comparisons spanning two. Their plotting areas are taller. The linked scatterplot and heatmap retain equal widths for joint exploration; the detailed treemap, flow map and waterfall retain a full row. Below 1,101 pixels, unequal pairs stack to preserve readable labels. These proportions and pixel spacings are design choices, not numerical course requirements. Data and scale domains are unchanged.
+On wide screens, related charts occupy equal-width columns with aligned chart starts. Chart heights reflect their content; the detailed treemap, flow map and waterfall retain a full row. The primary comparison pairs stack below 1,101 pixels. The waterfall combines zero-based national totals with an explicitly enlarged cumulative-change scale and signed contribution labels. These layout and scale choices serve the reading tasks; they are not numerical course requirements.
 
 Source guidance: `FIT2179 Course Notes 9 Layout.pdf`, PDF pages 2 and 4–6; `FIT3179_Week04 – Visual hiearchy and figure-ground.pdf`, PDF pages 3 and 6; `Munzner - Chapter 7 - Arrange Tables.pdf`, PDF pages 31–32. Private course originals are not distributed in this repository.
 

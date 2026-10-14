@@ -80,13 +80,13 @@
           {
             "field": "properties.spend_per_resident",
             "type": "quantitative",
-            "title": "Australian dollars per resident",
+            "title": "AUD per resident",
             "format": "$,.0f"
           },
           {
             "field": "properties.spend",
             "type": "quantitative",
-            "title": "Spending (Australian dollars)",
+            "title": "Spending (AUD)",
             "format": "$,.0f"
           },
           {
@@ -111,7 +111,7 @@
           },
           "legend": {
             "title": [
-              "Australian dollars",
+              "AUD",
               "per resident"
             ],
             "format": "$,.0f",
@@ -166,7 +166,7 @@
           {
             "field": "spend_per_resident",
             "type": "quantitative",
-            "title": "Australian dollars per resident",
+            "title": "AUD per resident",
             "format": "$,.0f"
           }
         ]

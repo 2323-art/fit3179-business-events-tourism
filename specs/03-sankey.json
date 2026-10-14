@@ -1,6 +1,6 @@
 {
   "width": "container",
-  "height": 420,
+  "height": 380,
   "config": {
     "font": "IBM Plex Sans",
     "view": {
@@ -67,7 +67,7 @@
           "axis": null,
           "scale": {
             "domain": [
-              21,
+              23,
               0
             ]
           }
@@ -143,11 +143,11 @@
           "filter": "datum.x == 1"
         },
         {
-          "calculate": "(datum.y + datum.y2)/2",
+          "calculate": "datum.label == 'Outside Australia' ? 21.6 : (datum.y + datum.y2)/2",
           "as": "mid"
         },
         {
-          "calculate": "(datum.label == 'Domestic overnight' ? 'Domestic\\novernight' : datum.label == 'Outside Australia' ? 'Overseas' : datum.label) + '\\n' + format(datum.value/1e9,'.2f') + ' billion'",
+          "calculate": "(datum.label == 'Outside Australia' ? 'Overseas' : datum.label) + '\\nAUD ' + format(datum.value/1e9,'.2f') + 'bn'",
           "as": "direct_label"
         }
       ],
@@ -157,11 +157,11 @@
         "dx": -10,
         "color": "#07101C",
         "fontWeight": "bold",
-        "fontSize": 16,
+        "fontSize": 15,
         "lineBreak": "\n",
-        "lineHeight": 20,
+        "lineHeight": 18,
         "baseline": "middle",
-        "dy": -7
+        "dy": 0
       },
       "encoding": {
         "x": {
@@ -175,6 +175,110 @@
         "text": {
           "field": "direct_label",
           "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/flow-nodes.json"
+      },
+      "transform": [
+        {
+          "filter": "datum.x == 0"
+        },
+        {
+          "calculate": "(datum.y + datum.y2)/2",
+          "as": "mid"
+        },
+        {
+          "calculate": "(datum.label == 'Domestic overnight' ? 'Domestic\\novernight' : datum.label) + '\\nAUD ' + format(datum.value/1e9,'.2f') + 'bn'",
+          "as": "direct_label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "color": "#07101C",
+        "fontWeight": "bold",
+        "fontSize": 15,
+        "lineBreak": "\n",
+        "lineHeight": 18,
+        "baseline": "middle",
+        "dy": -5
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "direct_label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 0.98,
+            "y": 16.1,
+            "label": "AUD 2.34bn"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontWeight": "bold",
+        "fontSize": 15,
+        "color": "white"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 1,
+            "y": 19.92,
+            "end": 20.5
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "end"
         }
       }
     }

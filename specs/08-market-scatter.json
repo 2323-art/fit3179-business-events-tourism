@@ -111,6 +111,20 @@
   "transform": [
     {
       "filter": "datum.year == year"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "spend",
+          "as": "max_spend"
+        },
+        {
+          "op": "max",
+          "field": "visitors",
+          "as": "max_trips"
+        }
+      ]
     }
   ],
   "layer": [
@@ -142,7 +156,7 @@
           "type": "quantitative",
           "title": [
             "Spending in Australia",
-            "(million Australian dollars)"
+            "(AUD millions)"
           ],
           "axis": {
             "labelExpr": "format(datum.value / 1e6, '.0f')",
@@ -195,7 +209,7 @@
     {
       "transform": [
         {
-          "filter": "focus == 'All markets' ? datum.country == 'Malaysia' : datum.country == focus"
+          "filter": "focus == 'All markets' ? (datum.country == 'Malaysia' || datum.spend == datum.max_spend || datum.visitors == datum.max_trips) : datum.country == focus"
         },
         {
           "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
@@ -209,11 +223,11 @@
       "mark": {
         "type": "text",
         "dx": {
-          "expr": "datum.country == 'New Zealand' ? -6 : 6"
+          "expr": "datum.visitors > 130000 ? -7 : 7"
         },
         "dy": -9,
         "align": {
-          "expr": "datum.country == 'New Zealand' ? 'right' : 'left'"
+          "expr": "datum.visitors > 130000 ? 'right' : 'left'"
         },
         "fontSize": 15,
         "color": "#162B4D"
