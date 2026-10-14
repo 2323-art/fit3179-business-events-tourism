@@ -20,7 +20,7 @@
     {
       "key": "NSW",
       "label": "New South Wales",
-      "colour": "#A6364F"
+      "colour": "#443675"
     },
     {
       "key": "VIC",
@@ -35,7 +35,7 @@
     {
       "key": "WA",
       "label": "Western Australia",
-      "colour": "#C56B93"
+      "colour": "#D2BA68"
     },
     {
       "key": "SA",
@@ -86,7 +86,7 @@
     {
       "key": "National/state parks",
       "label": "National and state parks",
-      "colour": "#A4513A",
+      "colour": "#3F667B",
       "dash": [
         10,
         3,

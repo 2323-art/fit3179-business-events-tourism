@@ -286,8 +286,8 @@ for path in OUT.glob('*.json'):
  path.write_text(json.dumps(s,indent=2,ensure_ascii=False),encoding='utf-8')
 
 # Colour roles are shared with the HTML legends; no data colour has two meanings.
-STATE_COLOURS={'NSW':'#A6364F','VIC':'#795637','QLD':'#748128','WA':'#C56B93','SA':'#5E608B','ACT':'#386453','NT':'#9A8468','TAS':'#4F7F91'}
-ACTIVITY_COLOURS={'Dine out':'#008B9C','Sightseeing':'#6E3D60','Go to the beach':'#526F24','National/state parks':'#A4513A'}
+STATE_COLOURS={'NSW':'#443675','VIC':'#795637','QLD':'#748128','WA':'#D2BA68','SA':'#5E608B','ACT':'#386453','NT':'#9A8468','TAS':'#4F7F91'}
+ACTIVITY_COLOURS={'Dine out':'#008B9C','Sightseeing':'#6E3D60','Go to the beach':'#526F24','National/state parks':'#3F667B'}
 ACTIVITY_DASHES=[[],[8,4],[3,3],[10,3,2,3]]
 semantics={
  'travellers':[{'key':k,'label':k,'colour':c} for k,c in zip(types,colors)],

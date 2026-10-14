@@ -10,6 +10,8 @@ The main question is who generates visitor spending, where it lands, and how int
 
 ### Consistent colour meanings and legends — 14 October 2026
 
+**User rule: never pair red and green.** The red, rose and red-brown category colours have been retired: New South Wales uses deep violet, Western Australia uses sand, and national/state park activities use steel blue. Legends and linked charts use these replacements consistently. Future palette changes must preserve this rule; colour alone must not be the only way to identify a series.
+
 `data/colour-semantics.json` records the category colours used by the charts and their legends. Each category colour has one meaning across the story: visitor classes retain gold/teal/blue; states have a separate shared palette in the symbol map and treemap; activities have their own colours and redundant line patterns; purple/orange consistently show increases/decreases. Slate grey identifies other international visitors. The choropleth retains a separate ordered greyscale for spending per resident. Text, outlines and basemaps are structural elements, not additional category encodings.
 
 Colour legends replace repeated traveller labels in the Sankey, state labels on the symbol map and treemap, and activity labels alongside the lines. Essential geographic labels, endpoint names, region identities that fit and a few key values remain where a category legend cannot replace them. State legend buttons highlight the same state in both views and show its destination spending below the treemap; keyboard selection and resize retention are supported.
