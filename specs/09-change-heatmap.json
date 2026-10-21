@@ -183,10 +183,10 @@
         },
         "color": {
           "condition": {
-            "test": "abs(datum.change) > 0.45",
+            "test": "contrast('white', scale('color', datum.change)) > contrast('black', scale('color', datum.change))",
             "value": "white"
           },
-          "value": "#162B4D"
+          "value": "black"
         }
       },
       "transform": [

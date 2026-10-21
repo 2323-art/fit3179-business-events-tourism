@@ -1,0 +1,350 @@
+// INTERVIEW COPY: 04-choropleth.json
+// GeoJSON polygons already contain joined TRA spending / ABS population in properties. geoshape draws boundaries; sequential brightness encodes the rate. Additional marks locate and label small ACT.
+// Read-only study companion. The website loads specs/04-choropleth.json, not this .jsonc file.
+// Comments explain this exact local snapshot; regenerate/recompare after future chart edits.
+{
+  "width": "container",
+  "height": 380,
+  // Shared presentation defaults for this chart: fonts, axes, gridlines, legends and text.
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#4E6078",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  // Select the grammar/version: Vega-Lite is a high-level chart language; Vega gives direct control over dataflows and marks.
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  // Convert longitude/latitude into flat screen coordinates. Equal-area preserves relative area, not every shape or distance.
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0,
+      0
+    ],
+    "center": [
+      0,
+      -28
+    ]
+  },
+  // Draw these subviews on top of each other: earlier layers form the background; later layers add marks/labels.
+  "layer": [
+    {
+      // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+      "data": {
+        "url": "data/australia.json",
+        // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        // Line thickness. When a field is mapped here, its magnitude determines the visible width.
+        "strokeWidth": 1
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+        "tooltip": [
+          {
+            "field": "properties.state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "properties.spend_per_resident",
+            "type": "quantitative",
+            "title": "AUD per resident",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f"
+          },
+          {
+            "field": "properties.spend",
+            "type": "quantitative",
+            "title": "Spending (AUD)",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f"
+          },
+          {
+            "field": "properties.population",
+            "type": "quantitative",
+            "title": "Residents",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": ",.0f"
+          }
+        ],
+        "color": {
+          "field": "properties.spend_per_resident",
+          "type": "quantitative",
+          // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+          "scale": {
+            "domain": [
+              0,
+              1600
+            ],
+            "range": [
+              "#F0F0F0",
+              "#343434"
+            ]
+          },
+          "legend": {
+            "title": [
+              "AUD",
+              "per resident"
+            ],
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f",
+            "gradientLength": 220
+          }
+        }
+      }
+    },
+    {
+      // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+      "data": {
+        "url": "data/states.json"
+      },
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "text",
+        "fontWeight": "bold",
+        "fontSize": 15,
+        "color": "#162B4D",
+        "lineBreak": "\n",
+        "lineHeight": 18,
+        "align": "center",
+        "dx": -5,
+        "dy": -16
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Geographic horizontal coordinate, passed through the projection rather than treated as an ordinary chart x value.
+        "longitude": {
+          "field": "label_lon",
+          "type": "quantitative"
+        },
+        // Geographic vertical coordinate, passed through the projection.
+        "latitude": {
+          "field": "label_lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "map_label",
+          "type": "nominal"
+        },
+        "color": {
+          // Choose a visual property based on a parameter/test, for example fade unselected markets while retaining context.
+          "condition": {
+            "test": "datum.code == 'NT'",
+            "value": "white"
+          },
+          "value": "#162B4D"
+        },
+        // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+        "tooltip": [
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "spend_per_resident",
+            "type": "quantitative",
+            "title": "AUD per resident",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f"
+          }
+        ]
+      },
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.code == 'NT'"
+        },
+        {
+          // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+          "calculate": "datum.code == 'NT' ? 'Northern\\nTerritory\\n$' + format(datum.spend_per_resident, ',.0f') : 'Australian\\nCapital Territory\\n$' + format(datum.spend_per_resident, ',.0f')",
+          "as": "map_label"
+        }
+      ]
+    },
+    {
+      // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+      "data": {
+        "values": [
+          {
+            // Geographic horizontal coordinate, passed through the projection rather than treated as an ordinary chart x value.
+            "longitude": 148.983,
+            // Geographic vertical coordinate, passed through the projection.
+            "latitude": -35.4618,
+            "lon2": 158,
+            "lat2": -42.5
+          }
+        ]
+      },
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "rule",
+        "color": "#162B4D",
+        // Line thickness. When a field is mapped here, its magnitude determines the visible width.
+        "strokeWidth": 1.4
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Geographic horizontal coordinate, passed through the projection rather than treated as an ordinary chart x value.
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        // Geographic vertical coordinate, passed through the projection.
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon2"
+        },
+        "latitude2": {
+          "field": "lat2"
+        }
+      }
+    },
+    {
+      // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+      "data": {
+        "values": [
+          {
+            // Geographic horizontal coordinate, passed through the projection rather than treated as an ordinary chart x value.
+            "longitude": 148.983,
+            // Geographic vertical coordinate, passed through the projection.
+            "latitude": -35.4618
+          }
+        ]
+      },
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "circle",
+        "filled": false,
+        "size": 70,
+        "stroke": "#162B4D",
+        // Line thickness. When a field is mapped here, its magnitude determines the visible width.
+        "strokeWidth": 1.6,
+        // Transparency changes emphasis. It does not modify the recorded visitor or spending amount.
+        "opacity": 1
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Geographic horizontal coordinate, passed through the projection rather than treated as an ordinary chart x value.
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        // Geographic vertical coordinate, passed through the projection.
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+      "data": {
+        "url": "data/states.json"
+      },
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.code == 'ACT'"
+        },
+        {
+          // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+          "calculate": "'Australian Capital\\nTerritory\\n$' + format(datum.spend_per_resident, ',.0f')",
+          "as": "callout"
+        }
+      ],
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "top",
+        "dx": 0,
+        "dy": 7,
+        "fontSize": 15,
+        "fontWeight": "bold",
+        "lineBreak": "\n",
+        "lineHeight": 18,
+        "color": "#162B4D"
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Geographic horizontal coordinate, passed through the projection rather than treated as an ordinary chart x value.
+        "longitude": {
+          "datum": 158
+        },
+        // Geographic vertical coordinate, passed through the projection.
+        "latitude": {
+          "datum": -42.5
+        },
+        "text": {
+          "field": "callout"
+        },
+        // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "spend_per_resident",
+            "type": "quantitative",
+            "title": "AUD per resident",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f"
+          }
+        ]
+      }
+    }
+  ]
+}

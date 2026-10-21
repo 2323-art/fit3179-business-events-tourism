@@ -1,0 +1,342 @@
+// INTERVIEW COPY: 10-waterfall.json
+// vconcat places national totals above cumulative detail. Totals start at zero; detail spans prepared start/end on an enlarged scale. window lead finds the next category for dashed connectors; labels show signed AUD millions.
+// Read-only study companion. The website loads specs/10-waterfall.json, not this .jsonc file.
+// Comments explain this exact local snapshot; regenerate/recompare after future chart edits.
+{
+  // Select the grammar/version: Vega-Lite is a high-level chart language; Vega gives direct control over dataflows and marks.
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  // Shared presentation defaults for this chart: fonts, axes, gridlines, legends and text.
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#4E6078",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 170,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20,
+      "subtitleFontSize": 15,
+      "subtitleLineHeight": 20,
+      "subtitleColor": "#4E6078",
+      "offset": 14
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+  "data": {
+    "url": "data/waterfall.json"
+  },
+  // Apply these operations in order before drawing this view/layer. datum means the current record.
+  "transform": [
+    {
+      // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+      "calculate": "datum.label == 'USA' ? 'United States' : datum.label == 'Other + rounding' ? 'Other markets*' : datum.label",
+      "as": "display_name"
+    }
+  ],
+  "spacing": 36,
+  // Stack these views vertically. Read each panel axis; the waterfall panels intentionally use different domains.
+  "vconcat": [
+    {
+      "title": {
+        "text": "National totals",
+        "subtitle": "Zero-based spending scale"
+      },
+      "height": 86,
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.kind == 'Total'"
+        }
+      ],
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "y": {
+          "field": "label",
+          "type": "ordinal",
+          "title": null,
+          "sort": [
+            "2024",
+            "2025"
+          ],
+          "axis": {
+            "labelAngle": 0
+          }
+        },
+        "x": {
+          "field": "end",
+          "type": "quantitative",
+          "title": "Spending in Australia (AUD billions)",
+          // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+          "scale": {
+            "domain": [
+              0,
+              3
+            ],
+            "nice": false
+          },
+          "axis": {
+            "tickCount": 4
+          }
+        }
+      },
+      // Draw these subviews on top of each other: earlier layers form the background; later layers add marks/labels.
+      "layer": [
+        {
+          // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+          "mark": {
+            "type": "bar",
+            "size": 24,
+            "color": "#2457D6"
+          },
+          // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+          "encoding": {
+            // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+            "tooltip": [
+              {
+                "field": "display_name",
+                "title": "Origin / group"
+              },
+              {
+                "field": "value",
+                "title": "Amount (AUD billions)",
+                // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+                "format": "+.3f"
+              }
+            ]
+          }
+        },
+        {
+          // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "dx": -8,
+            "color": "white",
+            "fontWeight": "bold",
+            "fontSize": 15
+          },
+          // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+          "encoding": {
+            "text": {
+              "field": "end",
+              // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+              "format": ".2f"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "How the total changed",
+        "subtitle": [
+          "Enlarged cumulative scale: each step is a gain or loss.",
+          "Signed labels show each contribution in AUD millions."
+        ]
+      },
+      "height": 350,
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.kind != 'Total'"
+        },
+        {
+          // Compute a value using ordered neighbouring rows; lead identifies the next contribution for a waterfall connector.
+          "window": [
+            {
+              "op": "lead",
+              "field": "display_name",
+              "as": "next_name"
+            }
+          ],
+          "sort": [
+            {
+              "field": "order"
+            }
+          ]
+        }
+      ],
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "y": {
+          "field": "display_name",
+          "type": "ordinal",
+          "sort": {
+            "field": "order",
+            "order": "ascending"
+          },
+          "title": null,
+          "axis": {
+            "labelAngle": 0,
+            "labelLimit": 170,
+            "labelPadding": 8
+          }
+        },
+        "x": {
+          "field": "start",
+          "type": "quantitative",
+          "title": "Cumulative spending (AUD billions)",
+          // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+          "scale": {
+            "domain": [
+              2.3,
+              2.8
+            ],
+            "zero": false,
+            "nice": false
+          },
+          "axis": {
+            "tickCount": 5,
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": ".1f"
+          }
+        }
+      },
+      // Draw these subviews on top of each other: earlier layers form the background; later layers add marks/labels.
+      "layer": [
+        {
+          // Apply these operations in order before drawing this view/layer. datum means the current record.
+          "transform": [
+            {
+              // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+              "filter": "datum.next_name != null"
+            }
+          ],
+          // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+          "mark": {
+            "type": "rule",
+            // Dash pattern gives a category cue in addition to colour, particularly for activity lines.
+            "strokeDash": [
+              3,
+              3
+            ],
+            "color": "#8292A7"
+          },
+          // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+          "encoding": {
+            "x": {
+              "field": "end"
+            },
+            // Second vertical boundary/endpoint: in the Sankey, the gap between y and y2 is ribbon thickness.
+            "y2": {
+              "field": "next_name"
+            }
+          }
+        },
+        {
+          // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+          "mark": {
+            "type": "bar",
+            "size": 22
+          },
+          // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+          "encoding": {
+            // Second horizontal endpoint: useful for floating waterfall bars or a rule connecting two values.
+            "x2": {
+              "field": "end"
+            },
+            "color": {
+              "field": "kind",
+              "type": "nominal",
+              // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+              "scale": {
+                "domain": [
+                  "Total",
+                  "Increase",
+                  "Decrease"
+                ],
+                "range": [
+                  "#2457D6",
+                  "#762A83",
+                  "#C45118"
+                ]
+              },
+              "legend": null
+            },
+            // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+            "tooltip": [
+              {
+                "field": "display_name",
+                "title": "Origin / group"
+              },
+              {
+                "field": "value",
+                "title": "Amount (AUD billions)",
+                // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+                "format": "+.3f"
+              }
+            ]
+          }
+        },
+        {
+          // Apply these operations in order before drawing this view/layer. datum means the current record.
+          "transform": [
+            {
+              // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+              "calculate": "format(datum.value*1000,'+.1f')",
+              "as": "change_label"
+            },
+            {
+              // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+              "calculate": "max(datum.start,datum.end)",
+              "as": "label_x"
+            }
+          ],
+          // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 7,
+            "fontSize": 15,
+            "color": "#162B4D"
+          },
+          // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+          "encoding": {
+            "x": {
+              "field": "label_x"
+            },
+            "text": {
+              "field": "change_label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resolve": {
+    // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+    "scale": {
+      "x": "independent",
+      "y": "independent"
+    }
+  }
+}

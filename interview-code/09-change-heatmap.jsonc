@@ -1,0 +1,243 @@
+// INTERVIEW COPY: 09-change-heatmap.json
+// Rows are origins, columns are measures. Prepared change is a fraction; diverging colour is centred on zero. Extra rectangle/text layers show the selected market without changing its colour meaning.
+// Read-only study companion. The website loads specs/09-change-heatmap.json, not this .jsonc file.
+// Comments explain this exact local snapshot; regenerate/recompare after future chart edits.
+{
+  "width": "container",
+  "height": 520,
+  // Shared presentation defaults for this chart: fonts, axes, gridlines, legends and text.
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#4E6078",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  // Select the grammar/version: Vega-Lite is a high-level chart language; Vega gives direct control over dataflows and marks.
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+  "data": {
+    "url": "data/changes.json"
+  },
+  // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+  "encoding": {
+    "x": {
+      "field": "metric",
+      "type": "ordinal",
+      "sort": [
+        "Visitors",
+        "Nights",
+        "Spend"
+      ],
+      "title": null,
+      "axis": {
+        "orient": "top",
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "country",
+      "type": "nominal",
+      "sort": [
+        "China",
+        "Malaysia",
+        "India",
+        "New Zealand",
+        "Korea",
+        "UK",
+        "Germany",
+        "Philippines",
+        "Scandinavia",
+        "Hong Kong",
+        "France",
+        "USA",
+        "Singapore",
+        "Japan",
+        "Indonesia",
+        "Canada",
+        "Netherlands",
+        "Viet Nam"
+      ],
+      "title": null,
+      "axis": {
+        "labelExpr": "datum.label == \"USA\" ? \"United States\" : datum.label == \"UK\" ? \"United Kingdom\" : datum.label == \"NSW\" ? \"New South Wales\" : datum.label == \"VIC\" ? \"Victoria\" : datum.label == \"QLD\" ? \"Queensland\" : datum.label == \"WA\" ? \"Western Australia\" : datum.label == \"SA\" ? \"South Australia\" : datum.label == \"ACT\" ? \"Australian Capital Territory\" : datum.label == \"NT\" ? \"Northern Territory\" : datum.label == \"TAS\" ? \"Tasmania\" : datum.label",
+        "labelLimit": 180
+      }
+    }
+  },
+  // Draw these subviews on top of each other: earlier layers form the background; later layers add marks/labels.
+  "layer": [
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "rect",
+        "stroke": "white",
+        // Line thickness. When a field is mapped here, its magnitude determines the visible width.
+        "strokeWidth": 2
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "color": {
+          "field": "change",
+          "type": "quantitative",
+          // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+          "scale": {
+            "domain": [
+              -0.65,
+              0,
+              0.65
+            ],
+            "range": [
+              "#C45118",
+              "#FFFFFF",
+              "#762A83"
+            ],
+            "clamp": true,
+            "interpolate": "rgb"
+          },
+          "legend": {
+            "title": [
+              "Change,",
+              "2024 to 2025"
+            ],
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "+.0%",
+            "gradientLength": 120
+          }
+        },
+        // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+        "tooltip": [
+          {
+            "field": "country_full",
+            "type": "nominal"
+          },
+          {
+            "field": "metric",
+            "type": "nominal"
+          },
+          {
+            "field": "change",
+            "type": "quantitative",
+            "title": "Change",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "+.1%"
+          },
+          {
+            "field": "before",
+            "type": "quantitative",
+            "title": "2024",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": ",.0f"
+          },
+          {
+            "field": "after",
+            "type": "quantitative",
+            "title": "2025",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": ",.0f"
+          }
+        ]
+      },
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+          "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
+          "as": "country_full"
+        }
+      ]
+    },
+    {
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.country == marketFocus"
+        }
+      ],
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "rect",
+        "fillOpacity": 0,
+        "stroke": "#162B4D",
+        // Line thickness. When a field is mapped here, its magnitude determines the visible width.
+        "strokeWidth": 3
+      }
+    },
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "text",
+        "fontSize": 15
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "text": {
+          "field": "change_label",
+          "type": "nominal"
+        },
+        "color": {
+          // Choose a visual property based on a parameter/test, for example fade unselected markets while retaining context.
+          "condition": {
+            "test": "contrast('white', scale('color', datum.change)) > contrast('black', scale('color', datum.change))",
+            "value": "white"
+          },
+          "value": "black"
+        }
+      },
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.country == marketFocus"
+        }
+      ]
+    }
+  ],
+  // Apply these operations in order before drawing this view/layer. datum means the current record.
+  "transform": [
+    {
+      // Compute a new field; the adjacent as key names the result. This often formats labels without changing raw values.
+      "calculate": "abs(datum.change) < 0.0005 ? '0.0%' : format(datum.change, '+.1%')",
+      "as": "change_label"
+    }
+  ],
+  // Interactive values. bind connects a parameter to an HTML control; app.js can also update the resulting signal.
+  "params": [
+    {
+      "name": "marketFocus",
+      "value": "Malaysia"
+    }
+  ]
+}

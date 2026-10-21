@@ -215,13 +215,13 @@
         "fontWeight": "bold",
         "color": "#162B4D",
         "align": {
-          "expr": "datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' ? 'right' : 'left'"
+          "expr": "datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' || datum.country == 'Singapore' ? 'right' : 'left'"
         },
         "dx": {
-          "expr": "datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' ? -8 : 8"
+          "expr": "datum.country == 'USA' || datum.country == 'India' || datum.country == 'Malaysia' || datum.country == 'Singapore' ? -8 : 8"
         },
         "dy": {
-          "expr": "datum.country == 'Singapore' ? 18 : datum.country == 'Malaysia' ? -8 : -10"
+          "expr": "datum.country == 'UK' ? -24 : datum.country == 'Singapore' ? 20 : datum.country == 'Malaysia' ? -10 : datum.country == 'Japan' ? -4 : -12"
         }
       },
       "encoding": {
@@ -247,7 +247,7 @@
       },
       "transform": [
         {
-          "filter": "originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"
+          "filter": "originFocus == 'All origins' || datum.country == originFocus"
         },
         {
           "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",

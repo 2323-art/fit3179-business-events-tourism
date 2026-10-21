@@ -1,0 +1,14 @@
+{
+  "01-waffle.json": "6be8bd7cde042f1fe4297bd9af626f596426bd99d43067e6578cb21a3cb36904",
+  "02-spend-per-trip.json": "bb82ebf9dc99dcb9c13aeeac9452464c66a9a6a7a92ecd8a30a9b59cbf65046a",
+  "03-sankey.json": "2b8b3175c0e60836c783c671ba3284fde1a6cb81e55dec709c86aa459947feb3",
+  "04-choropleth.json": "76c874b1214d9735491210c5672bf909ef566dfac0804b3815a4b914996782bc",
+  "05-symbol-map.json": "e9773c517dd2c4d6bd9ae9026676ed659c46e553f1ba445432ce75c0e9f05cda",
+  "06-treemap.json": "0dadeda27fbc202cffe7bacc487867d0dc15e18c69f4c0cfb24fe57ca4cf34e7",
+  "07-flow-map.json": "8d4bf133c3f9a86cd5a5b5e3b0111e7af360c0e243d9698b7f0578c0b131bc5c",
+  "08-market-scatter.json": "4f449ad8e3ed9d40c87989c68d9e31e03f48aa5c680e3ed4ac364877ddf7b67f",
+  "09-change-heatmap.json": "b01ae7a8b7c25064975eff3db97d3388087c1c717b498548ae2a95ce1a5c7cef",
+  "10-waterfall.json": "ed96ace5bbb478a20c2c34a10f761d321a76a32a9873f8ffe8fff77222d08b6a",
+  "11-activity-slope.json": "01959cc28401f9038998ebfa1a766e8752fd98ef91d59aa48abbf5a455a60117",
+  "12-per-night.json": "8db9bfbe078f4c1036d1c012d4538365870fe3a56ffaf9b6e4f44bff294d169e"
+}

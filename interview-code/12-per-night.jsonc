@@ -1,0 +1,202 @@
+// INTERVIEW COPY: 12-per-night.json
+// A rule joins other and business values in each year. Two circle layers draw its endpoints, and text layers label 2025. These are published rounded per-night values.
+// Read-only study companion. The website loads specs/12-per-night.json, not this .jsonc file.
+// Comments explain this exact local snapshot; regenerate/recompare after future chart edits.
+{
+  "width": "container",
+  "height": 240,
+  // Shared presentation defaults for this chart: fonts, axes, gridlines, legends and text.
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#4E6078",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "tickCount": 5,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  // Select the grammar/version: Vega-Lite is a high-level chart language; Vega gives direct control over dataflows and marks.
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  // Input observations, a named dataset reference, or inline annotation data. A URL is resolved relative to the site directory.
+  "data": {
+    "url": "data/per-night.json"
+  },
+  // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+  "encoding": {
+    "y": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null
+    },
+    "x": {
+      "field": "other",
+      "type": "quantitative",
+      "title": [
+        "Spending per visitor night",
+        "(AUD)"
+      ],
+      // Map a data domain to a visual range. Explicit domains keep the frame stable across interactions.
+      "scale": {
+        "domain": [
+          0,
+          180
+        ]
+      },
+      "axis": {
+        // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+        "format": "$,.0f"
+      }
+    }
+  },
+  // Draw these subviews on top of each other: earlier layers form the background; later layers add marks/labels.
+  "layer": [
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "rule",
+        // Line thickness. When a field is mapped here, its magnitude determines the visible width.
+        "strokeWidth": 4,
+        "color": "#B3C2D3"
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Second horizontal endpoint: useful for floating waterfall bars or a rule connecting two values.
+        "x2": {
+          "field": "business"
+        }
+      }
+    },
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "circle",
+        "size": 150,
+        "color": "#59626D",
+        // Transparency changes emphasis. It does not modify the recorded visitor or spending amount.
+        "opacity": 1
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+        "tooltip": [
+          {
+            "field": "other",
+            "type": "quantitative",
+            "title": "Other international visitors",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "circle",
+        "size": 150,
+        "color": "#2457D6",
+        // Transparency changes emphasis. It does not modify the recorded visitor or spending amount.
+        "opacity": 1
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "x": {
+          "field": "business",
+          "type": "quantitative"
+        },
+        // Fields or expressions displayed on hover; formats improve readability while preserving stored values.
+        "tooltip": [
+          {
+            "field": "business",
+            "type": "quantitative",
+            "title": "Business-event visitors",
+            // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+            "format": "$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "text",
+        "dy": -18,
+        "color": "#162B4D"
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "text": {
+          "field": "other",
+          "type": "quantitative",
+          // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+          "format": "$,.0f"
+        }
+      },
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.year == 2025"
+        }
+      ]
+    },
+    {
+      // Choose the primitive drawn for each record. Appearance can be constant here or driven by encoding below.
+      "mark": {
+        "type": "text",
+        "dy": -18,
+        "color": "#162B4D"
+      },
+      // Map data fields to visual channels. field selects a column; quantitative means magnitude, nominal means category.
+      "encoding": {
+        "x": {
+          "field": "business",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "business",
+          "type": "quantitative",
+          // Parsing or display formatting, depending on location: reading GeoJSON features or formatting readable numbers.
+          "format": "$,.0f"
+        }
+      },
+      // Apply these operations in order before drawing this view/layer. datum means the current record.
+      "transform": [
+        {
+          // Keep records satisfying this expression; unlike opacity highlighting, filtering removes records from this view/layer.
+          "filter": "datum.year == 2025"
+        }
+      ]
+    }
+  ]
+}

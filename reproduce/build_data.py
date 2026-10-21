@@ -1,35 +1,47 @@
 """Rebuild derived display data from preserved official source tables."""
+# INTERVIEW: DATA PREPARATION ONLY: this script runs before publication, not in a visitor browser.
+# INTERVIEW: It rebuilds derived JSON/CSV from preserved official snapshots. Reading these comments does not require running it.
+# INTERVIEW: Do not run build_specs.py over the authored specifications; it is an older presentation generator.
 import json, csv, math, hashlib
 from pathlib import Path
 from collections import defaultdict
 import openpyxl
 
+# INTERVIEW: Resolve paths relative to this script: data/source holds inputs, data holds compact chart-ready outputs.
 ROOT=Path(__file__).resolve().parents[1]; R=ROOT/'data'/'source'; D=ROOT/'data'
 D.mkdir(parents=True,exist_ok=True)
 import urllib.request
+# INTERVIEW: Use the preserved Natural Earth files when available; only download geometry if an input is missing.
 for filename,remote in [('world-original.geojson','ne_110m_admin_0_countries.geojson'),('states-original.geojson','ne_50m_admin_1_states_provinces.geojson'),('places-original.geojson','ne_110m_populated_places.geojson')]:
  if not (R/filename).exists(): urllib.request.urlretrieve('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/'+remote,R/filename)
 def read(n): return json.loads((R/(n+'.json')).read_text(encoding='utf-8'))
 def save(n,v): (D/(n+'.json')).write_text(json.dumps(v,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+# INTERVIEW: Write each ordinary table twice: JSON for the visualisations, CSV for readers to download.
 def table(n,v):
  save(n,v)
  if v:
   with (D/(n+'.csv')).open('w',newline='',encoding='utf-8-sig') as f:
    w=csv.DictWriter(f,fieldnames=list(v[0]));w.writeheader();w.writerows(v)
 
+# INTERVIEW: Use the published union of attendees OR accompanying visitors. Adding overlapping subgroup totals would double count.
 union='Attended or accompanied someone else to business event total'
 summary=[r for r in read('tra-summary-dashboard') if r['Category']==union]
 types={'Daytrips':'Domestic day','Overnight':'Domestic overnight','International':'International'}
+# INTERVIEW: Prepare national records. Source money is in thousands, so multiply by 1000 to store AUD; spend per trip is spending / trips.
 national=[]
 for r in summary:
  if r['Type'] not in types:continue
  national.append(dict(year=r['Year'],traveller=types[r['Type']],visitors=r['Visitors'],nights=r['Visitor nights'],spend=r['Spend in Australia ($000)']*1000,total_spend=r['Total trip spend ($000)']*1000,spend_per_trip=r['Spend in Australia ($000)']*1000/r['Visitors']))
+# INTERVIEW: assert checks exact reconciliation against the published combined totals; a failed assertion stops this rebuild.
 for year in [2024,2025]:
  total=next(r for r in summary if r['Year']==year and r['Type']=='Combined')
  for field,source in [('visitors','Visitors'),('spend','Spend in Australia ($000)'),('total_spend','Total trip spend ($000)')]:
   assert sum(r[field] for r in national if r['year']==year)==total[source]*(1000 if 'spend' in field else 1)
 table('national',national)
+# INTERVIEW: The domestic presentation uses 2025 only because survey methods changed. Earlier data remain available for international comparisons.
 latest=[r for r in national if r['year']==2025]
+# INTERVIEW: WAFFLE: calculate each group percentage, floor to whole cells, then distribute remaining cells to the largest fractional remainders.
+# INTERVIEW: This largest-remainder allocation ensures each grid contains exactly 100 cells, while share retains the unrounded fraction.
 waffle=[]
 for metric,key in [('Visitor trips','visitors'),('Spending in Australia','spend')]:
  total=sum(r[key] for r in latest); shares=[r[key]/total*100 for r in latest]
@@ -38,19 +50,24 @@ for metric,key in [('Visitor trips','visitors'),('Spending in Australia','spend'
  index=0
  for r,pct,count in zip(latest,shares,counts):
   for _ in range(count):
+# INTERVIEW: x = index modulo 10 gives the column; y counts rows from the other end. These coordinates position each square.
    waffle.append(dict(metric=metric,traveller=r['traveller'],share=pct/100,x=index%10,y=9-index//10));index+=1
  assert index==100
 table('waffle',waffle)
 
 # Continuous ribbons have conserved dollar thickness at both ends.
+# INTERVIEW: SANKEY: work in billions for layout; ribbon thickness h is the spending value / 1e9. Gaps separate groups but do not represent money.
 scale=1e9; gap=.55; flows=[]; nodes=[]; source_y=0; dest_y={'In Australia':0,'Outside Australia':18.3}
 for r in sorted(latest,key=lambda r:['Domestic day','Domestic overnight','International'].index(r['traveller'])):
  height=r['total_spend']/scale
  nodes.append(dict(label=r['traveller'],x=0,y=source_y,y2=source_y+height,value=r['total_spend']))
  local_offset=0
+# INTERVIEW: International total spending splits into in-Australia spending and the residual outside Australia. Zero-valued flows are skipped.
  for destination,value in [('In Australia',r['spend']),('Outside Australia',r['total_spend']-r['spend'])]:
   if value==0:continue
   h=value/scale;y0=source_y+local_offset;y1=dest_y[destination]
+# INTERVIEW: Sample 31 points across each ribbon. smooth=t*t*(3-2*t) eases its vertical movement between endpoints.
+# INTERVIEW: Both boundaries move together and stay h apart, preserving dollar thickness throughout the ribbon.
   for step in range(31):
    t=step/30;smooth=t*t*(3-2*t)
    flows.append(dict(link=r['traveller']+' → '+destination,traveller=r['traveller'],destination=destination,value=value,x=t,y=y0+(y1-y0)*smooth,y2=y0+(y1-y0)*smooth+h))
@@ -59,14 +76,17 @@ for r in sorted(latest,key=lambda r:['Domestic day','Domestic overnight','Intern
 for dest,start in [('In Australia',0),('Outside Australia',18.3)]:nodes.append(dict(label=dest,x=1,y=start,y2=dest_y[dest],value=(dest_y[dest]-start)*scale))
 table('flows',flows);table('flow-nodes',nodes)
 
+# INTERVIEW: GEOGRAPHIC JOIN: standardise state names into common codes so TRA, ABS and Natural Earth refer to the same jurisdictions.
 abbr={'New South Wales':'NSW','Victoria':'VIC','Queensland':'QLD','South Australia':'SA','Western Australia':'WA','Tasmania':'TAS','Northern Territory':'NT','ACT':'ACT','Australian Capital Territory':'ACT'}
 popcols=dict(zip(['NSW','VIC','QLD','SA','WA','TAS','NT','ACT'],range(20,28)))
+# INTERVIEW: Read the preserved ABS spreadsheet: row 187 must represent June 2025, aligned with the tourism reference year.
 wb=openpyxl.load_workbook(R/'abs-population-mar-2026.xlsx',read_only=True,data_only=True);ws=wb['Data1']
 population={k:ws.cell(187,col).value for k,col in popcols.items()}
 assert str(ws.cell(187,1).value).startswith('2025-06')
 states=[]
 geometry=json.loads((R/'states-original.geojson').read_text(encoding='utf-8'))
 features=[]
+# INTERVIEW: Round geographic coordinates to reduce file size; this changes display geometry precision, not the tourism estimates.
 def round_coords(v):return [round_coords(i) for i in v] if isinstance(v,list) else round(v,3) if isinstance(v,float) else v
 for feature in geometry['features']:
  p=feature['properties'];name=p.get('name')
@@ -75,13 +95,16 @@ for feature in geometry['features']:
  candidates=[r for r in read('tra-state-summary') if r['Year']==2025 and r['Type']=='Total' and r['Category']=='Total' and abbr.get(r['State/Territory'])==code]
  assert len(candidates)==1,(name,candidates)
  r=candidates[0];assert r['Sample In/Out']==1
+# INTERVIEW: Attach population and spending-per-resident to each state record. Monetary millions are converted to AUD before division.
  item=dict(state=name,code=code,visitors=r['Visitors (000)']*1000,spend=r['Expenditure ($M)']*1e6,nights=r['Nights (000)']*1000,population=population[code],spend_per_resident=r['Expenditure ($M)']*1e6/population[code],longitude=p['longitude'],latitude=p['latitude'])
  # ACT is too small to find without a clearly labelled callout.
  item['label_lon']=153 if code=='ACT' else p['longitude'];item['label_lat']=-36.7 if code=='ACT' else p['latitude']
+# INTERVIEW: Embed the joined measures into GeoJSON properties. The choropleth reads properties.spend_per_resident directly; no runtime lookup is needed.
  states.append(item);features.append(dict(type='Feature',properties=item,geometry=dict(type=feature['geometry']['type'],coordinates=round_coords(feature['geometry']['coordinates']))))
 assert len(states)==8
 table('states',states);save('australia',dict(type='FeatureCollection',features=features))
 
+# INTERVIEW: TREEMAP DATA: root Australia -> states -> destination regions. Parent value=0 avoids adding parent totals to their children again.
 regions=[dict(id='Australia',parent=None,name='Australia',value=0)]
 for code in popcols:regions.append(dict(id=code,parent='Australia',name=code,value=0))
 for r in read('tra-cap-city-regional'):
@@ -91,6 +114,7 @@ for r in read('tra-cap-city-regional'):
  regions.append(dict(id=r['Region'],parent=code,name=r['Region'].replace('Canberra - Regional ACT','ACT (all)').replace(' and the South',' & south').replace('Destination Perth','Perth region'),value=r['Expenditure ($M)']*1e6))
 table('regions',regions)
 
+# INTERVIEW: Reshape the source into one row per origin and year, merging its visitor/night/spending measures with a (country, year) key.
 markets={}
 metric_names={'Visitors (000)':'visitors','Visitor nights (000)':'nights','Spend in Australia ($000)':'spend','Total trip spend ($000)':'total_spend'}
 for r in read('tra-international-markets'):
@@ -99,6 +123,7 @@ for r in read('tra-international-markets'):
  markets[key][metric_names[r['Attribute']]]=r['Value']*1000
 market=list(markets.values());assert len(market)==36
 table('markets',market)
+# INTERVIEW: HEATMAP DATA: one row per origin and measure. Store change as a fraction (0.10 means 10%), plus before/after values.
 changes=[]
 for country in sorted(set(r['country'] for r in market)):
  before=markets[(country,2024)];after=markets[(country,2025)]
@@ -107,25 +132,32 @@ for country in sorted(set(r['country'] for r in market)):
 table('changes',changes)
 before=next(r for r in national if r['year']==2024 and r['traveller']=='International')['spend']
 after=next(r for r in national if r['year']==2025 and r['traveller']=='International')['spend']
+# INTERVIEW: WATERFALL: select the six largest absolute market changes, order gains before losses, and append a residual.
+# INTERVIEW: Residual = national change minus shown contributions; it includes remaining markets, unpublished origins and rounding.
 drivers=sorted([(c,markets[c,2025]['spend']-markets[c,2024]['spend']) for c in set(r['country'] for r in market)],key=lambda x:abs(x[1]),reverse=True)[:6]
 drivers=sorted(drivers,key=lambda x:-x[1]);drivers.append(('Other + rounding',after-before-sum(v for c,v in drivers)))
+# INTERVIEW: Running total starts at the 2024 national figure. Each contribution stores its start, end and signed delta in AUD billions.
 waterfall=[dict(label='2024',start=0,end=before/1e9,value=before/1e9,kind='Total',order=0)];running=before/1e9
 for i,(country,delta) in enumerate(drivers,1):
  waterfall.append(dict(label=country,start=running,end=running+delta/1e9,value=delta/1e9,kind='Increase' if delta>=0 else 'Decrease',order=i));running+=delta/1e9
 waterfall.append(dict(label='2025',start=0,end=after/1e9,value=after/1e9,kind='Total',order=len(waterfall)))
+# INTERVIEW: Check that the complete waterfall finishes at the 2025 national total, allowing tiny floating-point rounding.
 assert abs(running-after/1e9)<1e-8
 table('waterfall',waterfall)
+# INTERVIEW: ACTIVITIES: retain the published attendee-only shares. The display specification selects four from these five activities.
 activities=[]
 for r in read('tra-international-be-actitivies'):
  if r['Activity'] in ['Dine out','Go shopping','Sightseeing','Go to the beach','National parks / state parks']:
   activities.append(dict(activity=r['Activity'].replace('National parks / state parks','National/state parks'),year=r['Year'],share=r['Percentage_attend']))
 assert len(activities)==10
 table('activities',activities)
+# INTERVIEW: PER NIGHT: retain the published rounded comparison between business-event and other international visitors.
 night=[]
 for r in read('tra-per-person-night-spend'):
  night.append(dict(year=str(r['Year']),other=r['Did not attend or accompany anyone to a business event'],business=r[union]))
 table('per-night',night)
 
+# INTERVIEW: WORLD BASEMAP: retain country names and rounded geometry; omit Antarctica from this story map.
 world=json.loads((R/'world-original.geojson').read_text(encoding='utf-8'))
 save('world',dict(type='FeatureCollection',features=[dict(type='Feature',properties={'name':f['properties']['ADMIN']},geometry=dict(type=f['geometry']['type'],coordinates=round_coords(f['geometry']['coordinates']))) for f in world['features'] if f['properties']['ADMIN']!='Antarctica']))
 places=json.loads((R/'places-original.geojson').read_text(encoding='utf-8'))
@@ -135,6 +167,8 @@ def location(prefix):
  return found[0]['geometry']['coordinates']
 capital={'New Zealand':'Wellington','China':'Beijing','USA':'Washington','Singapore':'Singapore','UK':'London','India':'New Delhi','Japan':'Tokyo','Malaysia':'Kuala Lumpur'}
 dest=location('Canberra');origins=[];links=[]
+# INTERVIEW: FLOW GEOMETRY: generate 61 points along a spherical great-circle connection between representative capitals.
+# INTERVIEW: This is a schematic connection, not an observed flight itinerary; the visitor count controls stroke width separately.
 def great_circle(a,b):
  def vec(p):
   lon,lat=map(math.radians,p);return [math.cos(lat)*math.cos(lon),math.cos(lat)*math.sin(lon),math.sin(lat)]
@@ -143,11 +177,13 @@ def great_circle(a,b):
   t=i/60;v=[(math.sin((1-t)*omega)*x+math.sin(t*omega)*y)/math.sin(omega) for x,y in zip(va,vb)]
   out.append([round(math.degrees(math.atan2(v[1],v[0])),3),round(math.degrees(math.atan2(v[2],math.hypot(v[0],v[1]))),3)])
  return out
+# INTERVIEW: Take the eight largest published origin markets in 2025 and connect each representative capital to Canberra.
 for r in sorted([r for r in market if r['year']==2025],key=lambda r:-r['visitors'])[:8]:
  coord=location(capital[r['country']]);origins.append(dict(country=r['country'],visitors=r['visitors'],longitude=coord[0],latitude=coord[1]))
  links.append(dict(type='Feature',properties={'country':r['country'],'visitors':r['visitors']},geometry={'type':'LineString','coordinates':great_circle(coord,dest)}))
 save('routes',dict(type='FeatureCollection',features=links));table('origins',origins)
 
+# INTERVIEW: Record source provenance and processing decisions so the displayed data can be traced back to the official snapshots.
 sources=[dict(id='TRA',title='Tourism Research Australia: Business events data',url='https://www.tra.gov.au/en/tourism-statistics/business-events-data',reference='Calendar years 2024 and 2025; public report refreshed 21 May 2026',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Selected union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break.'),dict(id='ABS',title='ABS National, state and territory population, March 2026',url='https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026',reference='June 2025 population from Table 4, Data1 row 187 columns T:AA',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Joined eight jurisdictions to TRA spending; spending divided by residents.'),dict(id='NE',title='Natural Earth vector map data',url='https://www.naturalearthdata.com/',reference='1:110m countries and populated places; 1:50m Australian states',retrieved='2026-10-05',licence='Public domain',transform='Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows.')]
 save('provenance',sources)
 checks=dict(national_reconciled=True,states_joined=len(states),market_rows=len(market),waffle_cells=len(waffle),waterfall_reconciled=True,data_bytes=sum(p.stat().st_size for p in D.glob('*')),excluded=['Spending items: inconsistent aggregate with headline','Days at events: anomalous row and incompatible bins'],caveats=['State visits count a multi-state trip more than once.','Survey estimates and published rounding; no claim of statistical significance.','Amounts are nominal AUD, not inflation adjusted.','2024/2025 domestic data are not directly comparable.'])
