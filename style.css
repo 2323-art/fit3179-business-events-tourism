@@ -168,8 +168,10 @@ html{scroll-padding-top:calc(var(--masthead-height,100px) + 20px)}
 /* INTERVIEW: A white page sits on a darker canvas. Keeping overflow visible
    preserves sticky navigation and lets the existing chart widths adapt normally. */
 html{background:#d9dde3}
-body{width:calc(100% - 80px);max-width:1360px;margin-inline:auto;background:#fff;box-shadow:0 0 0 1px #162b4d0a}
-.masthead{padding-inline:48px}
+/* Match the reference's 1100px page and 952px content measure on desktop. */
+body{width:100%;max-width:1100px;margin-inline:auto;background:#fff;box-shadow:0 0 0 1px #162b4d0a}
+.wrap{max-width:952px}
+.masthead{padding-inline:max(32px,calc((100% - 952px)/2))}
 .opening{row-gap:40px;padding-top:40px}
 .hero-title{grid-column:1/-1;text-align:center;border-bottom:1px solid var(--line);padding-bottom:36px;min-width:0}
 .hero-title h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(2.75rem,5.2vw,4.75rem);font-weight:700;line-height:1.12;letter-spacing:-.035em;margin:0 0 24px;text-wrap:balance}
@@ -177,8 +179,7 @@ body{width:calc(100% - 80px);max-width:1360px;margin-inline:auto;background:#fff
 .hero-title .hero-subtitle{font-family:Georgia,'Times New Roman',serif;font-size:clamp(1.125rem,1.8vw,1.5rem);font-style:italic;line-height:1.5;color:var(--muted);text-align:center;max-width:70ch;margin:0 auto;text-wrap:balance}
 .opening>.hero-copy{align-self:center}
 @media(max-width:1100px){
- body{width:calc(100% - 32px)}
- .masthead{padding-inline:32px}
+ .masthead{padding-inline:max(32px,calc((100% - 952px)/2))}
 }
 @media(max-width:760px){
  body{width:100%}
