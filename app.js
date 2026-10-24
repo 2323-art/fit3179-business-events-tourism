@@ -187,6 +187,15 @@ function fitProse(){
 let proseFrame;
 function scheduleProse(){cancelAnimationFrame(proseFrame);proseFrame=requestAnimationFrame(fitProse)}
 document.fonts.ready.then(scheduleProse);addEventListener('resize',scheduleProse);
+// INTERVIEW: Measure the sticky header so chapter links land below it, even when fonts or mobile wrapping change its height.
+const masthead=document.querySelector('.masthead');
+function updateMastheadHeight(){
+ document.documentElement.style.setProperty('--masthead-height',Math.ceil(masthead.getBoundingClientRect().height)+'px');
+}
+if(masthead){
+ updateMastheadHeight();
+ new ResizeObserver(updateMastheadHeight).observe(masthead);
+}
 // INTERVIEW: Run startup once. Keep resize work in a promise queue so two expensive redraws do not run over each other.
 start().then(scheduleProse);let resizeTimer,previousWidth=innerWidth,renderQueue=Promise.resolve();
 // INTERVIEW: RESPONSIVE REDRAW: ignore width changes smaller than 20px and wait 200ms after the latest resize event (debouncing).
