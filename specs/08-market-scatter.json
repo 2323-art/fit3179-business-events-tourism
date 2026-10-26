@@ -139,16 +139,23 @@
         "x": {
           "field": "visitors",
           "type": "quantitative",
-          "title": "Visitor trips",
+          "title": "Visitor trips (k = thousand)",
           "axis": {
-            "format": ",.0f",
-            "tickCount": 3
+            "format": "~s",
+            "values": [
+              0,
+              50000,
+              100000,
+              150000,
+              200000
+            ]
           },
           "scale": {
             "domain": [
               0,
-              185000
-            ]
+              200000
+            ],
+            "nice": false
           }
         },
         "y": {

@@ -47,7 +47,7 @@
   },
   "transform": [
     {
-      "calculate": "datum.label == 'USA' ? 'United States' : datum.label == 'Other + rounding' ? 'Other markets*' : datum.label",
+      "calculate": "datum.label == 'USA' ? 'United States' : datum.label",
       "as": "display_name"
     }
   ],
@@ -140,7 +140,7 @@
           "Signed labels show each contribution in AUD millions."
         ]
       },
-      "height": 350,
+      "height": 400,
       "transform": [
         {
           "filter": "datum.kind != 'Total'"
@@ -172,7 +172,8 @@
           "axis": {
             "labelAngle": 0,
             "labelLimit": 170,
-            "labelPadding": 8
+            "labelPadding": 8,
+            "labelExpr": "datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label"
           }
         },
         "x": {

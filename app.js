@@ -59,15 +59,16 @@ async function renderChart(name,index){
 // INTERVIEW: fetch retrieves the specification; json() parses it into an object. Its data.url fields tell Vega which data to load.
   const spec=await (await fetch('specs/'+name+'.json')).json();
 // INTERVIEW: Measure available container width. The following index-based adjustments adapt labels, legends and chart sizes.
-// INTERVIEW: On narrow screens the heatmap omits the selected-value text layer; table/tooltip detail remains available.
+// INTERVIEW: Selected heatmap values remain visible at every width; compact text fits the three cells on phones.
   const width=Math.max(230,el.clientWidth);
   if(index===1)spec.layer[0].encoding.x.title='Spending per trip (AUD)';
   if(index===6&&width<500)spec.layer[1].encoding.strokeWidth.legend.columns=1;
-  if(index===8&&width<500)spec.layer[2].transform=[{filter:'false'}];
+  if(index===8&&width<400)spec.layer[2].mark.fontSize=13;
+  if(index===7&&width<360)spec.layer[0].encoding.x.axis.values=[0,100000,200000];
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
   else if(index===5){spec.width=width;spec.height=width<800?540:380}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
-  else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?134:180));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other markets*' ? ['Other','markets*'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=100;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
+  else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
   if(index===3)spec.height=Math.min(400,width*.98);

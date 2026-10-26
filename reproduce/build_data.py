@@ -2,18 +2,14 @@
 # INTERVIEW: DATA PREPARATION ONLY: this script runs before publication, not in a visitor browser.
 # INTERVIEW: It rebuilds derived JSON/CSV from preserved official snapshots. Reading these comments does not require running it.
 # INTERVIEW: Do not run build_specs.py over the authored specifications; it is an older presentation generator.
-import json, csv, math, hashlib
+import argparse, json, csv, math, hashlib
 from pathlib import Path
 from collections import defaultdict
-import openpyxl
 
 # INTERVIEW: Resolve paths relative to this script: data/source holds inputs, data holds compact chart-ready outputs.
 ROOT=Path(__file__).resolve().parents[1]; R=ROOT/'data'/'source'; D=ROOT/'data'
 D.mkdir(parents=True,exist_ok=True)
 import urllib.request
-# INTERVIEW: Use the preserved Natural Earth files when available; only download geometry if an input is missing.
-for filename,remote in [('world-original.geojson','ne_110m_admin_0_countries.geojson'),('states-original.geojson','ne_50m_admin_1_states_provinces.geojson'),('places-original.geojson','ne_110m_populated_places.geojson')]:
- if not (R/filename).exists(): urllib.request.urlretrieve('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/'+remote,R/filename)
 def read(n): return json.loads((R/(n+'.json')).read_text(encoding='utf-8'))
 def save(n,v): (D/(n+'.json')).write_text(json.dumps(v,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
 # INTERVIEW: Write each ordinary table twice: JSON for the visualisations, CSV for readers to download.
@@ -22,6 +18,71 @@ def table(n,v):
  if v:
   with (D/(n+'.csv')).open('w',newline='',encoding='utf-8-sig') as f:
    w=csv.DictWriter(f,fieldnames=list(v[0]));w.writeheader();w.writerows(v)
+
+def make_waterfall(national, market):
+ """Decompose the national change without hiding known markets in the residual."""
+ totals={r['year']:r['spend'] for r in national if r['traveller']=='International'}
+ values={(r['country'],r['year']):r['spend'] for r in market}
+ if len(values)!=len(market): raise ValueError('Duplicate market/year records')
+ countries=sorted({r['country'] for r in market})
+ if any((c,y) not in values for c in countries for y in (2024,2025)):
+  raise ValueError('Every market must have both comparison years')
+ before,after=totals[2024],totals[2025]
+ changes=[(c,values[c,2025]-values[c,2024]) for c in countries]
+ drivers=sorted(changes,key=lambda x:(-abs(x[1]),x[0]))[:6]
+ drivers=sorted(drivers,key=lambda x:(-x[1],x[0]))
+ selected={c for c,_ in drivers}
+ # Known omitted markets remain distinct from origins absent from this source table.
+ other_published=sum(delta for c,delta in changes if c not in selected)
+ unpublished_before=before-sum(values[c,2024] for c in countries)
+ unpublished_after=after-sum(values[c,2025] for c in countries)
+ unpublished_change=unpublished_after-unpublished_before
+ drivers += [('Other published markets',other_published),
+             ('Unpublished + rounding',unpublished_change)]
+ if sum(delta for _,delta in drivers)!=after-before:
+  raise ValueError('Waterfall contributions do not reconcile to national change')
+ rows=[dict(label='2024',start=0,end=before/1e9,value=before/1e9,kind='Total',order=0)]
+ running=before
+ for i,(label,delta) in enumerate(drivers,1):
+  rows.append(dict(label=label,start=running/1e9,end=(running+delta)/1e9,
+                   value=delta/1e9,kind='Increase' if delta>=0 else 'Decrease',order=i))
+  running+=delta
+ if running!=after: raise ValueError('Waterfall endpoint does not match national total')
+ rows.append(dict(label='2025',start=0,end=after/1e9,value=after/1e9,kind='Total',order=len(rows)))
+ return rows
+
+# A bounded update/check supports chart 10 without rewriting any other display data.
+parser=argparse.ArgumentParser(description=__doc__)
+mode=parser.add_mutually_exclusive_group()
+mode.add_argument('--waterfall-only',action='store_true',help='Rebuild only waterfall JSON/CSV from preserved TRA snapshots')
+mode.add_argument('--check-waterfall',action='store_true',help='Verify saved waterfall against preserved TRA snapshots without writes')
+args=parser.parse_args()
+if args.waterfall_only or args.check_waterfall:
+ union='Attended or accompanied someone else to business event total'
+ national=[dict(year=r['Year'],traveller='International',spend=r['Spend in Australia ($000)']*1000)
+           for r in read('tra-summary-dashboard') if r['Category']==union and r['Type']=='International']
+ market=[dict(country={'United States of America':'USA','United Kingdom':'UK'}.get(r['Country of origin'],r['Country of origin']),
+              year=r['Year'],spend=r['Value']*1000)
+         for r in read('tra-international-markets') if r['Attribute']=='Spend in Australia ($000)']
+ waterfall=make_waterfall(national,market)
+ if args.waterfall_only:
+  table('waterfall',waterfall)
+ else:
+  saved=json.loads((D/'waterfall.json').read_text(encoding='utf-8'))
+  if saved!=waterfall: raise ValueError('Saved waterfall JSON differs from source-derived values')
+  with (D/'waterfall.csv').open(encoding='utf-8-sig',newline='') as f:
+   csv_rows=list(csv.DictReader(f))
+  if len(csv_rows)!=len(waterfall): raise ValueError('Waterfall CSV row count differs')
+  for actual,expected in zip(csv_rows,waterfall):
+   for key,value in expected.items():
+    if (actual[key]!=value if isinstance(value,str) else float(actual[key])!=value):
+     raise ValueError(f'Waterfall CSV differs at {expected["label"]}: {key}')
+  print('Waterfall JSON/CSV match preserved sources; named, other-published and unpublished changes reconcile exactly')
+ raise SystemExit(0)
+
+# INTERVIEW: Use preserved Natural Earth inputs when available; download only missing geometry.
+for filename,remote in [('world-original.geojson','ne_110m_admin_0_countries.geojson'),('states-original.geojson','ne_50m_admin_1_states_provinces.geojson'),('places-original.geojson','ne_110m_populated_places.geojson')]:
+ if not (R/filename).exists(): urllib.request.urlretrieve('https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/'+remote,R/filename)
 
 # INTERVIEW: Use the published union of attendees OR accompanying visitors. Adding overlapping subgroup totals would double count.
 union='Attended or accompanied someone else to business event total'
@@ -80,6 +141,7 @@ table('flows',flows);table('flow-nodes',nodes)
 abbr={'New South Wales':'NSW','Victoria':'VIC','Queensland':'QLD','South Australia':'SA','Western Australia':'WA','Tasmania':'TAS','Northern Territory':'NT','ACT':'ACT','Australian Capital Territory':'ACT'}
 popcols=dict(zip(['NSW','VIC','QLD','SA','WA','TAS','NT','ACT'],range(20,28)))
 # INTERVIEW: Read the preserved ABS spreadsheet: row 187 must represent June 2025, aligned with the tourism reference year.
+import openpyxl
 wb=openpyxl.load_workbook(R/'abs-population-mar-2026.xlsx',read_only=True,data_only=True);ws=wb['Data1']
 population={k:ws.cell(187,col).value for k,col in popcols.items()}
 assert str(ws.cell(187,1).value).startswith('2025-06')
@@ -130,19 +192,11 @@ for country in sorted(set(r['country'] for r in market)):
  for key,label in [('visitors','Visitors'),('nights','Nights'),('spend','Spend')]:
   changes.append(dict(country=country,metric=label,change=after[key]/before[key]-1,before=before[key],after=after[key]))
 table('changes',changes)
-before=next(r for r in national if r['year']==2024 and r['traveller']=='International')['spend']
-after=next(r for r in national if r['year']==2025 and r['traveller']=='International')['spend']
-# INTERVIEW: WATERFALL: select the six largest absolute market changes, order gains before losses, and append a residual.
-# INTERVIEW: Residual = national change minus shown contributions; it includes remaining markets, unpublished origins and rounding.
-drivers=sorted([(c,markets[c,2025]['spend']-markets[c,2024]['spend']) for c in set(r['country'] for r in market)],key=lambda x:abs(x[1]),reverse=True)[:6]
-drivers=sorted(drivers,key=lambda x:-x[1]);drivers.append(('Other + rounding',after-before-sum(v for c,v in drivers)))
-# INTERVIEW: Running total starts at the 2024 national figure. Each contribution stores its start, end and signed delta in AUD billions.
-waterfall=[dict(label='2024',start=0,end=before/1e9,value=before/1e9,kind='Total',order=0)];running=before/1e9
-for i,(country,delta) in enumerate(drivers,1):
- waterfall.append(dict(label=country,start=running,end=running+delta/1e9,value=delta/1e9,kind='Increase' if delta>=0 else 'Decrease',order=i));running+=delta/1e9
-waterfall.append(dict(label='2025',start=0,end=after/1e9,value=after/1e9,kind='Total',order=len(waterfall)))
-# INTERVIEW: Check that the complete waterfall finishes at the 2025 national total, allowing tiny floating-point rounding.
-assert abs(running-after/1e9)<1e-8
+# INTERVIEW: WATERFALL: show six named changes, remaining published markets, then the change
+# in national spending not represented by those published markets. The last category includes
+# unpublished origins and rounding; its size must not be interpreted as rounding error alone.
+# Accumulate whole AUD and convert to billions only for display, preserving exact reconciliation.
+waterfall=make_waterfall(national,market)
 table('waterfall',waterfall)
 # INTERVIEW: ACTIVITIES: retain the published attendee-only shares. The display specification selects four from these five activities.
 activities=[]
