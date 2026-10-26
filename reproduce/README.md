@@ -4,6 +4,12 @@ The readable JSON files in `../specs/` are the current authored chart definition
 
 `build_data.py` processes the preserved statistical snapshots into the derived data used by the site. This is separate from recreating the visual design.
 
+## Verify or rebuild the narrative/state-mix data
+
+`python reproduce/story_data.py --check` compares the saved Sankey and state-mix JSON/CSV with the preserved official snapshots without writing. `python reproduce/story_data.py` rebuilds only those three tables. This standard-library script is also called by the full data rebuild.
+
+The Sankey now isolates the 2025 international total-trip spending split. The state mix selects `Year = 2025`, `Category = Total`, the three traveller `Type` rows and `Sample In/Out = 1` for each of eight jurisdictions. It does not add Attend/Accompany or use `State Total` (all tourism). Shares divide by the sum of the three published components in each jurisdiction; separate state totals differ slightly through source rounding. No states are summed into national unique trips.
+
 ## Verify or rebuild chart 10 only
 
 From the repository root, these commands use Python's standard library and the included snapshots:
@@ -51,7 +57,7 @@ During the 27 October 2026 repair, both offline checks passed. All six public ta
 The following scoped helpers apply the current refinements to the existing authored specifications and can be run repeatedly:
 
 - `refine_geographic_labels.py`: ACT callout and international-origin labels.
-- `refine_text_contrast.py`: Sankey and heatmap label foregrounds.
+- `refine_text_contrast.py`: older Sankey/heatmap foreground helper; do not run it over the reshaped international-only Sankey.
 - `refine_story_annotations.py`: state-visit map callouts.
 
 These helpers preserve the existing data and quantitative encodings. They are not a migration from the older generator's output. Preview and inspect the charts after any later design or source-data change.

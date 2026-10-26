@@ -1,6 +1,7 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
-  "height": 380,
+  "height": 300,
   "config": {
     "font": "IBM Plex Sans",
     "view": {
@@ -39,7 +40,6 @@
       "color": "#162B4D"
     }
   },
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "layer": [
     {
       "data": {
@@ -47,7 +47,7 @@
       },
       "mark": {
         "type": "area",
-        "opacity": 0.8
+        "color": "#2457D6"
       },
       "encoding": {
         "x": {
@@ -67,8 +67,8 @@
           "axis": null,
           "scale": {
             "domain": [
-              23,
-              0
+              5.05,
+              -0.25
             ]
           }
         },
@@ -76,37 +76,31 @@
           "field": "y2"
         },
         "detail": {
-          "field": "link",
-          "type": "nominal"
+          "field": "link"
         },
-        "color": {
-          "field": "traveller",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Domestic day",
-              "Domestic overnight",
-              "International"
-            ],
-            "range": [
-              "#B47716",
-              "#007F78",
-              "#2457D6"
-            ]
+        "opacity": {
+          "condition": {
+            "test": "datum.destination == 'In Australia'",
+            "value": 0.8
           },
-          "legend": null
+          "value": 0.35
         },
         "tooltip": [
           {
-            "field": "link",
-            "type": "nominal",
-            "title": "Flow"
+            "field": "destination",
+            "title": "Spending location"
           },
           {
             "field": "value",
             "type": "quantitative",
-            "title": "Australian dollars",
-            "format": "$,.0f"
+            "format": "$,.0f",
+            "title": "AUD"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "format": ".1%",
+            "title": "Share of international total trip spending"
           }
         ]
       }
@@ -117,64 +111,34 @@
       },
       "mark": {
         "type": "rule",
-        "strokeWidth": 7,
+        "strokeWidth": 6,
         "color": "#162B4D"
       },
       "encoding": {
         "x": {
           "field": "x",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              -0.03,
+              1.03
+            ]
+          }
         },
         "y": {
           "field": "y",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              5.05,
+              -0.25
+            ]
+          }
         },
         "y2": {
           "field": "y2"
-        }
-      }
-    },
-    {
-      "data": {
-        "url": "data/flow-nodes.json"
-      },
-      "transform": [
-        {
-          "filter": "datum.x == 1"
-        },
-        {
-          "calculate": "datum.label == 'Outside Australia' ? 21.6 : (datum.y + datum.y2)/2",
-          "as": "mid"
-        },
-        {
-          "calculate": "(datum.label == 'Outside Australia' ? 'Overseas' : datum.label) + '\\nAUD ' + format(datum.value/1e9,'.2f') + 'bn'",
-          "as": "direct_label"
-        }
-      ],
-      "mark": {
-        "type": "text",
-        "align": "right",
-        "dx": -10,
-        "color": "#07101C",
-        "fontWeight": "bold",
-        "fontSize": 15,
-        "lineBreak": "\n",
-        "lineHeight": 18,
-        "baseline": "middle",
-        "dy": 0
-      },
-      "encoding": {
-        "x": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "mid",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "direct_label",
-          "type": "nominal"
         }
       }
     },
@@ -191,7 +155,7 @@
           "as": "mid"
         },
         {
-          "calculate": "(datum.label == 'Domestic overnight' ? 'Domestic\\novernight' : datum.label) + '\\nAUD ' + format(datum.value/1e9,'.2f') + 'bn'",
+          "calculate": "'International\\ntrip spending\\nAUD ' + format(datum.value/1e9,'.2f') + 'bn'",
           "as": "direct_label"
         }
       ],
@@ -199,13 +163,12 @@
         "type": "text",
         "align": "left",
         "dx": 10,
-        "color": "#07101C",
-        "fontWeight": "bold",
         "fontSize": 15,
+        "fontWeight": "bold",
+        "color": "#07101C",
         "lineBreak": "\n",
-        "lineHeight": 18,
-        "baseline": "middle",
-        "dy": -5
+        "lineHeight": 20,
+        "baseline": "middle"
       },
       "encoding": {
         "x": {
@@ -217,28 +180,37 @@
           "type": "quantitative"
         },
         "text": {
-          "field": "direct_label",
-          "type": "nominal"
+          "field": "direct_label"
         }
       }
     },
     {
       "data": {
-        "values": [
-          {
-            "x": 0.98,
-            "y": 16.1,
-            "label": "AUD 2.34bn"
-          }
-        ]
+        "url": "data/flow-nodes.json"
       },
+      "transform": [
+        {
+          "filter": "datum.x == 1"
+        },
+        {
+          "calculate": "(datum.y + datum.y2)/2",
+          "as": "mid"
+        },
+        {
+          "calculate": "(datum.label == 'In Australia' ? 'In Australia' : 'Overseas') + '\\nAUD ' + format(datum.value/1e9,'.2f') + 'bn\\n' + format(datum.share,'.1%')",
+          "as": "direct_label"
+        }
+      ],
       "mark": {
         "type": "text",
         "align": "right",
         "dx": -10,
-        "fontWeight": "bold",
         "fontSize": 15,
-        "color": "#07101C"
+        "fontWeight": "bold",
+        "color": "#07101C",
+        "lineBreak": "\n",
+        "lineHeight": 20,
+        "baseline": "middle"
       },
       "encoding": {
         "x": {
@@ -246,39 +218,11 @@
           "type": "quantitative"
         },
         "y": {
-          "field": "y",
+          "field": "mid",
           "type": "quantitative"
         },
         "text": {
-          "field": "label"
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "x": 1,
-            "y": 19.92,
-            "end": 20.5
-          }
-        ]
-      },
-      "mark": {
-        "type": "rule",
-        "color": "#162B4D"
-      },
-      "encoding": {
-        "x": {
-          "field": "x",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "y",
-          "type": "quantitative"
-        },
-        "y2": {
-          "field": "end"
+          "field": "direct_label"
         }
       }
     }

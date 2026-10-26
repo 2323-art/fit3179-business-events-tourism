@@ -9,7 +9,7 @@ const chartBaseURL=new URL('.',document.baseURI).href;
 window.chartViews={};window.chartFailures=[];
 // INTERVIEW: Cache data used by the HTML summaries and controls. selectedState persists across chart redraws.
 let marketRows=[];
-let colourSemantics,regionRows=[],selectedState='All states';
+let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states';
 // INTERVIEW: These helpers format numbers and expand abbreviations for readers; they do not change the underlying observations.
 const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
 const formatMoney=n=>new Intl.NumberFormat('en-AU',{maximumFractionDigits:1}).format(n/1e6)+' million Australian dollars';
@@ -50,8 +50,8 @@ function updateMarketSummary(){
  const year=Number(view.signal('year')),focus=view.signal('focus'),rows=marketRows.filter(r=>r.year===year);
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
- document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads on spending');
- document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. Other dots within the chosen scale remain for comparison.`:`In ${year}, ${displayName(spendLeader.country)} led spending with ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')}; ${displayName(tripLeader.country)} led visitor volume with about ${formatTrips(tripLeader.visitors)} trips. Choose a year or any of the 18 markets below.`;
+ document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads spending among published origins');
+ document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. Other dots within the chosen scale remain for comparison.`:`Among the 18 published markets in ${year}, ${displayName(spendLeader.country)} generated ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')} from ${formatTrips(spendLeader.visitors)} trips. ${displayName(tripLeader.country)} had ${formatTrips(tripLeader.visitors)} trips but ${formatMoney(tripLeader.spend).replace(' million Australian dollars','m AUD')} in spending. More trips did not identify the spending leader.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
  document.getElementById('market-scale-note').textContent=detail?`Detail: ${rows.filter(inside).length} of ${rows.length} markets; up to 40,000 trips and AUD 120m. Both years use these same bounds. ${row&&!inside(row)?displayName(row.country)+' is outside this detail; choose All markets to see it.':'Choose All markets to restore the overview.'}`:'Overview: all 18 published markets. Choose Smaller markets to spread out the crowded lower-left cluster. Each scale keeps the same bounds across years.';
  updateComparison(focus);scheduleProse();
@@ -79,10 +79,11 @@ async function renderChart(name,index){
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
+  if(index===2)spec.height=300;
   if(index===3)spec.height=Math.min(400,width*.98);
   if(index===4)spec.height=Math.min(360,width*.9);
   if(index===10)spec.height=380;
-  if(index===11)spec.height=200;
+  if(index===11)spec.height=240;
 // INTERVIEW: Embed the specification into the container. SVG gives scalable vector marks; actions:false hides the default editor menu.
 // INTERVIEW: The loader base is the site directory, excluding a chapter hash, so relative data URLs remain valid.
   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',tooltip:{theme:'light'},loader:vega.loader({baseURL:chartBaseURL})});
@@ -95,19 +96,40 @@ async function renderChart(name,index){
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
 }
+// Linked composition extends the visit map: same geography, a new traveller-type dimension.
+async function renderStateMix(){
+ const el=document.getElementById('state-mix-chart');el.setAttribute('aria-busy','true');
+ try{
+  const spec=await (await fetch('specs/state-mix.json',{cache:'no-cache'})).json();
+  const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});
+  window.chartViews['state-mix']=result.view;
+  await result.view.signal('stateFocus',selectedState).runAsync();
+ }catch(error){window.chartFailures.push({name:'state-mix',message:error.message});el.innerHTML='<p class="chart-error">The traveller mix could not load. Its data table remains available below.</p>';console.error(error)}
+ finally{el.setAttribute('aria-busy','false')}
+}
+function updateStateMix(){
+ const code=selectedState==='All states'?'NSW':selectedState;
+ const rows=stateMixRows.filter(r=>r.code===code);if(rows.length!==3)return;
+ const pct=n=>new Intl.NumberFormat('en-AU',{style:'percent',minimumFractionDigits:1,maximumFractionDigits:1}).format(n);
+ const day=rows.find(r=>r.traveller==='Domestic day'),overnight=rows.find(r=>r.traveller==='Domestic overnight');
+ document.getElementById('state-mix-title').textContent=rows[0].state+' · visitor mix and spending mix';
+ document.getElementById('state-mix-summary').textContent=`Domestic day visitors make ${pct(day.visitor_share)} of state visits but ${pct(day.spend_share)} of spending. Domestic overnight visitors account for ${pct(overnight.visitor_share)} of visits and ${pct(overnight.spend_share)} of spending. The national contrast varies from place to place.`;
+ document.getElementById('state-mix-context').textContent=selectedState==='All states'?'New South Wales is the starting example. Select a state in either legend to compare its visitor mix.':'The selected state also highlights the visit map and destination treemap. Use All states and territories to restore the overview and New South Wales example.';
+}
+
 // INTERVIEW: DATA ALTERNATIVE: load the same prepared values into a readable HTML table inside a native dialog.
 // INTERVIEW: National data are limited to 2025 here because the domestic survey changed. Region parents are excluded to avoid double counting.
 async function showTable(name){
  let rows=await (await fetch('data/'+name+'.json')).json();
  if(name==='national')rows=rows.filter(r=>r.year===2025);
  if(name==='regions')rows=rows.filter(r=>r.value>0).map(r=>({region:r.name,state:r.parent,spend:r.value}));
- const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:name==='states'?'State visits':'Visitor trips',share:'Participation',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
+ const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
 // INTERVIEW: Hide coordinates and layout-order columns from this reader-facing table; retain them in the underlying download.
  const hidden=new Set(['longitude','latitude','label_lon','label_lat','order']);
  const table=document.createElement('table');const head=document.createElement('thead'),body=document.createElement('tbody');
  const keys=Object.keys(rows[0]||{}).filter(k=>!hidden.has(k));const hr=document.createElement('tr');keys.forEach(key=>{const th=document.createElement('th');th.textContent=labels[key]||key.replaceAll('_',' ');th.scope='col';hr.append(th)});head.append(hr);
- rows.forEach(row=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=row[key]===null?'Not available':typeof row[key]==='number'?new Intl.NumberFormat('en-AU',{maximumFractionDigits:['share','change'].includes(key)?1:4,...(['share','change'].includes(key)?{style:'percent'}:{})}).format(row[key]):displayName(row[key]);tr.append(td)});body.append(tr)});table.append(head,body);
- document.getElementById('data-note').textContent=(name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='activities'?'Includes all five supplied activities; the chart selects four to keep the comparison readable. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
+ rows.forEach(row=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=row[key]===null?'Not available':typeof row[key]==='number'?new Intl.NumberFormat('en-AU',{maximumFractionDigits:['share','change','visitor_share','spend_share'].includes(key)?1:4,...(['share','change','visitor_share','spend_share'].includes(key)?{style:'percent'}:{})}).format(row[key]):displayName(row[key]);tr.append(td)});body.append(tr)});table.append(head,body);
+ document.getElementById('data-note').textContent=(name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='state-mix'?'2025 business-event totals by traveller group, not all tourism. Shares use the sum of the three published components within each state; rounding may differ from the separate state total. ':name==='activities'?'Includes all five supplied activities; the chart selects four to keep the comparison readable. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
  document.getElementById('table-wrap').replaceChildren(table);document.getElementById('data-title').textContent=name.replaceAll('-',' ')+' · chart data';document.getElementById('data-dialog').showModal();
 }
 // INTERVIEW: Create a table button, CSV download and specification link for each figure, using its HTML data-table/data-chart attributes.
@@ -127,7 +149,7 @@ async function start(){
  try{
   marketRows=await (await fetch('data/markets.json')).json();
 // INTERVIEW: Load category colours for HTML legends and destination values for the selected-state detail list.
-  [colourSemantics,regionRows]=await Promise.all(['colour-semantics','regions'].map(async name=>(await fetch('data/'+name+'.json')).json()));
+  [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
   buildColourLegends();
   const origins=await (await fetch('data/origins.json')).json();
 // INTERVIEW: Create origin buttons from actual data. Clicking sets originFocus; conditional opacity fades unrelated routes.
@@ -137,7 +159,7 @@ async function start(){
    button.addEventListener('click',async()=>{const view=window.chartViews['07-flow-map'];if(!view)return;await view.signal('originFocus',row.country).runAsync();document.querySelectorAll('#origin-key button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));});document.getElementById('origin-key').append(button);
   }
  }catch(error){console.error('Could not load comparison controls',error)}
- await Promise.all(charts.map(renderChart));updateMarketSummary();document.documentElement.dataset.chartsReady='true';
+ await Promise.all([...charts.map(renderChart),renderStateMix()]);updateMarketSummary();updateStateMix();document.documentElement.dataset.chartsReady='true';
 }
 // INTERVIEW: Build visible legends from colour-semantics.json. Chart specifications contain matching colour scales.
 // INTERVIEW: State entries are buttons because they also select data; other legend entries are explanatory labels.
@@ -166,7 +188,8 @@ function buildColourLegends(){
 // INTERVIEW: The optional ?. call skips a View that has not loaded yet. Promise.all waits for both available updates.
 async function selectState(state){
  selectedState=state;
- await Promise.all(['05-symbol-map','06-treemap'].map(name=>window.chartViews[name]?.signal('stateFocus',state).runAsync()));
+ updateStateMix();
+ await Promise.all(['05-symbol-map','06-treemap','state-mix'].map(name=>window.chartViews[name]?.signal('stateFocus',state).runAsync()));
 // INTERVIEW: Synchronise the pressed appearance of both state legends, so their controls agree.
  document.querySelectorAll('[data-state]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.state===state)));
  const detail=document.getElementById('state-detail');detail.replaceChildren();
@@ -213,7 +236,7 @@ start().then(scheduleProse);let resizeTimer,previousWidth=innerWidth,renderQueue
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
  renderQueue=renderQueue.then(async()=>{
   previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),marketScale=prior?.signal('marketScale'),originFocus=window.chartViews['07-flow-map']?.signal('originFocus');
-  Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all(charts.map(renderChart));
+  Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all([...charts.map(renderChart),renderStateMix()]);
   if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).signal('marketScale',marketScale).runAsync();
   if(originFocus!==undefined&&window.chartViews['07-flow-map'])await window.chartViews['07-flow-map'].signal('originFocus',originFocus).runAsync();
   updateMarketSummary();scheduleProse();

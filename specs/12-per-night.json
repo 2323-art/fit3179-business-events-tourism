@@ -133,12 +133,7 @@
           "type": "quantitative",
           "format": "$,.0f"
         }
-      },
-      "transform": [
-        {
-          "filter": "datum.year == 2025"
-        }
-      ]
+      }
     },
     {
       "mark": {
@@ -156,12 +151,34 @@
           "type": "quantitative",
           "format": "$,.0f"
         }
-      },
+      }
+    },
+    {
       "transform": [
         {
-          "filter": "datum.year == 2025"
+          "calculate": "(datum.other + datum.business)/2",
+          "as": "mid"
+        },
+        {
+          "calculate": "format(datum.business/datum.other-1,'.1%') + ' higher'",
+          "as": "premium"
         }
-      ]
+      ],
+      "mark": {
+        "type": "text",
+        "dy": 25,
+        "fontSize": 14,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "x": {
+          "field": "mid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "premium"
+        }
+      }
     }
   ]
 }

@@ -1,0 +1,163 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 110,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#4E6078",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  "data": {
+    "url": "data/state-mix.json"
+  },
+  "params": [
+    {
+      "name": "stateFocus",
+      "value": "All states"
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.code == (stateFocus == 'All states' ? 'NSW' : stateFocus)"
+    },
+    {
+      "fold": [
+        "visitor_share",
+        "spend_share"
+      ],
+      "as": [
+        "measure",
+        "share"
+      ]
+    },
+    {
+      "calculate": "datum.measure == 'visitor_share' ? 'State visits' : 'Spending'",
+      "as": "measure_label"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "measure_label",
+      "type": "nominal",
+      "sort": [
+        "State visits",
+        "Spending"
+      ],
+      "title": null,
+      "axis": {
+        "labelLimit": 100
+      }
+    },
+    "x": {
+      "field": "share",
+      "type": "quantitative",
+      "stack": "zero",
+      "scale": {
+        "domain": [
+          0,
+          1
+        ]
+      },
+      "axis": {
+        "format": ".0%",
+        "values": [
+          0,
+          0.5,
+          1
+        ]
+      },
+      "title": "Share within this state"
+    },
+    "color": {
+      "field": "traveller",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Domestic day",
+          "Domestic overnight",
+          "International"
+        ],
+        "range": [
+          "#B47716",
+          "#007F78",
+          "#2457D6"
+        ]
+      },
+      "legend": null
+    },
+    "order": {
+      "field": "order",
+      "type": "quantitative",
+      "sort": "ascending"
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "title": "State / territory"
+      },
+      {
+        "field": "traveller",
+        "title": "Visitor group"
+      },
+      {
+        "field": "measure_label",
+        "title": "Measure"
+      },
+      {
+        "field": "share",
+        "type": "quantitative",
+        "format": ".1%",
+        "title": "Share"
+      },
+      {
+        "field": "visitors",
+        "type": "quantitative",
+        "format": ",.0f",
+        "title": "State visits"
+      },
+      {
+        "field": "spend",
+        "type": "quantitative",
+        "format": "$,.0f",
+        "title": "Spending (AUD)"
+      }
+    ]
+  },
+  "mark": {
+    "type": "bar",
+    "size": 30
+  }
+}

@@ -116,26 +116,9 @@ for metric,key in [('Visitor trips','visitors'),('Spending in Australia','spend'
  assert index==100
 table('waffle',waffle)
 
-# Continuous ribbons have conserved dollar thickness at both ends.
-# INTERVIEW: SANKEY: work in billions for layout; ribbon thickness h is the spending value / 1e9. Gaps separate groups but do not represent money.
-scale=1e9; gap=.55; flows=[]; nodes=[]; source_y=0; dest_y={'In Australia':0,'Outside Australia':18.3}
-for r in sorted(latest,key=lambda r:['Domestic day','Domestic overnight','International'].index(r['traveller'])):
- height=r['total_spend']/scale
- nodes.append(dict(label=r['traveller'],x=0,y=source_y,y2=source_y+height,value=r['total_spend']))
- local_offset=0
-# INTERVIEW: International total spending splits into in-Australia spending and the residual outside Australia. Zero-valued flows are skipped.
- for destination,value in [('In Australia',r['spend']),('Outside Australia',r['total_spend']-r['spend'])]:
-  if value==0:continue
-  h=value/scale;y0=source_y+local_offset;y1=dest_y[destination]
-# INTERVIEW: Sample 31 points across each ribbon. smooth=t*t*(3-2*t) eases its vertical movement between endpoints.
-# INTERVIEW: Both boundaries move together and stay h apart, preserving dollar thickness throughout the ribbon.
-  for step in range(31):
-   t=step/30;smooth=t*t*(3-2*t)
-   flows.append(dict(link=r['traveller']+' → '+destination,traveller=r['traveller'],destination=destination,value=value,x=t,y=y0+(y1-y0)*smooth,y2=y0+(y1-y0)*smooth+h))
-  local_offset+=h;dest_y[destination]+=h
- source_y+=height+gap
-for dest,start in [('In Australia',0),('Outside Australia',18.3)]:nodes.append(dict(label=dest,x=1,y=start,y2=dest_y[dest],value=(dest_y[dest]-start)*scale))
-table('flows',flows);table('flow-nodes',nodes)
+# Reuse the bounded narrative transform, so a full rebuild preserves current data.
+from story_data import build_outputs, save_outputs
+save_outputs(build_outputs())
 
 # INTERVIEW: GEOGRAPHIC JOIN: standardise state names into common codes so TRA, ABS and Natural Earth refer to the same jurisdictions.
 abbr={'New South Wales':'NSW','Victoria':'VIC','Queensland':'QLD','South Australia':'SA','Western Australia':'WA','Tasmania':'TAS','Northern Territory':'NT','ACT':'ACT','Australian Capital Territory':'ACT'}
@@ -238,7 +221,7 @@ for r in sorted([r for r in market if r['year']==2025],key=lambda r:-r['visitors
 save('routes',dict(type='FeatureCollection',features=links));table('origins',origins)
 
 # INTERVIEW: Record source provenance and processing decisions so the displayed data can be traced back to the official snapshots.
-sources=[dict(id='TRA',title='Tourism Research Australia: Business events data',url='https://www.tra.gov.au/en/tourism-statistics/business-events-data',reference='Calendar years 2024 and 2025; public report refreshed 21 May 2026',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Selected union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break.'),dict(id='ABS',title='ABS National, state and territory population, March 2026',url='https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026',reference='June 2025 population from Table 4, Data1 row 187 columns T:AA',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Joined eight jurisdictions to TRA spending; spending divided by residents.'),dict(id='NE',title='Natural Earth vector map data',url='https://www.naturalearthdata.com/',reference='1:110m countries and populated places; 1:50m Australian states',retrieved='2026-10-05',licence='Public domain',transform='Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows.')]
+sources=[dict(id='TRA',title='Tourism Research Australia: Business events data',url='https://www.tra.gov.au/en/tourism-statistics/business-events-data',reference='Calendar years 2024 and 2025; public report refreshed 21 May 2026',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Selected attendance-or-accompaniment union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break. International total spending split into Australian and overseas amounts. State traveller shares use 2025 Category Total components, normalised within each jurisdiction; State Total all-tourism rows are excluded.'),dict(id='ABS',title='ABS National, state and territory population, March 2026',url='https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026',reference='June 2025 population from Table 4, Data1 row 187 columns T:AA',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Joined eight jurisdictions to TRA spending; spending divided by residents.'),dict(id='NE',title='Natural Earth vector map data',url='https://www.naturalearthdata.com/',reference='1:110m countries and populated places; 1:50m Australian states',retrieved='2026-10-05',licence='Public domain',transform='Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows.')]
 save('provenance',sources)
 checks=dict(national_reconciled=True,states_joined=len(states),market_rows=len(market),waffle_cells=len(waffle),waterfall_reconciled=True,data_bytes=sum(p.stat().st_size for p in D.glob('*')),excluded=['Spending items: inconsistent aggregate with headline','Days at events: anomalous row and incompatible bins'],caveats=['State visits count a multi-state trip more than once.','Survey estimates and published rounding; no claim of statistical significance.','Amounts are nominal AUD, not inflation adjusted.','2024/2025 domestic data are not directly comparable.'])
 (ROOT/'data-checks.json').write_text(json.dumps(checks,indent=2),encoding='utf-8')
