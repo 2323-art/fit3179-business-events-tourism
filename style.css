@@ -196,3 +196,16 @@ body{width:100%;max-width:1100px;margin-inline:auto;background:#fff;box-shadow:0
  html{background:white}
  body{width:100%;max-width:none;box-shadow:none}
 }
+
+/* S9 pp.3–4 and S8 pp.5–6: keep the reading path short and group optional detail. */
+.wide figcaption{columns:1;max-width:76ch}
+.caption-detail{margin-top:10px;break-inside:avoid;font-size:var(--type-small);line-height:1.6}
+.caption-detail summary{cursor:pointer;color:var(--ink);font-weight:600;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.caption-detail p{margin:8px 0 0}
+.caption-detail[open]{padding-bottom:8px}
+.market-insight{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.market-insight h3{font-size:1.25rem;line-height:1.45;margin:0 0 12px}
+.market-insight{margin-top:32px;padding:24px;background:var(--pale)}
+.market-insight p{font-size:var(--type-small);line-height:1.6;max-width:76ch}
+.market-insight #market-insight{font-size:1rem}
+#market-scale-note{margin:8px 0 20px;min-height:0}

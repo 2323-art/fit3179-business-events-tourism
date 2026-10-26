@@ -32,6 +32,12 @@ function updateComparison(focus){
   for(const row of [before,after]){const td=document.createElement('td');td.textContent=key==='spend'?(row[key]/1e6).toLocaleString('en-AU',{minimumFractionDigits:1,maximumFractionDigits:1}):formatTrips(row[key]);tr.append(td)}body.append(tr);
  }
 // INTERVIEW: Percentage change = after / before - 1. formatChange turns a fraction such as 0.3125 into +31.3%.
+ // Derived rates connect visitor volume to spending without claiming causes (S1 p.10; S9 pp.2–4).
+ const tripBefore=before.spend/before.visitors,tripAfter=after.spend/after.visitors;
+ const money=n=>'AUD '+Math.round(n).toLocaleString('en-AU');
+ document.getElementById('market-insight-title').textContent=displayName(country)+' · volume and spending per trip';
+ document.getElementById('market-insight').textContent=`Trips changed ${formatChange(after.visitors/before.visitors-1)}, while spending per trip changed ${formatChange(tripAfter/tripBefore-1)} (${money(tripBefore)} → ${money(tripAfter)}). Together, these changes give ${formatChange(after.spend/before.spend-1)} in total spending.`;
+ document.getElementById('market-rate-detail').textContent=`Average nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. Ratios use unrounded calculations from the published estimates; year-to-year change factors multiply; percentage changes do not simply add. These averages describe different visitor groups in each year and do not establish what caused the change. Source: Tourism Research Australia.`;
  document.getElementById('change-summary').textContent=`${displayName(country)}, 2024 → 2025: visitor trips ${formatChange(after.visitors/before.visitors-1)}, nights ${formatChange(after.nights/before.nights-1)} and spending ${formatChange(after.spend/before.spend-1)}. The outlined row follows the market selector; all other rows remain visible.`;
 // INTERVIEW: LINKING: send the same country to the heatmap signal. runAsync() evaluates the chart update.
 // INTERVIEW: The signal controls the outline/text layer; it does not remove the other heatmap rows.
@@ -45,7 +51,9 @@ function updateMarketSummary(){
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
  document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads on spending');
- document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. The faded dots retain the other markets for comparison.`:`In ${year}, ${displayName(spendLeader.country)} led spending with ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')}; ${displayName(tripLeader.country)} led visitor volume with about ${formatTrips(tripLeader.visitors)} trips. Choose a year or any of the 18 markets below.`;
+ document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. Other dots within the chosen scale remain for comparison.`:`In ${year}, ${displayName(spendLeader.country)} led spending with ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')}; ${displayName(tripLeader.country)} led visitor volume with about ${formatTrips(tripLeader.visitors)} trips. Choose a year or any of the 18 markets below.`;
+ const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
+ document.getElementById('market-scale-note').textContent=detail?`Detail: ${rows.filter(inside).length} of ${rows.length} markets; up to 40,000 trips and AUD 120m. Both years use these same bounds. ${row&&!inside(row)?displayName(row.country)+' is outside this detail; choose All markets to see it.':'Choose All markets to restore the overview.'}`:'Overview: all 18 published markets. Choose Smaller markets to spread out the crowded lower-left cluster. Each scale keeps the same bounds across years.';
  updateComparison(focus);scheduleProse();
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
@@ -57,14 +65,14 @@ async function renderChart(name,index){
  if(!el.querySelector('svg'))el.innerHTML='<p class="chart-status" role="status">Loading chart…</p>';
  try{
 // INTERVIEW: fetch retrieves the specification; json() parses it into an object. Its data.url fields tell Vega which data to load.
-  const spec=await (await fetch('specs/'+name+'.json')).json();
+  const spec=await (await fetch('specs/'+name+'.json',{cache:'no-cache'})).json();
 // INTERVIEW: Measure available container width. The following index-based adjustments adapt labels, legends and chart sizes.
 // INTERVIEW: Selected heatmap values remain visible at every width; compact text fits the three cells on phones.
   const width=Math.max(230,el.clientWidth);
   if(index===1)spec.layer[0].encoding.x.title='Spending per trip (AUD)';
   if(index===6&&width<500)spec.layer[1].encoding.strokeWidth.legend.columns=1;
   if(index===8&&width<400)spec.layer[2].mark.fontSize=13;
-  if(index===7&&width<360)spec.layer[0].encoding.x.axis.values=[0,100000,200000];
+  if(index===7&&width<360)spec.layer[0].encoding.x.axis.values={expr:"marketScale == 'Smaller markets' ? [0,20000,40000] : [0,100000,200000]"};
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
   else if(index===5){spec.width=width;spec.height=width<800?540:380}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
@@ -82,7 +90,7 @@ async function renderChart(name,index){
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
   if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
-  if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);updateMarketSummary()}
+  if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);result.view.addSignalListener('marketScale',updateMarketSummary);updateMarketSummary()}
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
@@ -107,10 +115,10 @@ document.querySelectorAll('.chart-tools').forEach(el=>{const b=document.createEl
 // INTERVIEW: Close the dialog using its button or a click on the backdrop. The native dialog also supports Escape.
 document.getElementById('close-dialog').addEventListener('click',()=>document.getElementById('data-dialog').close());
 document.getElementById('data-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
-// INTERVIEW: Reset both scatterplot signals to the initial overview; updateMarketSummary also refreshes the linked table/heatmap.
+// INTERVIEW: Reset all three scatterplot controls to the initial overview; updateMarketSummary also refreshes the linked table/heatmap.
 document.getElementById('reset-market').addEventListener('click',async()=>{
  const view=window.chartViews['08-market-scatter'];if(!view)return;
- await view.signal('year',2025).signal('focus','All markets').runAsync();updateMarketSummary();
+ await view.signal('year',2025).signal('focus','All markets').signal('marketScale','All markets').runAsync();updateMarketSummary();
 });
 // INTERVIEW: STARTUP: wait for fonts, load control data, build legends/origin buttons, then render all 12 charts.
 // INTERVIEW: Promise.all waits for independent chart renders together; it does not deliberately load them one at a time.
@@ -200,13 +208,13 @@ if(masthead){
 // INTERVIEW: Run startup once. Keep resize work in a promise queue so two expensive redraws do not run over each other.
 start().then(scheduleProse);let resizeTimer,previousWidth=innerWidth,renderQueue=Promise.resolve();
 // INTERVIEW: RESPONSIVE REDRAW: ignore width changes smaller than 20px and wait 200ms after the latest resize event (debouncing).
-// INTERVIEW: Save selected year/market/origin, finalise old Views, rebuild at the new size, then restore the selections.
+// INTERVIEW: Save selected year/market/scale/origin, finalise old Views, rebuild at the new size, then restore the selections.
 // INTERVIEW: State selection is restored inside renderChart using selectedState; finalise releases old chart resources.
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
  renderQueue=renderQueue.then(async()=>{
-  previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),originFocus=window.chartViews['07-flow-map']?.signal('originFocus');
+  previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),marketScale=prior?.signal('marketScale'),originFocus=window.chartViews['07-flow-map']?.signal('originFocus');
   Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all(charts.map(renderChart));
-  if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).runAsync();
+  if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).signal('marketScale',marketScale).runAsync();
   if(originFocus!==undefined&&window.chartViews['07-flow-map'])await window.chartViews['07-flow-map'].signal('originFocus',originFocus).runAsync();
   updateMarketSummary();scheduleProse();
  }).catch(console.error);

@@ -106,6 +106,18 @@
           "Viet Nam"
         ]
       }
+    },
+    {
+      "name": "marketScale",
+      "value": "All markets",
+      "bind": {
+        "input": "select",
+        "name": "Scale: ",
+        "options": [
+          "All markets",
+          "Smaller markets"
+        ]
+      }
     }
   ],
   "transform": [
@@ -125,13 +137,16 @@
           "as": "max_trips"
         }
       ]
+    },
+    {
+      "filter": "marketScale == 'All markets' || (datum.visitors <= 40000 && datum.spend <= 120000000)"
     }
   ],
   "layer": [
     {
       "mark": {
         "type": "circle",
-        "size": 110,
+        "size": 85,
         "stroke": "white",
         "strokeWidth": 1
       },
@@ -142,19 +157,14 @@
           "title": "Visitor trips (k = thousand)",
           "axis": {
             "format": "~s",
-            "values": [
-              0,
-              50000,
-              100000,
-              150000,
-              200000
-            ]
+            "values": {
+              "expr": "marketScale == 'Smaller markets' ? [0,10000,20000,30000,40000] : [0,50000,100000,150000,200000]"
+            }
           },
           "scale": {
-            "domain": [
-              0,
-              200000
-            ],
+            "domain": {
+              "expr": "marketScale == 'Smaller markets' ? [0, 40000] : [0, 200000]"
+            },
             "nice": false
           }
         },
@@ -170,10 +180,10 @@
             "tickCount": 4
           },
           "scale": {
-            "domain": [
-              0,
-              400000000
-            ]
+            "domain": {
+              "expr": "marketScale == 'Smaller markets' ? [0, 120000000] : [0, 400000000]"
+            },
+            "nice": false
           }
         },
         "color": {
@@ -230,11 +240,11 @@
       "mark": {
         "type": "text",
         "dx": {
-          "expr": "datum.visitors > 130000 ? -7 : 7"
+          "expr": "datum.visitors > (marketScale == 'Smaller markets' ? 25000 : 130000) ? -7 : 7"
         },
         "dy": -9,
         "align": {
-          "expr": "datum.visitors > 130000 ? 'right' : 'left'"
+          "expr": "datum.visitors > (marketScale == 'Smaller markets' ? 25000 : 130000) ? 'right' : 'left'"
         },
         "fontSize": 15,
         "color": "#162B4D"
