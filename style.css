@@ -514,8 +514,8 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-shared-controls select,.market-shared-controls button{font:inherit;font-size:14px;color:#000;background:white;border:1px solid var(--line);padding:8px 12px;min-height:38px}
 .market-shared-controls select{min-width:120px}
 .market-shared-controls button{cursor:pointer;margin-left:auto}
-.market-pair>.market-interaction-hint{max-width:none;font-size:14px;margin:12px 0 20px}
-.market-pair>.markets-row{margin-top:0;padding-bottom:0;align-items:start}
+.market-chart-panel>.market-interaction-hint{max-width:none;font-size:14px;margin:12px 0 20px}
+.market-chart-panel>.markets-row{margin-top:0;padding-bottom:0;align-items:start}
 .market-pair .markets-row>figure>h3{font-size:20px;line-height:1.4;margin:0 48px 20px 0}
 .market-pair>.market-insight{align-items:start;margin-top:24px}
 .market-pair .story-explanation>h3{max-width:none;margin-bottom:12px}
@@ -530,3 +530,8 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-year-control select{font:inherit;color:#000;background:white;border:1px solid var(--line);padding:7px 10px;min-height:36px}
 .market-view #market-scale-note{max-width:none;margin:8px 0 16px}
 #chart08 .vega-bindings:empty{display:none}
+
+/* One continuous background groups the shared filters and linked charts. */
+.market-chart-panel{background:var(--plot-ground);border:1px solid var(--line);border-radius:6px;padding:16px}
+.market-chart-panel>.market-shared-controls{background:transparent;border:0;padding:0}
+@media(max-width:650px){.market-chart-panel{padding:12px}}
