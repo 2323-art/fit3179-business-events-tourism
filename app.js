@@ -2,7 +2,7 @@
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
 // INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The destination treemap uses rectangle area for AUD spending.
-const charts=['01-waffle','02-spend-per-trip','03-spending-icons','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-bump','12-per-night'];
+const charts=['01-waffle','02-spend-per-trip','03-origin-spending','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-bump','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
@@ -82,7 +82,7 @@ async function renderChart(name,index){
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
-  if(index===2){spec.width=Math.min(width-12,380);spec.height=spec.width;}
+  if(index===2){spec.width=width;spec.height=width<400?540:500;}
   if(index===3)spec.height=Math.min(400,width*.98);
   if(index===4)spec.height=Math.min(360,width*.9);
   if(index===10){
@@ -103,6 +103,7 @@ async function renderChart(name,index){
   window.chartViews[name]=result.view;
   if(index===10){await result.view.signal('activityFocus',activityFocus).runAsync();result.view.addSignalListener('activityFocus',(_,value)=>{activityFocus=value})}
   if(index===0)await bindWaffleFeedback(result.view);
+  if(index===2)await bindOriginSpending(result.view);
   if(index===3)await bindSpendingMap(result.view);
   if(index===4)await bindVisitsMap(result.view);
   if(index===5)bindDestinationFeedback(result.view);
@@ -111,6 +112,32 @@ async function renderChart(name,index){
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
+}
+// Source countries split into two spending locations, with conserved AUD widths.
+let spendingOriginSelected='';
+async function bindOriginSpending(view){
+ const rows=await (await fetch('data/origin-spending.json',{cache:'no-cache'})).json();
+ const selector=document.getElementById('spending-origin');
+ const countryLabel=country=>country.replace('United States of America','United States');
+ selector.replaceChildren(new Option('All six countries',''),...rows.map(r=>new Option(countryLabel(r.country),r.country)));
+ selector.value=spendingOriginSelected;
+ let shown=null;
+ const show=country=>{
+  if(country===shown)return;shown=country;
+  const selected=rows.filter(r=>!country||r.country===country);
+  const total=selected.reduce((sum,r)=>sum+r.total_trip_spend,0);
+  const inside=selected.reduce((sum,r)=>sum+r.in_australia,0);
+  document.getElementById('origin-spending-share').textContent=(inside/total*100).toFixed(1)+'%';
+  document.getElementById('origin-spending-name').textContent=country?countryLabel(country):'these six origin countries';
+  document.getElementById('origin-spending-inside').textContent='Retained in Australia: AUD '+(inside/1e6).toLocaleString('en-AU',{maximumFractionDigits:1})+'m';
+  document.getElementById('origin-spending-outside').textContent='Spent outside Australia: AUD '+((total-inside)/1e6).toLocaleString('en-AU',{maximumFractionDigits:1})+'m';
+  view.signal('originFocus',country).runAsync().catch(console.error);scheduleProse();
+ };
+ selector.onchange=()=>{spendingOriginSelected=selector.value;show(spendingOriginSelected)};
+ view.addEventListener('mouseover',(_,item)=>{const country=item?.datum?.country;if(rows.some(r=>r.country===country))show(country)});
+ view.addEventListener('mouseout',()=>show(spendingOriginSelected));
+ view.addEventListener('click',(_,item)=>{const country=item?.datum?.country;if(!rows.some(r=>r.country===country))return;spendingOriginSelected=spendingOriginSelected===country?'':country;selector.value=spendingOriginSelected;show(spendingOriginSelected)});
+ show(spendingOriginSelected);
 }
 // Preview a traveller group across both waffles; click retains the comparison.
 let waffleSelected='';
@@ -288,12 +315,13 @@ async function showTable(name){
  if(name==='national')rows=rows.filter(r=>r.year===2025);
  if(name==='regions')rows=rows.filter(r=>r.value>0).map(r=>({region:r.name,state:r.parent,spend:r.value}));
  const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',rank:'Rank among these six',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
+if(name==='origin-spending')Object.assign(labels,{rank:'Rank by total trip spending',total_trip_spend:'Total trip spending (AUD)',in_australia:'Retained in Australia (AUD)',outside_australia:'Spent outside Australia (AUD)',share:'Share retained in Australia'});
 // INTERVIEW: Hide coordinates and layout-order columns from this reader-facing table; retain them in the underlying download.
  const hidden=new Set(['longitude','latitude','label_lon','label_lat','order']);
  const table=document.createElement('table');const head=document.createElement('thead'),body=document.createElement('tbody');
  const keys=Object.keys(rows[0]||{}).filter(k=>!hidden.has(k));const hr=document.createElement('tr');keys.forEach(key=>{const th=document.createElement('th');th.textContent=labels[key]||key.replaceAll('_',' ');th.scope='col';hr.append(th)});head.append(hr);
- rows.forEach(row=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=row[key]===null?'Not available':typeof row[key]==='number'?new Intl.NumberFormat('en-AU',{maximumFractionDigits:['share','change','visitor_share','spend_share'].includes(key)?1:4,...(['share','change','visitor_share','spend_share'].includes(key)?{style:'percent'}:{})}).format(row[key]):displayName(row[key]);tr.append(td)});body.append(tr)});table.append(head,body);
- document.getElementById('data-note').textContent=(name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='state-mix'?'2025 business-event totals by traveller group, not all tourism. Shares use the sum of the three published components within each state; rounding may differ from the separate state total. ':name==='activities'?'Six activities with values in all three years. Rank is among these six only. 2023 percentages are published whole numbers; later values are dashboard estimates. Activities can overlap. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
+ rows.forEach(row=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=row[key]===null?'Not available':key==='year'?String(row[key]):typeof row[key]==='number'?new Intl.NumberFormat('en-AU',{maximumFractionDigits:['share','change','visitor_share','spend_share'].includes(key)?1:4,...(['share','change','visitor_share','spend_share'].includes(key)?{style:'percent'}:{})}).format(row[key]):displayName(row[key]);tr.append(td)});body.append(tr)});table.append(head,body);
+ document.getElementById('data-note').textContent=(name==='origin-spending'?'Top six published origins ranked by 2025 total trip spending. Outside spending is total trip spending minus spending in Australia. Retained means reported Australian spending, not net economic retention. ':name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='state-mix'?'2025 business-event totals by traveller group, not all tourism. Shares use the sum of the three published components within each state; rounding may differ from the separate state total. ':name==='activities'?'Six activities with values in all three years. Rank is among these six only. 2023 percentages are published whole numbers; later values are dashboard estimates. Activities can overlap. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
  document.getElementById('table-wrap').replaceChildren(table);document.getElementById('data-title').textContent=name.replaceAll('-',' ')+' · chart data';document.getElementById('data-dialog').showModal();
 }
 // INTERVIEW: Create a table button, CSV download and specification link for each figure, using its HTML data-table/data-chart attributes.

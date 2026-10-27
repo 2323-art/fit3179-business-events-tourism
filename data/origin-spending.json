@@ -1,0 +1,56 @@
+[
+  {
+    "rank": 1,
+    "country": "United States of America",
+    "year": 2025,
+    "total_trip_spend": 554169000,
+    "in_australia": 242340000,
+    "outside_australia": 311829000,
+    "share": 0.43730342188032895
+  },
+  {
+    "rank": 2,
+    "country": "China",
+    "year": 2025,
+    "total_trip_spend": 500820000,
+    "in_australia": 362361000,
+    "outside_australia": 138459000,
+    "share": 0.7235354019408171
+  },
+  {
+    "rank": 3,
+    "country": "United Kingdom",
+    "year": 2025,
+    "total_trip_spend": 463745000,
+    "in_australia": 242544000,
+    "outside_australia": 221201000,
+    "share": 0.5230115688578852
+  },
+  {
+    "rank": 4,
+    "country": "New Zealand",
+    "year": 2025,
+    "total_trip_spend": 455958000,
+    "in_australia": 311929000,
+    "outside_australia": 144029000,
+    "share": 0.6841178354146654
+  },
+  {
+    "rank": 5,
+    "country": "India",
+    "year": 2025,
+    "total_trip_spend": 278834000,
+    "in_australia": 192110000,
+    "outside_australia": 86724000,
+    "share": 0.6889762367573539
+  },
+  {
+    "rank": 6,
+    "country": "Singapore",
+    "year": 2025,
+    "total_trip_spend": 203582000,
+    "in_australia": 102035000,
+    "outside_australia": 101547000,
+    "share": 0.5011985342515547
+  }
+]

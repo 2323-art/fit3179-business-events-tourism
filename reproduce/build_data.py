@@ -224,3 +224,7 @@ save('provenance',sources)
 checks=dict(national_reconciled=True,states_joined=len(states),market_rows=len(market),waffle_cells=len(waffle),waterfall_reconciled=True,data_bytes=sum(p.stat().st_size for p in D.glob('*')),excluded=['Spending items: inconsistent aggregate with headline','Days at events: anomalous row and incompatible bins'],caveats=['State visits count a multi-state trip more than once.','Survey estimates and published rounding; no claim of statistical significance.','Amounts are nominal AUD, not inflation adjusted.','2024/2025 domestic data are not directly comparable.'])
 (ROOT/'data-checks.json').write_text(json.dumps(checks,indent=2),encoding='utf-8')
 print(json.dumps(checks,indent=2))
+
+# Rebuild the ranked origin-spending Sankey from the same preserved markets.
+from origin_spending import build as build_origin_spending
+build_origin_spending()

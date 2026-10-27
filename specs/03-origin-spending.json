@@ -1,0 +1,285 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "2025 top six published origin countries ranked by total trip spending. Ribbon widths preserve absolute AUD amounts. Retained means reported spending in Australia, not net economic retention.",
+  "width": 570,
+  "height": 500,
+  "padding": 0,
+  "autosize": "none",
+  "background": "white",
+  "signals": [
+    {
+      "name": "originFocus",
+      "value": ""
+    },
+    {
+      "name": "leftX",
+      "update": "width < 400 ? 86 : 112"
+    },
+    {
+      "name": "rightX",
+      "update": "width - (width < 400 ? 101 : 138)"
+    },
+    {
+      "name": "midX",
+      "update": "(leftX + 8 + rightX) / 2"
+    }
+  ],
+  "data": [
+    {
+      "name": "links",
+      "url": "data/origin-spending-links.json"
+    },
+    {
+      "name": "nodes",
+      "url": "data/origin-spending-nodes.json"
+    },
+    {
+      "name": "sources",
+      "source": "nodes",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.kind === 'source'"
+        }
+      ]
+    },
+    {
+      "name": "targets",
+      "source": "nodes",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.kind === 'target'"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "nodes",
+        "field": "extent"
+      },
+      "range": [
+        28,
+        {
+          "signal": "height-12"
+        }
+      ],
+      "zero": true,
+      "nice": false
+    }
+  ],
+  "marks": [
+    {
+      "type": "path",
+      "name": "spendingRibbons",
+      "from": {
+        "data": "links"
+      },
+      "encode": {
+        "update": {
+          "path": {
+            "signal": "'M'+(leftX+8)+','+scale('y',datum.sy0)+' C'+midX+','+scale('y',datum.sy0)+' '+midX+','+scale('y',datum.ty0)+' '+rightX+','+scale('y',datum.ty0)+' L'+rightX+','+scale('y',datum.ty1)+' C'+midX+','+scale('y',datum.ty1)+' '+midX+','+scale('y',datum.sy1)+' '+(leftX+8)+','+scale('y',datum.sy1)+' Z'"
+          },
+          "fill": {
+            "signal": "datum.location === 'Retained in Australia' ? '#2457D6' : '#8191A7'"
+          },
+          "fillOpacity": {
+            "signal": "!originFocus || datum.country === originFocus ? 0.84 : 0.12"
+          },
+          "stroke": {
+            "value": "white"
+          },
+          "strokeWidth": {
+            "value": 0.5
+          },
+          "cursor": {
+            "value": "pointer"
+          },
+          "tooltip": {
+            "signal": "{'Origin': datum.country, 'Spending location': datum.location, 'Amount (AUD)': format(datum.amount, ',.0f'), 'Share of country trip spending': format(datum.share, '.1%'), 'Total trip spending (AUD)': format(datum.total, ',.0f')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "name": "originNodes",
+      "from": {
+        "data": "sources"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "leftX"
+          },
+          "width": {
+            "value": 8
+          },
+          "y": {
+            "scale": "y",
+            "field": "y0"
+          },
+          "y2": {
+            "scale": "y",
+            "field": "y1"
+          },
+          "fill": {
+            "value": "#162B4D"
+          },
+          "opacity": {
+            "signal": "!originFocus || datum.country === originFocus ? 1 : 0.25"
+          },
+          "cursor": {
+            "value": "pointer"
+          },
+          "tooltip": {
+            "signal": "{'Origin':datum.country,'Total trip spending (AUD)':format(datum.amount,',.0f')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {
+        "data": "targets"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "rightX"
+          },
+          "width": {
+            "value": 8
+          },
+          "y": {
+            "scale": "y",
+            "field": "y0"
+          },
+          "y2": {
+            "scale": "y",
+            "field": "y1"
+          },
+          "fill": {
+            "signal": "datum.label === 'Retained in Australia' ? '#2457D6' : '#8191A7'"
+          },
+          "tooltip": {
+            "signal": "{'Location':datum.label,'Six-country total (AUD)':format(datum.amount,',.0f')}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "originLabels",
+      "from": {
+        "data": "sources"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "leftX-7"
+          },
+          "y": {
+            "signal": "scale('y',(datum.y0+datum.y1)/2)-9"
+          },
+          "text": {
+            "signal": "width < 400 ? split(datum.label,' ') : [datum.label]"
+          },
+          "align": {
+            "value": "right"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "lineHeight": {
+            "value": 14
+          },
+          "fontSize": {
+            "signal": "width < 400 ? 12 : 13"
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#000"
+          },
+          "cursor": {
+            "value": "pointer"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "sources"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "leftX-7"
+          },
+          "y": {
+            "signal": "scale('y',(datum.y0+datum.y1)/2)+(width < 400 && indexof(datum.label,' ') >= 0 ? 15 : 7)"
+          },
+          "text": {
+            "signal": "'AUD '+format(datum.amount/1e6,'.1f')+'m'"
+          },
+          "align": {
+            "value": "right"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "fontSize": {
+            "signal": "width < 400 ? 11 : 12"
+          },
+          "fill": {
+            "value": "#000"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "targets"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "rightX+15"
+          },
+          "y": {
+            "signal": "scale('y',(datum.y0+datum.y1)/2)-22"
+          },
+          "text": {
+            "signal": "datum.label === 'Retained in Australia' ? ['Retained in','Australia','AUD '+format(datum.amount/1e9,'.2f')+'bn'] : ['Spent outside','Australia','AUD '+format(datum.amount/1e9,'.2f')+'bn']"
+          },
+          "align": {
+            "value": "left"
+          },
+          "baseline": {
+            "value": "top"
+          },
+          "lineHeight": {
+            "value": 17
+          },
+          "fontSize": {
+            "signal": "width < 400 ? 12 : 14"
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "value": "#000"
+          }
+        }
+      }
+    }
+  ]
+}

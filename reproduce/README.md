@@ -69,3 +69,11 @@ The following scoped helpers apply the current refinements to the existing autho
 - `refine_story_annotations.py`: state-visit map callouts.
 
 These helpers preserve the existing data and quantitative encodings. They are not a migration from the older generator's output. Preview and inspect the charts after any later design or source-data change.
+
+## Figure 03: origin-country spending Sankey
+
+Run `python reproduce/origin_spending.py --check` to verify the saved summary, CSV, nodes and ribbons. Omit `--check` to rebuild them. The complete builder also calls this helper.
+
+The six published origins with the highest **2025 total trip spending** are selected from `tra-international-markets.json`. Source amounts in thousands are converted to AUD. Spending outside Australia equals total trip spending minus spending in Australia. All nodes and ribbons share one absolute AUD scale; gaps carry no data. Both destination totals include only these six countries. “Retained in Australia” means reported Australian spending, not net economic retention. Country selection changes emphasis and the detail card, never totals or widths.
+
+Design grounding: S42 Week 6 networks/trees/flows, PDF pages 21–24 (Sankey); S5 Marks and channels, pages 4–5 (quantitative size); S61 Manipulate view, pages 8–12 (selection and highlighting). Applying a conserved two-destination flow to these source attributes is our design inference.
