@@ -596,8 +596,11 @@ body p,.methods li,body figcaption:not(.story-note),
 @media(max-width:760px){.methods.wrap,footer.wrap{padding-left:18px;padding-right:18px}}
 
 #chart10:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
-#change-insight{min-height:205px}
+#change-insight{min-height:0}
 
 /* Keep the selected activity statistic beside its explanation. */
 .activity-stat-card #activity-stat-value{display:block;font:italic clamp(48px,5vw,64px)/1.1 Georgia,serif;color:#000;margin-bottom:10px;letter-spacing:-.03em}
 .activity-stat-card #activity-stat-change{font-size:var(--type-small);line-height:1.5;margin:0;max-width:none}
+
+.change-stat-card #change-stat-value{display:block;font:italic clamp(48px,5vw,64px)/1.1 Georgia,serif;color:#000;margin-bottom:10px;letter-spacing:-.03em}
+.change-stat-card #change-stat-years{font-size:var(--type-small);line-height:1.5;margin:0;max-width:none}

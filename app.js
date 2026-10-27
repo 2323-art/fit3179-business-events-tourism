@@ -95,16 +95,18 @@ async function bindSpendingChangeFeedback(view){
  const show=async(label=spendingChangePinned)=>{
   if(view.signal('changeFocus')!==label)await view.signal('changeFocus',label).runAsync();
   const row=rows.find(row=>row.label===label);
+  const cardRow=row||rows.find(row=>row.label==='Unpublished + rounding');
+  document.getElementById('change-stat-value').textContent=(cardRow.value<0?'−':'+')+Math.abs(cardRow.value*1000).toFixed(1)+'m';
+  document.getElementById('change-stat-name').textContent=displayName(cardRow.label);
+  document.getElementById('change-stat-years').textContent=money(annual(cardRow.label,2024))+' → '+money(annual(cardRow.label,2025));
   if(!row){
    title.textContent='Published markets explain only part of the decline';
    setNarrativeEmphasis(body,'About 78% of the net decline sits in the unpublished-origin and rounding remainder. Gains from some named markets do not offset the overall fall. The chart reconciles the decline, but cannot identify which unlisted origins drove it.',['78% of the net decline','cannot identify which unlisted origins']);
   }else{
-   const before=annual(label,2024),after=annual(label,2025),amount=money(row.value*1e9);
    title.textContent=displayName(label)+' · spending change';
-   const first=`${row.value<0?'Decrease':'Increase'} of ${amount}: ${money(before)} in 2024 to ${money(after)} in 2025. `;
    const net=spendingChangeRows.find(r=>r.label==='2025').value-spendingChangeRows.find(r=>r.label==='2024').value;
    const explanation=label==='Unpublished + rounding'?`This residual accounts for ${(row.value/net*100).toFixed(1)}% of the net decline. It combines unlisted origins and rounding; it is not a measured country group.`:label==='Other published markets'?'This combines the remaining 12 published origins. Their net decrease adds to the national decline.':row.value>0?'This gain offsets part of the national decline. It does not mean national spending increased.':'This market adds to the national decline.';
-   setNarrativeEmphasis(body,first+explanation,[amount,'offsets part of the national decline','adds to the national decline','remaining 12 published origins','not a measured country group']);
+   setNarrativeEmphasis(body,explanation,['offsets part of the national decline','adds to the national decline','remaining 12 published origins','not a measured country group']);
   }
   scheduleProse();
  };
