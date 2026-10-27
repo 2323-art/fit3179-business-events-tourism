@@ -219,17 +219,45 @@ function fitProse(){
 let proseFrame;
 function scheduleProse(){cancelAnimationFrame(proseFrame);proseFrame=requestAnimationFrame(fitProse)}
 document.fonts.ready.then(scheduleProse);addEventListener('resize',scheduleProse);
-// INTERVIEW: Measure the sticky header so chapter links land below it, even when fonts or mobile wrapping change its height.
-const masthead=document.querySelector('.masthead');
-function updateMastheadHeight(){
- document.documentElement.style.setProperty('--masthead-height',Math.ceil(masthead.getBoundingClientRect().height)+'px');
+// Keep anchor headings below the navigation, including its two-row phone layout.
+const chapterNav=document.querySelector('.chapter-nav');
+const chapterLinks=[...chapterNav.querySelectorAll('a')];
+const storyChapters=chapterLinks.map(link=>document.querySelector(link.getAttribute('href')));
+let chapterFrame;
+function updateChapterNav(){
+ const height=Math.ceil(chapterNav.getBoundingClientRect().height);
+ document.documentElement.style.setProperty('--chapter-nav-height',height+'px');
+ let current=null;
+ for(const chapter of storyChapters){if(chapter.getBoundingClientRect().top<=height+80)current=chapter.id}
+ chapterLinks.forEach(link=>{
+  if(link.getAttribute('href')==='#'+current)link.setAttribute('aria-current','location');
+  else link.removeAttribute('aria-current');
+ });
 }
-if(masthead){
- updateMastheadHeight();
- new ResizeObserver(updateMastheadHeight).observe(masthead);
+function scheduleChapterNav(){cancelAnimationFrame(chapterFrame);chapterFrame=requestAnimationFrame(updateChapterNav)}
+new ResizeObserver(scheduleChapterNav).observe(chapterNav);
+addEventListener('scroll',scheduleChapterNav,{passive:true});
+addEventListener('resize',scheduleChapterNav);
+document.fonts.ready.then(scheduleChapterNav);
+updateChapterNav();
+// Charts change section heights during startup. Re-align a direct chapter URL
+// once those heights settle, unless the reader has already begun interacting.
+const initialStoryHash=location.hash;
+let readerInteracted=false;
+for(const event of ['pointerdown','wheel','touchstart','keydown']){
+ addEventListener(event,()=>{readerInteracted=true},{once:true,passive:true});
+}
+function settleInitialAnchor(){
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  if(!readerInteracted&&initialStoryHash&&location.hash===initialStoryHash){
+   const target=document.getElementById(initialStoryHash.slice(1));
+   target?.scrollIntoView({block:'start',behavior:'instant'});
+   scheduleChapterNav();
+  }
+ }));
 }
 // INTERVIEW: Run startup once. Keep resize work in a promise queue so two expensive redraws do not run over each other.
-start().then(scheduleProse);let resizeTimer,previousWidth=innerWidth,renderQueue=Promise.resolve();
+start().then(()=>{scheduleProse();scheduleChapterNav();settleInitialAnchor()});let resizeTimer,previousWidth=innerWidth,renderQueue=Promise.resolve();
 // INTERVIEW: RESPONSIVE REDRAW: ignore width changes smaller than 20px and wait 200ms after the latest resize event (debouncing).
 // INTERVIEW: Save selected year/market/scale/origin, finalise old Views, rebuild at the new size, then restore the selections.
 // INTERVIEW: State selection is restored inside renderChart using selectedState; finalise releases old chart resources.

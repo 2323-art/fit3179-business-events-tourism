@@ -7,20 +7,24 @@
 <title>Beyond the conference badge · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=961f8f2974f0"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=e51beb7c8fb7"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=40d72ffb2717"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=db21cfd51602"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
 <a class="skip" href="#story">Skip to the story</a>
 <!-- INTERVIEW: Navigation links scroll to sections on this one page; they do not swap major story sections. -->
-<header class="masthead"><a href="#top" class="wordmark">THE VISITOR ECONOMY<span>AUSTRALIA / 2025</span></a><nav aria-label="Story chapters"><a href="#mix">01 / Value</a><a href="#places">02 / Places</a><a href="#origins">03 / Origins</a><a href="#beyond">04 / Beyond</a></nav></header>
+<header class="masthead"><a href="#top" class="wordmark">THE VISITOR ECONOMY</a></header>
 <!-- INTERVIEW: Story sequence: visitor value, Australian destinations, international markets, then activity/per-night comparisons. -->
 <main id="story">
-<section class="opening wrap" id="top">
- <!-- INTERVIEW: Three headline cards introduce scale and spending mix. Rounded from the 2025 national table. -->
+<div class="hero-heading wrap" id="top">
  <div class="hero-title"><h1><span class="title-prelude">Beyond the</span>Conference <em>Badge</em></h1><p class="hero-subtitle">Why visitor numbers alone do not explain Australia's business-event spending</p></div>
+</div>
+<!-- This navigation belongs to the whole story, so it remains sticky beyond the opening. -->
+<nav class="chapter-nav" aria-label="Story chapters"><a href="#mix">01 / Value</a><a href="#places">02 / Places</a><a href="#origins">03 / Origins</a><a href="#beyond">04 / Beyond</a></nav>
+<section class="opening wrap" aria-label="Business-event tourism at a glance">
+ <!-- INTERVIEW: Three headline cards introduce scale and spending mix. Rounded from the 2025 national table. -->
  <div class="hero-stats" role="group" aria-label="Australian business-event tourism: key statistics for 2025">
   <div class="stat-card"><h2>Visitor volume · 2025</h2><p class="stat-value">20.7m</p><p class="stat-description">Business-event visitor trips across Australia.</p></div>
   <div class="stat-card"><h2>Visitor spending · 2025</h2><p class="stat-value"><span class="stat-currency">AUD</span> 17.2bn</p><p class="stat-description">Spent within Australia during visitors’ whole trips.</p></div>
