@@ -416,3 +416,17 @@ body p,.methods li,body figcaption:not(.story-note),
 .origin-hint{margin:10px 0 0}
 .origin-stat-card #origin-spending-share{display:block;font-size:54px;line-height:1.15;color:#2457D6;font-family:Georgia,serif}
 .origin-stat-card p{font-size:var(--type-small)}
+
+/* Concise narrative: charts lead; supporting methods open on demand. */
+.chart-intro,.story-note .chart-intro{min-height:0}
+.map-stat-card{min-height:0;margin-bottom:22px;padding-bottom:18px}
+.story-note .figure-method{padding-top:12px}
+.story-note .figure-method>p{margin-bottom:10px}
+.market-comparison>summary,.state-detail-disclosure>summary{cursor:pointer;font-weight:600;color:#000}
+.market-comparison[open]>div{margin-top:16px}
+.market-insight{align-items:center;gap:20px 32px}
+.market-insight .market-rate-card h3{max-width:none;font-size:1rem;margin:0 0 8px}
+.market-insight .rate-change{font-family:Georgia,serif;font-size:54px;line-height:1.1;color:var(--blue);margin:0 0 8px}
+.market-insight #market-rate-values{font-size:var(--type-small)}
+.market-insight #market-insight{margin:0 0 12px;font-size:1rem}
+.methods .caption-detail{margin-top:16px}

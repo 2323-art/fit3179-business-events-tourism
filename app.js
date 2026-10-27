@@ -26,7 +26,7 @@ function updateComparison(focus){
  const before=marketRows.find(r=>r.country===country&&r.year===2024),after=marketRows.find(r=>r.country===country&&r.year===2025);
  if(!before||!after)return;
  document.getElementById('comparison-title').textContent=displayName(country)+' · 2024 and 2025';
- document.getElementById('comparison-context').textContent=focus==='All markets'?'Malaysia is the starting example. Choose a market above to compare both years here.':'Both years stay visible while you switch the scatterplot year.';
+ document.getElementById('comparison-context').textContent=focus==='All markets'?'Malaysia is the starting example.':'Selected market; both years remain visible.';
 // INTERVIEW: Replace the previous table rows. textContent inserts text safely; createElement builds HTML nodes.
  const body=document.getElementById('comparison-rows');body.replaceChildren();
 // INTERVIEW: Build three rows (trips, nights, spending), with a value column for each year. Spending is displayed in millions only.
@@ -38,10 +38,14 @@ function updateComparison(focus){
  // Derived rates connect visitor volume to spending without claiming causes (S1 p.10; S9 pp.2–4).
  const tripBefore=before.spend/before.visitors,tripAfter=after.spend/after.visitors;
  const money=n=>'AUD '+Math.round(n).toLocaleString('en-AU');
- document.getElementById('market-insight-title').textContent=displayName(country)+' · volume and spending per trip';
- document.getElementById('market-insight').textContent=`Trips changed ${formatChange(after.visitors/before.visitors-1)}, while spending per trip changed ${formatChange(tripAfter/tripBefore-1)} (${money(tripBefore)} → ${money(tripAfter)}). Together, these changes give ${formatChange(after.spend/before.spend-1)} in total spending.`;
- document.getElementById('market-rate-detail').textContent=`Average nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. Ratios use unrounded calculations from the published estimates; year-to-year change factors multiply; percentage changes do not simply add. These averages describe different visitor groups in each year and do not establish what caused the change. Source: Tourism Research Australia.`;
- document.getElementById('change-summary').textContent=`${displayName(country)}, 2024 → 2025: visitor trips ${formatChange(after.visitors/before.visitors-1)}, nights ${formatChange(after.nights/before.nights-1)} and spending ${formatChange(after.spend/before.spend-1)}. The outlined row follows the market selector; all other rows remain visible.`;
+ document.getElementById('market-insight-title').textContent=displayName(country)+' · spending per trip';
+ document.getElementById('market-rate-change').textContent=formatChange(tripAfter/tripBefore-1);
+ document.getElementById('market-rate-values').textContent=`${money(tripBefore)} → ${money(tripAfter)} · 2024–2025`;
+ const tripDirection=after.visitors>before.visitors?'More':after.visitors<before.visitors?'Fewer':'Similar';
+ const rateDirection=tripAfter>tripBefore?'higher':tripAfter<tripBefore?'lower':'similar';
+ document.getElementById('market-insight').textContent=`${tripDirection} trips, ${rateDirection} average spending per trip. Volume and spending intensity both shape the total.`;
+ document.getElementById('market-rate-detail').textContent=`Nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. Calculations use unrounded estimates; change factors multiply. Different annual visitor groups are compared, not causes.`;
+ document.getElementById('change-summary').textContent=`${displayName(country)}: compare changes across the three measures.`;
 // INTERVIEW: LINKING: send the same country to the heatmap signal. runAsync() evaluates the chart update.
 // INTERVIEW: The signal controls the outline/text layer; it does not remove the other heatmap rows.
  const heatmap=window.chartViews['09-change-heatmap'];
@@ -54,9 +58,9 @@ function updateMarketSummary(){
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
  document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads spending among published origins');
- document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. Other dots within the chosen scale remain for comparison.`:`Among the 18 published markets in ${year}, ${displayName(spendLeader.country)} generated ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')} from ${formatTrips(spendLeader.visitors)} trips. ${displayName(tripLeader.country)} had ${formatTrips(tripLeader.visitors)} trips but ${formatMoney(tripLeader.spend).replace(' million Australian dollars','m AUD')} in spending. More trips did not identify the spending leader.`;
+ document.getElementById('market-summary').textContent=row?`Compare ${displayName(row.country)} with nearby markets.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
- document.getElementById('market-scale-note').textContent=detail?`Detail: ${rows.filter(inside).length} of ${rows.length} markets; up to 40,000 trips and AUD 120m. Both years use these same bounds. ${row&&!inside(row)?displayName(row.country)+' is outside this detail and is outlined in the compact overview.':'The compact overview keeps all markets in context.'}`:'Overview: all 18 published markets. Choose Smaller markets to spread out the crowded lower-left cluster. Each scale keeps the same bounds across years.';
+ document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the crowded cluster.';
  syncMarketOverview(year,focus,detail);updateComparison(focus);scheduleProse();
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
@@ -279,8 +283,8 @@ function updateStateMix(){
  }
  const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
  if(rows.some(r=>!r))return;
- document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'. Choose a different comparison state to see the contrast.':`Domestic overnight visitors account for ${pct(rows[0].visitor_share)} of visits and ${pct(rows[0].spend_share)} of spending in ${displayName(referenceState)}, versus ${pct(rows[1].visitor_share)} of visits and ${pct(rows[1].spend_share)} of spending in ${displayName(comparisonState)}.`;
- document.getElementById('state-mix-context').textContent='The reference stays fixed. Selecting a state in either legend changes the comparison state and highlights the visit map and destination treemap.';
+ document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'.':`Overnight visitors hold a larger spending share in ${displayName(rows[0].spend_share>rows[1].spend_share?referenceState:comparisonState)}.`;
+ document.getElementById('state-mix-context').textContent='Map selections update the comparison state.';
 }
 function buildStateComparison(){
  for(const id of ['reference-state','comparison-state']){
@@ -415,7 +419,7 @@ async function selectState(state){
  document.querySelectorAll('[data-state]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.state===state)));
  const detail=document.getElementById('state-detail');detail.replaceChildren();
  const destinations=regionRows.filter(r=>r.parent===state&&r.value>0),total=destinations.reduce((sum,r)=>sum+r.value,0);
- const intro=document.createElement('p');intro.textContent=state==='All states'?'Hover a rectangle for its spending and share, or choose a state above for all its values. Small rectangles may not fit a label.':displayName(state)+' · displayed total: '+formatMoney(total);detail.append(intro);
+ const intro=document.createElement('p');intro.textContent=state==='All states'?'Select a state to see its destination values.':displayName(state)+' · displayed total: '+formatMoney(total);detail.append(intro);
  if(state!=='All states'){
   const list=document.createElement('ul');
 // INTERVIEW: Keep only destination leaves belonging to the selected state and sort by spending, largest first.
