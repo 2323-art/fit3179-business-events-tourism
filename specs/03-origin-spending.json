@@ -85,7 +85,7 @@
             "signal": "'M'+(leftX+8)+','+scale('y',datum.sy0)+' C'+midX+','+scale('y',datum.sy0)+' '+midX+','+scale('y',datum.ty0)+' '+rightX+','+scale('y',datum.ty0)+' L'+rightX+','+scale('y',datum.ty1)+' C'+midX+','+scale('y',datum.ty1)+' '+midX+','+scale('y',datum.sy1)+' '+(leftX+8)+','+scale('y',datum.sy1)+' Z'"
           },
           "fill": {
-            "signal": "datum.location === 'Retained in Australia' ? '#2457D6' : '#8191A7'"
+            "signal": "datum.location === 'Retained in Australia' ? '#A83264' : '#8C8C8C'"
           },
           "fillOpacity": {
             "signal": "!originFocus || datum.country === originFocus ? 0.84 : 0.12"
@@ -164,7 +164,7 @@
             "field": "y1"
           },
           "fill": {
-            "signal": "datum.label === 'Retained in Australia' ? '#2457D6' : '#8191A7'"
+            "signal": "datum.label === 'Retained in Australia' ? '#A83264' : '#8C8C8C'"
           },
           "tooltip": {
             "signal": "{'Location':datum.label,'Six-country total (AUD)':format(datum.amount,',.0f')}"

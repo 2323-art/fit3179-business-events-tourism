@@ -210,7 +210,7 @@
                 "field": "rank"
               },
               "stroke": {
-                "signal": "datum.activity == activityFocus ? '#2E7055' : '#A8ADB4'"
+                "signal": "datum.activity == activityFocus ? '#111111' : '#A8ADB4'"
               },
               "strokeWidth": {
                 "signal": "datum.activity == activityFocus ? 3 : 2"
@@ -276,7 +276,7 @@
             "field": "rank"
           },
           "fill": {
-            "signal": "datum.activity == activityFocus ? '#2E7055' : '#A8ADB4'"
+            "signal": "datum.activity == activityFocus ? '#111111' : '#A8ADB4'"
           },
           "stroke": {
             "value": "white"
@@ -339,7 +339,7 @@
             "value": 15
           },
           "fill": {
-            "signal": "datum.activity == activityFocus ? '#2E7055' : '#59626D'"
+            "signal": "datum.activity == activityFocus ? '#111111' : '#59626D'"
           },
           "fontWeight": {
             "signal": "datum.activity == activityFocus ? 600 : 400"
@@ -389,7 +389,7 @@
             "value": 12
           },
           "fill": {
-            "value": "#2E7055"
+            "value": "#111111"
           },
           "opacity": {
             "signal": "!compact && datum.activity == activityFocus ? 1 : 0"
@@ -438,7 +438,7 @@
             "value": 15
           },
           "fill": {
-            "signal": "datum.activity == activityFocus ? '#2E7055' : '#59626D'"
+            "signal": "datum.activity == activityFocus ? '#111111' : '#59626D'"
           },
           "fontWeight": {
             "signal": "datum.activity == activityFocus ? 600 : 400"
@@ -488,7 +488,7 @@
             "value": 12
           },
           "fill": {
-            "value": "#2E7055"
+            "value": "#111111"
           },
           "opacity": {
             "signal": "datum.activity == activityFocus ? 1 : 0"

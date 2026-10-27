@@ -577,7 +577,7 @@ async function start(){
  try{
   marketRows=await (await fetch('data/markets.json')).json();buildMarketControls();
 // INTERVIEW: Load category colours for HTML legends and destination values for the selected-state detail list.
-  [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
+  [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json',{cache:'no-cache'})).json()));
   buildColourLegends();buildStateComparison();
   originMapRows=await (await fetch('data/origins.json?v='+originMapDataVersion,{cache:'no-cache'})).json();
   buildOriginMapControls();
@@ -600,7 +600,7 @@ function buildColourLegends(){
    if(entry.dash){
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 44 12');svg.setAttribute('width','44');svg.setAttribute('height','12');
     const line=document.createElementNS(svg.namespaceURI,'line');for(const [k,v] of Object.entries({x1:0,x2:44,y1:6,y2:6,stroke:entry.colour,'stroke-width':3,'stroke-dasharray':entry.dash.join(' ')}))line.setAttribute(k,v);svg.append(line);swatch.append(svg);swatch.classList.add('line-swatch');
-   }else swatch.style.backgroundColor=entry.colour;
+   }else{swatch.style.backgroundColor=entry.colour;if(entry.shape==='circle')swatch.style.borderRadius='50%';}
    item.append(swatch,document.createTextNode(entry.label));
    if(kind==='states'){item.type='button';item.dataset.state=entry.key;item.setAttribute('aria-pressed','false');item.addEventListener('click',()=>selectState(entry.key));}
    host.append(item);

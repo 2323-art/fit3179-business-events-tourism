@@ -58,43 +58,6 @@
       "colour": "#4F7F91"
     }
   ],
-  "activities": [
-    {
-      "key": "Dine out",
-      "label": "Dine out",
-      "colour": "#008B9C",
-      "dash": []
-    },
-    {
-      "key": "Sightseeing",
-      "label": "Sightseeing",
-      "colour": "#6E3D60",
-      "dash": [
-        8,
-        4
-      ]
-    },
-    {
-      "key": "Go to the beach",
-      "label": "Go to the beach",
-      "colour": "#526F24",
-      "dash": [
-        3,
-        3
-      ]
-    },
-    {
-      "key": "National/state parks",
-      "label": "National and state parks",
-      "colour": "#3F667B",
-      "dash": [
-        10,
-        3,
-        2,
-        3
-      ]
-    }
-  ],
   "change": [
     {
       "key": "Increase",
@@ -116,12 +79,12 @@
   ],
   "quantitative": {
     "spendingPerResident": [
-      "#ffffcc",
-      "#c7e9b4",
-      "#7fcdbb",
-      "#41b6c4",
-      "#2c7fb8",
-      "#253494"
+      "#EDEDED",
+      "#C9C9C9",
+      "#A6A6A6",
+      "#808080",
+      "#595959",
+      "#262626"
     ],
     "spendingPerResidentThresholds": [
       550,
@@ -131,5 +94,36 @@
       1300
     ]
   },
-  "note": "UI text, basemaps, borders and selection outlines are structural, not category colours."
+  "note": "Blue identifies international business-event visitors. Rose identifies spending retained in Australia. Traveller categories and states keep stable colours across charts. Purple/orange consistently mean increase/decrease. The resident-spending map uses ordered grey lightness, not category hues. Neutral text, backgrounds, comparison context and selection outlines do not identify categories; direct labels and shapes clarify their roles.",
+  "spendingLocation": [
+    {
+      "key": "Retained in Australia",
+      "label": "Retained in Australia",
+      "colour": "#A83264"
+    },
+    {
+      "key": "Spent outside Australia",
+      "label": "Spent outside Australia",
+      "colour": "#8C8C8C"
+    }
+  ],
+  "interaction": {
+    "selected": "#111111",
+    "context": "#A8ADB4",
+    "meaning": "Selection is a temporary interaction state, not an activity category."
+  },
+  "nightVisitors": [
+    {
+      "key": "Other",
+      "label": "Other international visitors",
+      "colour": "#59626D",
+      "shape": "square"
+    },
+    {
+      "key": "International",
+      "label": "Business-event visitors",
+      "colour": "#2457D6",
+      "shape": "circle"
+    }
+  ]
 }

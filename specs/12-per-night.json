@@ -83,7 +83,7 @@
     },
     {
       "mark": {
-        "type": "circle",
+        "type": "square",
         "size": 150,
         "color": "#59626D",
         "opacity": 1
