@@ -1,0 +1,37 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Local layout check</title>
+<style>body{margin:0}iframe{width:100%;height:900px;border:0}pre{white-space:pre-wrap;padding:16px}button{padding:10px}</style>
+<button id="audit">Audit rendered text</button><pre id="result">Loading</pre>
+<iframe title="Website preview" src="../index.html"></iframe>
+<script>
+const frame=document.querySelector('iframe');
+function audit(){
+ const d=frame.contentDocument,selector='p,li,h1,h2,h3,h4,figcaption,summary',bad=[];
+ let max=0,lineCount=0;
+ for(const el of d.querySelectorAll(selector)){
+  const lines=[];
+  function visit(node){
+   if(node.nodeType===1){
+    if(node!==el&&(node.matches(selector)||node.matches('svg,script,style,select,[aria-hidden="true"]')))return;
+    node.childNodes.forEach(visit);return;
+   }
+   if(node.nodeType!==3)return;
+   for(const m of node.textContent.matchAll(/\S+/gu)){
+    const range=d.createRange();range.setStart(node,m.index);range.setEnd(node,m.index+m[0].length);
+    const box=range.getClientRects()[0];if(!box?.width||!box.height)continue;
+    let line=lines.find(l=>Math.abs(l.bottom-box.bottom)<3);
+    if(!line){line={bottom:box.bottom,words:[]};lines.push(line)}line.words.push(m[0]);
+   }
+  }
+  visit(el);
+  for(const line of lines){lineCount++;max=Math.max(max,line.words.length);if(line.words.length>10)bad.push({element:el.id||el.className||el.tagName,words:line.words.length,text:line.words.join(' ')})}
+ }
+ const svgLong=[...d.querySelectorAll('svg text')].flatMap(el=>{
+  const spans=el.querySelectorAll('tspan');
+  return [...(spans.length?spans:[el])].filter(n=>n.textContent.trim().split(/\s+/).length>10).map(n=>n.textContent);
+ });
+ const result={openNotes:d.querySelectorAll("details[open]").length,market:d.querySelector("select[name=focus]")?.value,year:d.querySelector("select[name=year]")?.value,state:d.querySelector("#state-mix-title")?.textContent,width:frame.clientWidth,lineCount,max,bad,svgLong,charts:d.querySelectorAll('.chart svg,#state-mix-chart svg').length,overflow:d.documentElement.scrollWidth>frame.clientWidth,breaks:d.querySelectorAll('br[data-word-limit]').length};
+ document.querySelector('#result').textContent=JSON.stringify(result,null,2);
+}
+document.querySelector('#audit').addEventListener('click',audit);
+frame.addEventListener('load',()=>{let attempts=0;const timer=setInterval(()=>{if(frame.contentDocument.documentElement.dataset.chartsReady==='true'||++attempts===150){clearInterval(timer);requestAnimationFrame(()=>requestAnimationFrame(audit))}},100)});
+</script>

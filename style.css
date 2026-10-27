@@ -266,3 +266,39 @@ body{width:100%;max-width:1100px;margin-inline:auto;background:#fff;box-shadow:0
  .story-note h3{font-size:1.375rem}
  .story-row,.band .story-row{padding:28px 0}
 }
+
+/* S3 pp.6–7 and S8 pp.5–6: short, left-aligned text and
+   whitespace that groups related content. The exact ceiling is user-requested. */
+:root{--prose-measure:40ch;--plot-ground:#f5f8fb}
+body p,.methods li,body figcaption:not(.story-note),
+.hero-copy>p:not(.eyebrow),.hero-title .hero-subtitle,
+.chapter-summary,.story-note .chart-intro,.wide .chart-intro,
+.wide figcaption,.closing>p:last-child,dialog p{
+ max-width:min(100%,var(--prose-measure));text-align:left;
+}
+.story-note .figure-method p,.caption-detail p{max-width:100%}
+.chapter{padding:48px 0 64px}
+.chapter-bar{margin-bottom:24px}
+.chapter-summary{margin-bottom:24px}
+.story-row,.band .story-row{gap:32px;padding:32px 0}
+.story-plot{padding:20px;background:var(--plot-ground);border-radius:6px}
+.story-row .plot-title{margin-bottom:16px}
+.story-row .chart-tools{margin-top:16px}
+.story-note{padding-top:4px}
+.story-note .chart-intro{margin-bottom:16px}
+.story-note .figure-method{padding-top:16px}
+.method-note{grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:12px 32px;padding:24px}
+.method-note p{max-width:var(--prose-measure)}
+.market-insight{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px;padding:24px}
+.market-insight h3{grid-column:1/-1;margin:0;max-width:28ch}
+.market-insight p{margin:0}
+.market-insight .caption-detail{grid-column:2;margin:0}
+.market-insight #market-insight{grid-column:1;grid-row:2/4}
+.methods-links{max-width:none}
+@media(max-width:800px){
+ .chapter{padding:32px 0 40px}
+ .story-row,.band .story-row{gap:20px;padding:28px 0}
+ .story-plot{padding:14px}
+ .method-note,.market-insight{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px}
+ .method-note a,.market-insight h3,.market-insight #market-insight,.market-insight .caption-detail{grid-column:1;grid-row:auto}
+}
