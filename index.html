@@ -7,10 +7,10 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=841eee890117"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=3b8c744ed57d"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Refresh the app.js content hash whenever its code changes, especially when chart structures change. -->
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=97d39173caa9"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=38e1d35d06a9"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
@@ -40,8 +40,8 @@
 <section class="chapter wrap" id="mix">
  <div class="chapter-bar"><span class="chapter-no">01</span><h2>Which visits generate the most spending?</h2></div>
  <figure class="story-row">
- <div class="story-plot"><p class="plot-title">Visitor trips and spending shares · 2025</p><div id="chart01" class="chart" aria-label="Waffle charts comparing visitor-trip and spending shares"></div><div class="waffle-key"><p>Trip share / spending share</p><div><span><i class="day"></i>Domestic day</span><strong>55.3% / 16.7%</strong></div><div><span><i class="overnight"></i>Domestic overnight</span><strong>41.2% / 69.7%</strong></div><div><span><i class="international"></i>International</span><strong>3.5% / 13.6%</strong></div></div><div class="chart-tools" data-chart="01-waffle" data-table="national"></div></div>
- <figcaption class="story-note"><h3>More trips ≠ more spending</h3><p class="chart-intro">Day trips made up 55% of visits, while overnight domestic trips generated 70% of spending.</p><div class="figure-method"><p>01 / Each square ≈ 1%. Whole squares are rounded to sum to 100; hover for exact shares. Spending is within Australia. <a href="#sources">Tourism Research Australia</a>.</p></div></figcaption>
+ <div class="story-plot"><p class="plot-title">Visitor trips and spending shares · 2025</p><div id="chart01" class="chart" aria-label="Waffle charts comparing visitor-trip and spending shares"></div><div class="waffle-key"><p>Trip share / spending share</p><p class="waffle-hint">Hover to compare. Click a group to keep it.</p><button type="button" class="waffle-group" data-waffle-group="Domestic day" aria-pressed="false"><span><i class="day" aria-hidden="true"></i>Domestic day</span><strong>55.3% / 16.7%</strong></button><button type="button" class="waffle-group" data-waffle-group="Domestic overnight" aria-pressed="false"><span><i class="overnight" aria-hidden="true"></i>Domestic overnight</span><strong>41.2% / 69.7%</strong></button><button type="button" class="waffle-group" data-waffle-group="International" aria-pressed="false"><span><i class="international" aria-hidden="true"></i>International</span><strong>3.5% / 13.6%</strong></button></div><button type="button" id="reset-waffle" class="waffle-reset">Show all groups</button><div class="chart-tools" data-chart="01-waffle" data-table="national"></div></div>
+ <figcaption class="story-note"><div id="waffle-feedback" class="map-stat-card waffle-stat-card" aria-live="polite" aria-atomic="true"><strong id="waffle-group-name">Domestic day</strong><div class="waffle-stat-values"><div><span id="waffle-trip-share">55.3%</span><span>of visitor trips</span></div><div><span id="waffle-spend-share">16.7%</span><span>of spending</span></div></div><p id="waffle-share-gap">Spending share is 0.3&#215; its trip share.</p></div><h3>More trips ≠ more spending</h3><p class="chart-intro">Day trips made up 55% of visits, while overnight domestic trips generated 70% of spending.</p><div class="figure-method"><p>01 / Each square ≈ 1%. Whole squares are rounded to sum to 100; hover for exact shares. Spending is within Australia. <a href="#sources">Tourism Research Australia</a>.</p></div></figcaption>
  </figure>
  <div class="story-series">
 <!-- INTERVIEW: Figure 02: chart02 is the mount point for specification 02. The chart-tools data attributes select its data table and specification links. -->

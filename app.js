@@ -90,6 +90,7 @@ async function renderChart(name,index){
 // INTERVIEW: Store the View, restore state selection, and register listeners only for the scatterplot year/focus parameters.
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
+  if(index===0)await bindWaffleFeedback(result.view);
   if(index===3)await bindSpendingMap(result.view);
   if(index===4)await bindVisitsMap(result.view);
   if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
@@ -97,6 +98,37 @@ async function renderChart(name,index){
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
+}
+// Preview a traveller group across both waffles; click retains the comparison.
+let waffleSelected='';
+async function bindWaffleFeedback(view){
+ const rows=await (await fetch('data/waffle.json')).json();
+ const buttons=[...document.querySelectorAll('[data-waffle-group]')];
+ let shown=null;
+ const show=group=>{
+  if(group===shown)return;shown=group;
+  const traveller=group||'Domestic day';
+  const trips=rows.find(r=>r.traveller===traveller&&r.metric==='Visitor trips').share;
+  const spend=rows.find(r=>r.traveller===traveller&&r.metric==='Spending in Australia').share;
+  view.signal('waffleFocus',group).runAsync().catch(console.error);
+  document.getElementById('waffle-group-name').textContent=traveller;
+  document.getElementById('waffle-trip-share').textContent=(trips*100).toFixed(1)+'%';
+  document.getElementById('waffle-spend-share').textContent=(spend*100).toFixed(1)+'%';
+  document.getElementById('waffle-share-gap').textContent='Spending share is '+(spend/trips).toFixed(1)+'\u00d7 its trip share.';
+  buttons.forEach(b=>{b.classList.toggle('is-previewed',b.dataset.waffleGroup===group);b.setAttribute('aria-pressed',String(b.dataset.waffleGroup===waffleSelected))});
+ };
+ const choose=group=>{waffleSelected=waffleSelected===group?'':group;shown=null;show(waffleSelected)};
+ const groupOf=item=>item?.datum?.traveller;
+ view.addEventListener('mouseover',(_,item)=>{const group=groupOf(item);if(group)show(group)});
+ view.addEventListener('mouseout',()=>show(waffleSelected));
+ view.addEventListener('click',(_,item)=>{const group=groupOf(item);if(group)choose(group)});
+ for(const b of buttons){
+  b.onmouseenter=b.onfocus=()=>show(b.dataset.waffleGroup);
+  b.onmouseleave=b.onblur=()=>show(waffleSelected);
+  b.onclick=()=>choose(b.dataset.waffleGroup);
+ }
+ document.getElementById('reset-waffle').onclick=()=>{waffleSelected='';shown=null;show('')};
+ show(waffleSelected);
 }
 // Hover outlines preserve the spending colour. The dropdown offers keyboard/touch access.
 async function bindSpendingMap(view){

@@ -216,3 +216,9 @@ The spending-map readout now sits above its explanation in the left column. A la
 ### Live state-visit card
 
 Figure 05 has a matching live statistic card above its left-hand explanation. It shows compact visit counts, the state name and the full published count for 2025. NSW is the initial/reset example. Hovering circles, state shapes or labels previews that state with a black circle outline; leaving restores the selected state. Clicking uses the existing linked state selection, while the state buttons remain the keyboard/touch alternative. Circle areas and category colours retain their original meaning. This applies S22 *Proportional symbol maps* p. 2, S61 *Manipulate View* pp. 10–11 and the existing S8 hierarchy treatment.
+
+### Linked waffle feedback
+
+Hovering a square or its legend row previews that traveller group across both waffles. Other groups fade while square counts, areas and category colours remain unchanged. The adjacent display card shows trip share, spending share and their ratio, calculated from the unrounded supplied shares. Clicking a square or legend row retains the group; clicking it again or Show all groups clears it. The legend buttons provide keyboard focus previews and Enter/Space selection. The initial/reset card uses domestic day visitors as its example.
+
+This extends the existing S8 hierarchy treatment and S61 *Manipulate View* pp. 9–11 selection/highlighting guidance. The opacity treatment and shared card are implementation choices. Browser checks verified all three groups, the corresponding counts in both 100-square charts, actual chart hover/tooltips, keyboard activation, reset to all 200 visible squares, and the 390-pixel card layout without horizontal overflow. Source data were unchanged.

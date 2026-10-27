@@ -391,3 +391,21 @@ body p,.methods li,body figcaption:not(.story-note),
 .map-stat-card #spending-state-rate,.map-stat-card #visits-state-value{display:block;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:clamp(48px,5vw,64px);font-weight:400;line-height:1.1;letter-spacing:-.03em;color:#2e7055;margin-bottom:10px}
 .map-stat-card .map-stat-caption{font-size:16px;line-height:1.5;margin:0 0 10px;max-width:none}
 .map-stat-card #spending-state-detail,.map-stat-card #visits-state-detail{font-size:var(--type-small);line-height:1.5;margin:0;max-width:none}
+
+/* Waffle comparisons keep numeric shares visible beside the linked highlight. */
+.waffle-stat-card{min-height:190px}
+.waffle-stat-values{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 14px}
+.waffle-stat-values>div{min-width:0}
+.waffle-stat-values span{display:block;font-size:var(--type-small);line-height:1.5}
+.waffle-stat-values span:first-child{font:italic 44px/1.15 Georgia,'Times New Roman',serif;letter-spacing:-.04em;color:#2e7055;margin-bottom:5px;white-space:nowrap}
+#waffle-share-gap{font-size:var(--type-small);line-height:1.5;margin:0}
+.waffle-key>.waffle-group{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:7px 8px;margin:2px 0;background:transparent;border:1px solid transparent;border-radius:4px;color:#000;font:inherit;text-align:left;cursor:pointer}
+.waffle-group.is-previewed,.waffle-group[aria-pressed="true"]{background:white;border-color:var(--blue)}
+.waffle-key .waffle-hint{margin:6px 0 8px;color:#000}
+.waffle-reset{font:inherit;font-size:var(--type-small);color:#000;background:white;border:1px solid var(--line);border-radius:4px;padding:6px 10px;cursor:pointer}
+@media(max-width:450px){.waffle-key>.waffle-group{flex-wrap:wrap}.waffle-stat-values span:first-child{font-size:42px}}
+
+/* A rank chart needs horizontal room for labelled endpoints and yearly checkpoints. */
+.story-row.story-row--bump{grid-template-columns:minmax(0,1fr)}
+.story-row--bump .story-note{max-width:78ch}
+.story-row--bump .control-hint{margin:0 0 16px;max-width:80ch}
