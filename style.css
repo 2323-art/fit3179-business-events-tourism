@@ -166,7 +166,7 @@ html{scroll-padding-top:calc(var(--chapter-nav-height,60px) + 16px)}
 /* INTERVIEW: A white page sits on a darker canvas. Keeping overflow visible
    preserves sticky navigation and lets the existing chart widths adapt normally. */
 html{background:#d9dde3}
-/* Match the reference's 1100px page and 952px content measure on desktop. */
+/* Desktop page width: 1100px; content measure: 952px. */
 body{width:100%;max-width:1100px;margin-inline:auto;background:#fff;box-shadow:0 0 0 1px #162b4d0a}
 .wrap{max-width:952px}
 .masthead{padding-inline:max(32px,calc((100% - 952px)/2))}
@@ -215,7 +215,7 @@ body{width:100%;max-width:1100px;margin-inline:auto;background:#fff;box-shadow:0
 #state-mix-chart{min-height:150px}
 @media(max-width:980px){.state-mix-panel{grid-template-columns:minmax(0,1fr);gap:12px;padding:20px}}
 
-/* Reference-informed structure, independently authored for this story.
+/* Chart and explanation layout.
    S8 pp.4–6: consistent sight-lines and grouped columns; S3 pp.6–7: readable measure.
    The chart occupies two grid units and its takeaway one; the linked market pair stays together. */
 .opening{grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:32px;align-items:start;padding-bottom:40px}
@@ -326,7 +326,7 @@ body p,.methods li,body figcaption:not(.story-note),
 }
 
 /* Navigation starts below the subtitle and sticks within the entire story.
-   S8 pp.4–6 support the shared alignment; sticky behaviour follows the supplied reference. */
+   S8 pp.4–6 support the shared alignment. */
 .masthead{padding-block:10px;gap:0;box-shadow:none}
 .hero-heading.wrap{width:100%;max-width:none;padding:32px max(18px,calc((100% - 952px)/2)) 24px;background:#e8edf2}
 .hero-heading .hero-title{padding-bottom:18px;border-bottom:0;margin:0}
