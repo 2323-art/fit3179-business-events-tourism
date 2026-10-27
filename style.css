@@ -496,3 +496,13 @@ body p,.methods li,body figcaption:not(.story-note),
 .origin-country-control{flex:1;min-width:220px;max-width:310px}
 .origin-country-control select{width:100%;min-height:36px;font:inherit;font-size:14px;padding:7px 10px;background:white;color:#000;border:1px solid var(--line)}
 @media(max-width:650px){.origin-country-control{flex-basis:100%;max-width:none}}
+
+/* Keep the colour key beside the width legend title below the origin map. */
+.origin-map-legend{background:white;padding:12px 6px 6px;margin-top:-1px}
+.origin-map-legend-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px 24px;font-size:14px;margin-bottom:12px}
+.origin-map-legend-heading .semantic-legend{margin:0;padding:0;font-size:14px}
+.origin-width-key{display:flex;flex-wrap:wrap;gap:12px 20px;font-size:14px}
+.origin-width-key>span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+#chart07{background:white}
+#chart07 svg{display:block}
+#chart07 .vega-bindings:empty{display:none}

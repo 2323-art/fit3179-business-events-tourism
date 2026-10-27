@@ -80,7 +80,7 @@ async function renderChart(name,index){
 // INTERVIEW: Selected heatmap values remain visible at every width; compact text fits the three cells on phones.
   const width=Math.max(230,el.clientWidth);
   if(index===1)spec.layer[0].encoding.x.title='Spending per trip (AUD)';
-  if(index===6&&width<500)spec.layer[1].encoding.strokeWidth.legend.columns=1;
+  if(index===6){buildOriginWidthLegend(spec);spec.layer[1].encoding.strokeWidth.legend=null;}
   if(index===8&&width<400)spec.layer[2].mark.fontSize=13;
   if(index===7&&width<360)spec.layer[0].encoding.x.axis.values={expr:"marketScale == 'Smaller markets' ? [0,20000,40000] : [0,100000,200000]"};
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
@@ -120,6 +120,20 @@ async function renderChart(name,index){
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
+}
+// The HTML footer keeps colour and width keys together at every viewport size.
+function buildOriginWidthLegend(spec){
+ const encoding=spec.layer[1].encoding.strokeWidth;
+ const [d0,d1]=encoding.scale.domain,[r0,r1]=encoding.scale.range;
+ const host=document.getElementById('origin-width-key');host.replaceChildren();
+ for(const value of encoding.legend.values){
+  const item=document.createElement('span');
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 28 16');svg.setAttribute('width','28');svg.setAttribute('height','16');svg.setAttribute('aria-hidden','true');
+  const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+  for(const [key,val] of Object.entries({x1:1,x2:27,y1:8,y2:8,stroke:spec.layer[1].encoding.stroke.value,'stroke-width':r0+(value-d0)/(d1-d0)*(r1-r0),'stroke-opacity':0.8}))line.setAttribute(key,val);
+  svg.append(line);item.append(svg,document.createTextNode(formatTrips(value)));host.append(item);
+ }
 }
 // Route hover previews an origin; click or keyboard activation pins it.
 const originMapDataVersion='f2fa72d13a49';
