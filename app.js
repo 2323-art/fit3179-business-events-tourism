@@ -10,6 +10,7 @@ window.chartViews={};window.chartFailures=[];
 // INTERVIEW: Cache data used by the HTML summaries and controls. selectedState persists across chart redraws.
 let marketRows=[];
 let activityPinned='Shopping';
+let spendingChangePinned='',spendingChangeRows=[];
 // Match the activity specification's data revision so charts, tables and downloads bypass the old two-year cache.
 const activityDataVersion='e9b63cc0972c';
 let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states',referenceState='NSW',comparisonState='VIC';
@@ -76,6 +77,51 @@ function updateMarketSummary(){
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
 // INTERVIEW: async/await lets the browser keep working while requests and rendering finish.
+// Change values are contributions; before/after figures come from market totals,
+// never the cumulative start/end positions retained in the source waterfall table.
+async function bindSpendingChangeFeedback(view){
+ const container=document.getElementById('chart10');
+ const rows=spendingChangeRows.filter(row=>row.kind!=='Total');
+ const title=document.getElementById('change-insight-title'),body=document.getElementById('change-insight');
+ const money=n=>'AUD '+Math.abs(n/1e6).toLocaleString('en-AU',{minimumFractionDigits:1,maximumFractionDigits:1})+'m';
+ const names=rows.map(row=>row.label),named=names.filter(name=>!['Other published markets','Unpublished + rounding'].includes(name));
+ let preview='';
+ const annual=(label,year)=>{
+  const markets=marketRows.filter(row=>row.year===year);
+  if(label==='Other published markets')return markets.filter(row=>!named.includes(row.country)).reduce((sum,row)=>sum+row.spend,0);
+  if(label==='Unpublished + rounding')return spendingChangeRows.find(row=>row.label===String(year)&&row.kind==='Total').value*1e9-markets.reduce((sum,row)=>sum+row.spend,0);
+  return markets.find(row=>row.country===label)?.spend;
+ };
+ const show=async(label=spendingChangePinned)=>{
+  if(view.signal('changeFocus')!==label)await view.signal('changeFocus',label).runAsync();
+  const row=rows.find(row=>row.label===label);
+  if(!row){
+   title.textContent='Published markets explain only part of the decline';
+   setNarrativeEmphasis(body,'About 78% of the net decline sits in the unpublished-origin and rounding remainder. Gains from some named markets do not offset the overall fall. The chart reconciles the decline, but cannot identify which unlisted origins drove it.',['78% of the net decline','cannot identify which unlisted origins']);
+  }else{
+   const before=annual(label,2024),after=annual(label,2025),amount=money(row.value*1e9);
+   title.textContent=displayName(label)+' · spending change';
+   const first=`${row.value<0?'Decrease':'Increase'} of ${amount}: ${money(before)} in 2024 to ${money(after)} in 2025. `;
+   const net=spendingChangeRows.find(r=>r.label==='2025').value-spendingChangeRows.find(r=>r.label==='2024').value;
+   const explanation=label==='Unpublished + rounding'?`This residual accounts for ${(row.value/net*100).toFixed(1)}% of the net decline. It combines unlisted origins and rounding; it is not a measured country group.`:label==='Other published markets'?'This combines the remaining 12 published origins. Their net decrease adds to the national decline.':row.value>0?'This gain offsets part of the national decline. It does not mean national spending increased.':'This market adds to the national decline.';
+   setNarrativeEmphasis(body,first+explanation,[amount,'offsets part of the national decline','adds to the national decline','remaining 12 published origins','not a measured country group']);
+  }
+  scheduleProse();
+ };
+ const key=item=>{const d=item?.datum;return rows.find(r=>r.label===d?.label||displayName(r.label)===d?.value)?.label;};
+ view.addEventListener('mousemove',(_,item)=>{const label=key(item);if(label&&label!==preview){preview=label;show(label).catch(console.error)}});
+ view.addEventListener('click',(_,item)=>{const label=key(item);if(label){spendingChangePinned=spendingChangePinned===label?'':label;preview='';show().catch(console.error)}});
+ container.onmouseleave=()=>{preview='';show().catch(console.error)};
+ container.onkeydown=event=>{
+  if(event.key==='Escape'){event.preventDefault();spendingChangePinned='';preview='';show().catch(console.error)}
+  else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+   event.preventDefault();const current=names.indexOf(view.signal('changeFocus')),direction=['ArrowLeft','ArrowUp'].includes(event.key)?-1:1;
+   spendingChangePinned=names[current<0?(direction>0?0:names.length-1):(current+direction+names.length)%names.length];preview='';show().catch(console.error);
+  }
+ };
+ await show();
+}
+
 async function bindActivityFeedback(view){
  const container=document.getElementById('chart11');
  const rows=view.data('activities');
@@ -140,7 +186,7 @@ async function renderChart(name,index){
    document.getElementById('spending-after').textContent='AUD '+after.toFixed(2)+'bn';
    document.getElementById('spending-net').textContent=(after<before?'−':'+')+'AUD '+(Math.abs(after-before)*1000).toFixed(1)+'m';
    document.getElementById('spending-net-rate').textContent=Math.abs((after/before-1)*100).toFixed(1)+'% '+(after<before?'decrease':'increase');
-   spec.data={values:rows};
+   spendingChangeRows=rows;spec.data={values:rows};
   }
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
@@ -165,6 +211,7 @@ async function renderChart(name,index){
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
   if(index===10)await bindActivityFeedback(result.view);
+  if(index===9)await bindSpendingChangeFeedback(result.view);
   if(index===0)await bindWaffleFeedback(result.view);
   if(index===2)await bindOriginSpending(result.view);
   if(index===6)bindOriginMapFeedback(result.view);

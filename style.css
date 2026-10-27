@@ -594,3 +594,6 @@ body p,.methods li,body figcaption:not(.story-note),
 .methods.wrap,footer.wrap{background:#f1f3f5;width:100%;max-width:none;padding-left:max(48px,calc((100% - 952px)/2));padding-right:max(48px,calc((100% - 952px)/2))}
 @media(max-width:1100px){.methods.wrap,footer.wrap{padding-left:max(32px,calc((100% - 952px)/2));padding-right:max(32px,calc((100% - 952px)/2))}}
 @media(max-width:760px){.methods.wrap,footer.wrap{padding-left:18px;padding-right:18px}}
+
+#chart10:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+#change-insight{min-height:205px}

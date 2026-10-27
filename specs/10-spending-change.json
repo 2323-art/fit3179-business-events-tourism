@@ -96,7 +96,8 @@
     {
       "mark": {
         "type": "bar",
-        "size": 24
+        "size": 24,
+        "cursor": "pointer"
       },
       "encoding": {
         "y": {
@@ -192,7 +193,28 @@
             "field": "scope",
             "title": "Coverage"
           }
-        ]
+        ],
+        "opacity": {
+          "condition": {
+            "test": "changeFocus == '' || datum.label == changeFocus",
+            "value": 1
+          },
+          "value": 0.3
+        },
+        "stroke": {
+          "condition": {
+            "test": "datum.label == changeFocus",
+            "value": "#000000"
+          },
+          "value": "transparent"
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "datum.label == changeFocus",
+            "value": 2
+          },
+          "value": 0
+        }
       }
     },
     {
@@ -200,7 +222,11 @@
         "type": "text",
         "align": "left",
         "fontSize": 14,
-        "color": "#162B4D"
+        "color": "#162B4D",
+        "cursor": "pointer",
+        "fontWeight": {
+          "expr": "datum.label == changeFocus ? 'bold' : 'normal'"
+        }
       },
       "encoding": {
         "y": {
@@ -250,6 +276,12 @@
           "format": "+.1f"
         }
       }
+    }
+  ],
+  "params": [
+    {
+      "name": "changeFocus",
+      "value": ""
     }
   ]
 }
