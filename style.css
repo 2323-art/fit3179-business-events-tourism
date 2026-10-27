@@ -535,3 +535,9 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-chart-panel{background:var(--plot-ground);border:1px solid var(--line);border-radius:6px;padding:16px}
 .market-chart-panel>.market-shared-controls{background:transparent;border:0;padding:0}
 @media(max-width:650px){.market-chart-panel{padding:12px}}
+
+/* Keep the calculation beside the statistic it explains. */
+.market-rate-card .market-calculation{margin-top:24px}
+.market-calculation h4{font-size:1rem;margin:16px 0 8px}
+.market-insight .market-calculation p{margin:0 0 12px}
+.market-calculation .calculation-note{font-size:13px}

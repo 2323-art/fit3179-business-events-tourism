@@ -18,7 +18,7 @@ const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
 const formatMoney=n=>new Intl.NumberFormat('en-AU',{maximumFractionDigits:1}).format(n/1e6)+' million Australian dollars';
 const displayName=value=>typeof value==='string'?value.replace(/\b(USA|UK|NSW|VIC|QLD|WA|SA|NT|ACT|TAS)\b/g,key=>({'USA':'United States','UK':'United Kingdom','NSW':'New South Wales','VIC':'Victoria','QLD':'Queensland','WA':'Western Australia','SA':'South Australia','NT':'Northern Territory','ACT':'Australian Capital Territory','TAS':'Tasmania'}[key])).replace('National/state parks','National and state parks').replace('Other + rounding','Other markets and rounding'):value;
 const formatChange=n=>new Intl.NumberFormat('en-AU',{style:'percent',maximumFractionDigits:1,signDisplay:'exceptZero'}).format(Math.abs(n)<.0005?0:n);
-// INTERVIEW: LINKED DETAIL TABLE: show both years for the selected origin so readers do not need to memorise the previous view.
+// Linked calculation: show both yearly averages and their percentage change.
 // INTERVIEW: All markets is an overview state; Malaysia is explicitly the starting example for the table.
 function updateComparison(focus){
  const country=focus==='All markets'?'Malaysia':focus;
@@ -26,14 +26,7 @@ function updateComparison(focus){
  const before=marketRows.find(r=>r.country===country&&r.year===2024),after=marketRows.find(r=>r.country===country&&r.year===2025);
  if(!before||!after)return;
  document.getElementById('comparison-title').textContent=displayName(country)+' · 2024 and 2025';
- document.getElementById('comparison-context').textContent=focus==='All markets'?'Malaysia is the starting example.':'Selected market; both years remain visible.';
-// INTERVIEW: Replace the previous table rows. textContent inserts text safely; createElement builds HTML nodes.
- const body=document.getElementById('comparison-rows');body.replaceChildren();
-// INTERVIEW: Build three rows (trips, nights, spending), with a value column for each year. Spending is displayed in millions only.
- for(const [key,label] of [['visitors','Visitor trips'],['nights','Visitor nights'],['spend','Spending (AUD millions)']]){
-  const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';th.textContent=label;tr.append(th);
-  for(const row of [before,after]){const td=document.createElement('td');td.textContent=key==='spend'?(row[key]/1e6).toLocaleString('en-AU',{minimumFractionDigits:1,maximumFractionDigits:1}):formatTrips(row[key]);tr.append(td)}body.append(tr);
- }
+ document.getElementById('comparison-context').textContent=focus==='All markets'?'Malaysia is the starting example.':'Selected market; spending within Australia.';
 // INTERVIEW: Percentage change = after / before - 1. formatChange turns a fraction such as 0.3125 into +31.3%.
  // Derived rates connect visitor volume to spending without claiming causes (S1 p.10; S9 pp.2–4).
  const tripBefore=before.spend/before.visitors,tripAfter=after.spend/after.visitors;
@@ -41,6 +34,11 @@ function updateComparison(focus){
  document.getElementById('market-insight-title').textContent=displayName(country)+' · average spending per trip';
  document.getElementById('market-rate-change').textContent=formatChange(tripAfter/tripBefore-1);
  document.getElementById('market-rate-values').textContent=`${money(tripBefore)} → ${money(tripAfter)} · 2024–2025`;
+ const decimal=n=>n.toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
+ document.getElementById('calculation-2024').textContent=`2024: ${money(before.spend)} ÷ ${formatTrips(before.visitors)} ≈ AUD ${decimal(tripBefore)}`;
+ document.getElementById('calculation-2025').textContent=`2025: ${money(after.spend)} ÷ ${formatTrips(after.visitors)} ≈ AUD ${decimal(tripAfter)}`;
+ document.getElementById('calculation-change').textContent=`(${decimal(tripAfter)} ÷ ${decimal(tripBefore)} − 1) × 100 ≈ ${formatChange(tripAfter/tripBefore-1)}`;
+
  const tripGrowth=after.visitors/before.visitors-1,spendGrowth=after.spend/before.spend-1;
  const interpretation=tripGrowth>0&&tripAfter<tripBefore?'Lower average spending offsets some of the visitor growth.':tripGrowth<0&&tripAfter>tripBefore?'Higher average spending offsets some of the fall in visits.':tripGrowth>0&&tripAfter>tripBefore?'More trips and higher averages reinforce spending growth.':tripGrowth<0&&tripAfter<tripBefore?'Fewer trips and lower averages both reduce total spending.':'Both visitor volume and spending per trip shape the total.';
  document.getElementById('market-insight').textContent='Heatmap: total spending; card: average spending per trip. '+interpretation;
