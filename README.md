@@ -8,6 +8,8 @@ The central argument is that visitor numbers alone give an incomplete picture of
 
 ## Project preferences
 
+The conclusion closes the visitor-count argument with three linked evidence cards: domestic overnight spending share, contrasting regional shares, and Malaysia's trip-versus-spending growth. Each links back to its chapter. Values are rounded from the existing datasets (69.7% → 70%; regional shares 30.8% and 16.2%; Malaysian growth 31.25% and 4.13% → 31% and 4%). The closing statement distinguishes visitor spending from total event economic impact. This applies S9 *Storytelling* p. 4 (selective emphasis) and S8 *Layout* pp. 4–6 (alignment and grouping); the three-card arrangement is an implementation choice. Cards align in three columns on desktop and stack on phones.
+
 Do not pair red and green. The category palette and shared state colours are defined in `data/colour-semantics.json`; the activity bump chart uses direct labels and selective highlighting.
 
 ## Run locally
