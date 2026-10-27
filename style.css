@@ -516,7 +516,7 @@ body p,.methods li,body figcaption:not(.story-note),
 /* One shared control bar, paired views, and a combined reading below. */
 .market-pair{margin-top:32px}
 .market-shared-controls{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-end;padding:16px;background:var(--plot-ground);border:1px solid var(--line)}
-.market-shared-controls label{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600}
+.market-shared-controls label{display:flex;flex-direction:row;align-items:center;gap:8px;font-size:14px;font-weight:600}
 .market-shared-controls select,.market-shared-controls button{font:inherit;font-size:14px;color:#000;background:white;border:1px solid var(--line);padding:8px 12px;min-height:38px}
 .market-shared-controls select{min-width:120px}
 .market-shared-controls button{cursor:pointer;margin-left:auto}
@@ -528,7 +528,7 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-pair #market-summary{margin:0 0 12px;max-width:none;min-height:0}
 .market-pair-methods{padding-top:12px}
 .market-pair-methods>.market-comparison{margin-top:16px}
-@media(max-width:650px){.market-shared-controls label{flex:1;min-width:130px}.market-shared-controls button{margin-left:0}.market-shared-controls select{width:100%}}
+@media(max-width:650px){.market-shared-controls label{flex:1 1 100%;min-width:0}.market-shared-controls button{margin-left:0}.market-shared-controls select{flex:1;min-width:0;width:auto}}
 
 /* Place the scatter-only year control directly beneath its taller plot. */
 .market-year-control{margin:12px 0 8px}
