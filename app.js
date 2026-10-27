@@ -1,8 +1,8 @@
 /* Local Vega/Vega-Lite specifications; viewport changes preserve control values. */
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
-// INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. Destination stacks use a shared percentage scale.
-const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-destination-shares','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
+// INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The destination treemap uses rectangle area for AUD spending.
+const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
@@ -74,7 +74,7 @@ async function renderChart(name,index){
   if(index===8&&width<400)spec.layer[2].mark.fontSize=13;
   if(index===7&&width<360)spec.layer[0].encoding.x.axis.values={expr:"marketScale == 'Smaller markets' ? [0,20000,40000] : [0,100000,200000]"};
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
-  else if(index===5){spec.width=width-12}
+  else if(index===5){spec.width=width;spec.height=width<400?640:580}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
@@ -91,6 +91,7 @@ async function renderChart(name,index){
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
   if(index===3)await bindSpendingMap(result.view);
+  if(index===4)await bindVisitsMap(result.view);
   if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
   if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);result.view.addSignalListener('marketScale',updateMarketSummary);updateMarketSummary()}
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
@@ -120,6 +121,28 @@ async function bindSpendingMap(view){
  select.onchange=()=>show(select.value);
  show(select.value);
 }
+// The visit card previews hover; clicks retain the existing linked state selection.
+let visitMapRows=[];
+function updateVisitsCard(code=selectedState){
+ const row=visitMapRows.find(r=>r.code===code)||visitMapRows.find(r=>r.code==='NSW');
+ if(!row)return;
+ document.getElementById('visits-state-value').textContent=row.visitors>=1e6?(row.visitors/1e6).toFixed(1)+'m':(row.visitors/1e3).toFixed(0)+'k';
+ document.getElementById('visits-state-name').textContent=row.state;
+ document.getElementById('visits-state-detail').textContent=formatTrips(row.visitors)+' visits recorded in 2025.';
+}
+async function bindVisitsMap(view){
+ visitMapRows=await (await fetch('data/states.json')).json();
+ const codeOf=item=>item?.datum?.properties?.code||item?.datum?.code;
+ view.addEventListener('mouseover',(_,item)=>{
+  const code=codeOf(item);if(!code)return;
+  updateVisitsCard(code);view.signal('visitHover',code).runAsync().catch(console.error);
+ });
+ view.addEventListener('mouseout',()=>{
+  updateVisitsCard();view.signal('visitHover','').runAsync().catch(console.error);
+ });
+ view.addEventListener('click',(_,item)=>{const code=codeOf(item);if(code)selectState(code).catch(console.error)});
+ updateVisitsCard();
+}
 // Linked composition extends the visit map: same geography, a new traveller-type dimension.
 async function renderStateMix(){
  const basePromise=fetch('specs/state-mix.json',{cache:'no-cache'}).then(response=>response.json());
@@ -146,7 +169,7 @@ function updateStateMix(){
  const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
  if(rows.some(r=>!r))return;
  document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'. Choose a different comparison state to see the contrast.':`Domestic overnight visitors account for ${pct(rows[0].visitor_share)} of visits and ${pct(rows[0].spend_share)} of spending in ${displayName(referenceState)}, versus ${pct(rows[1].visitor_share)} of visits and ${pct(rows[1].spend_share)} of spending in ${displayName(comparisonState)}.`;
- document.getElementById('state-mix-context').textContent='The reference stays fixed. Selecting a state in either legend changes the comparison state and highlights the visit map and destination bars.';
+ document.getElementById('state-mix-context').textContent='The reference stays fixed. Selecting a state in either legend changes the comparison state and highlights the visit map and destination treemap.';
 }
 function buildStateComparison(){
  for(const id of ['reference-state','comparison-state']){
@@ -267,22 +290,24 @@ function buildColourLegends(){
   }
  }
 }
-// INTERVIEW: COORDINATED STATE SELECTION: send one state to BOTH the symbol map and destination bars, then show its regions below.
+// INTERVIEW: COORDINATED STATE SELECTION: send one state to BOTH the symbol map and destination treemap, then show its regions below.
 // INTERVIEW: The optional ?. call skips a View that has not loaded yet. Promise.all waits for both available updates.
 async function selectState(state){
  selectedState=state;
+ updateVisitsCard();
  if(state!=='All states')comparisonState=state;
  updateStateMix();
- await Promise.all(['05-symbol-map','06-destination-shares','state-mix'].map(name=>window.chartViews[name]?.signal('stateFocus',name==='state-mix'?comparisonState:state).runAsync()));
+ await Promise.all(['05-symbol-map','06-treemap','state-mix'].map(name=>window.chartViews[name]?.signal('stateFocus',name==='state-mix'?comparisonState:state).runAsync()));
 // INTERVIEW: Synchronise the pressed appearance of both state legends, so their controls agree.
  document.querySelectorAll('[data-state]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.state===state)));
  const detail=document.getElementById('state-detail');detail.replaceChildren();
- const intro=document.createElement('p');intro.textContent=state==='All states'?'Select a state in the legend to see its destinations and spending.':displayName(state)+' · destination spending in 2025';detail.append(intro);
+ const destinations=regionRows.filter(r=>r.parent===state&&r.value>0),total=destinations.reduce((sum,r)=>sum+r.value,0);
+ const intro=document.createElement('p');intro.textContent=state==='All states'?'Hover a rectangle for its spending and share, or choose a state above for all its values. Small rectangles may not fit a label.':displayName(state)+' · displayed total: '+formatMoney(total);detail.append(intro);
  if(state!=='All states'){
   const list=document.createElement('ul');
 // INTERVIEW: Keep only destination leaves belonging to the selected state and sort by spending, largest first.
-  for(const row of regionRows.filter(r=>r.parent===state).sort((a,b)=>b.value-a.value)){
-   const item=document.createElement('li');item.textContent=displayName(row.name).replace('Hobart & south','Hobart and the South')+': '+formatMoney(row.value);list.append(item);
+  for(const row of destinations.sort((a,b)=>b.value-a.value)){
+   const item=document.createElement('li');item.textContent=displayName(row.name).replace('Hobart & south','Hobart and the South')+': '+formatMoney(row.value)+' · '+(row.value/total*100).toFixed(1)+'% of displayed state spending';list.append(item);
   }detail.append(list);
  }
  scheduleProse();

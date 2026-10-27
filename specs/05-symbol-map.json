@@ -78,7 +78,8 @@
       "mark": {
         "type": "circle",
         "fillOpacity": 1,
-        "strokeWidth": 1.5
+        "strokeWidth": 1.5,
+        "cursor": "pointer"
       },
       "encoding": {
         "longitude": {
@@ -160,18 +161,29 @@
         },
         "opacity": {
           "condition": {
-            "test": "stateFocus == 'All states' || datum.code == stateFocus",
+            "test": "stateFocus == 'All states' || datum.code == stateFocus || datum.code == visitHover",
             "value": 1
           },
           "value": 0.18
         },
         "stroke": {
+          "condition": {
+            "test": "datum.code == visitHover",
+            "value": "#000000"
+          },
           "value": "#FFFFFF"
         },
         "order": {
           "field": "visitors",
           "type": "quantitative",
           "sort": "descending"
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "datum.code == visitHover",
+            "value": 3
+          },
+          "value": 1.5
         }
       }
     },
@@ -281,6 +293,10 @@
     {
       "name": "stateFocus",
       "value": "All states"
+    },
+    {
+      "name": "visitHover",
+      "value": ""
     }
   ]
 }

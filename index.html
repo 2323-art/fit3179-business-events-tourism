@@ -7,10 +7,10 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=f3b8e9cc2943"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=841eee890117"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Refresh the app.js content hash whenever its code changes, especially when chart structures change. -->
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=9c000753a56c"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=97d39173caa9"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
@@ -39,7 +39,6 @@
 <!-- INTERVIEW: Chapter 1: compare per-trip amounts and distinguish total trip spending from spending within Australia. -->
 <section class="chapter wrap" id="mix">
  <div class="chapter-bar"><span class="chapter-no">01</span><h2>Which visits generate the most spending?</h2></div>
- <p class="chapter-summary">Overnight domestic trips generate most spending in total. International trips generate the most per trip. These are different ways to describe value.</p>
  <figure class="story-row">
  <div class="story-plot"><p class="plot-title">Visitor trips and spending shares · 2025</p><div id="chart01" class="chart" aria-label="Waffle charts comparing visitor-trip and spending shares"></div><div class="waffle-key"><p>Trip share / spending share</p><div><span><i class="day"></i>Domestic day</span><strong>55.3% / 16.7%</strong></div><div><span><i class="overnight"></i>Domestic overnight</span><strong>41.2% / 69.7%</strong></div><div><span><i class="international"></i>International</span><strong>3.5% / 13.6%</strong></div></div><div class="chart-tools" data-chart="01-waffle" data-table="national"></div></div>
  <figcaption class="story-note"><h3>More trips ≠ more spending</h3><p class="chart-intro">Day trips made up 55% of visits, while overnight domestic trips generated 70% of spending.</p><div class="figure-method"><p>01 / Each square ≈ 1%. Whole squares are rounded to sum to 100; hover for exact shares. Spending is within Australia. <a href="#sources">Tourism Research Australia</a>.</p></div></figcaption>
@@ -59,7 +58,6 @@
 </section>
 <section class="band" id="places"><div class="chapter wrap">
  <div class="chapter-bar"><span class="chapter-no">02</span><h2>Where do visitors go and spend?</h2></div>
- <p class="chapter-summary">Where are visits concentrated, and how large is spending relative to population? These are complementary measures—not the same quantity with a different denominator.</p>
  <div class="story-series">
 <!-- INTERVIEW: Figure 04: chart04 is the mount point for specification 04. The chart-tools data attributes select its data table and specification links. -->
  <figure class="story-row story-row--map">
@@ -69,7 +67,7 @@
 <!-- INTERVIEW: Figure 05: chart05 is the mount point for specification 05. The chart-tools data attributes select its data table and specification links. -->
  <figure class="story-row story-row--map">
  <div class="story-plot"><p class="plot-title">Business-event visits by state · 2025</p><div id="chart05" class="chart"></div><div class="semantic-legend" data-legend="states" aria-label="Chart colour legend"></div><div class="chart-tools" data-chart="05-symbol-map" data-table="states"></div></div>
- <figcaption class="story-note"><h3>The east coast draws the largest volumes</h3><p class="chart-intro">New South Wales recorded <strong>7.2 million state visits</strong>, followed by Victoria at 5.7 million and Queensland at 5.0 million.</p><div class="figure-method"><p>05 / Circle <strong>area</strong> shows 2025 state visits. Select a state to highlight it here and in the destination bars. Multi-state trips count in each state visited; do not add these counts as unique trips. Sources: Tourism Research Australia; Natural Earth.</p><details class="caption-detail"><summary>Map colours and labels</summary><p>Colours identify states and match the destination bars. Labels connect leading states to their values; selecting another state labels it instead. The map uses an equal-area projection.</p></details></div></figcaption>
+ <figcaption class="story-note"><div id="visits-feedback" class="map-stat-card" aria-live="polite" aria-atomic="true"><span id="visits-state-value">7.2m</span><p class="map-stat-caption">state visits in<br><strong id="visits-state-name">New South Wales</strong></p><p id="visits-state-detail">7,205,000 visits recorded in 2025.</p></div><h3>The east coast draws the largest volumes</h3><p class="chart-intro">New South Wales recorded <strong>7.2 million state visits</strong>, followed by Victoria at 5.7 million and Queensland at 5.0 million.</p><div class="figure-method"><p>05 / Circle <strong>area</strong> shows 2025 state visits. Select a state to highlight it here and in the destination treemap. Multi-state trips count in each state visited; do not add these counts as unique trips. Sources: Tourism Research Australia; Natural Earth.</p><details class="caption-detail"><summary>Map colours and labels</summary><p>Colours identify states and match the destination treemap. Labels connect leading states to their values; selecting another state labels it instead. The map uses an equal-area projection.</p></details></div></figcaption>
  </figure>
  </div>
 <aside class="state-mix-panel" aria-labelledby="state-mix-title">
@@ -85,8 +83,8 @@
 </aside>
 <!-- INTERVIEW: Figure 06: chart06 is the mount point for specification 06. The chart-tools data attributes select its data table and specification links. -->
  <figure class="story-row">
- <div class="story-plot"><p class="plot-title">Destination shares within each state · 2025</p><div class="semantic-legend" data-legend="states" aria-label="Chart colour legend"></div><div id="chart06" class="chart"></div><div id="state-detail" class="state-detail" aria-live="polite"><p>Select a state in the legend to see its destinations and spending.</p></div><div class="chart-tools" data-chart="06-destination-shares" data-table="regions"></div></div>
- <figcaption class="story-note"><h3>Regional spending matters—but its share differs</h3><p class="chart-intro">Sydney and Melbourne lead in dollars. Yet Regional New South Wales represents <strong>30.8%</strong> of its state’s displayed spending, compared with <strong>16.2%</strong> for Regional Victoria. State totals conceal this contrast.</p><div class="figure-method"><p>06 / Each state’s bar totals 100% of its displayed destination spending. Segments follow the labels below, from left to right; regional destinations sit at the right edge. Labels give shares and AUD amounts, with the displayed state total above. Selecting a state outlines its row; all states remain visible. Source: Tourism Research Australia.</p><details class="caption-detail"><summary>Region boundaries and coverage</summary><p>Percentages are rounded independently and may not add to exactly 100%. Region definitions differ, so this is not a uniform city-versus-rural comparison. Gold Coast and Perth follow the source’s region boundaries; the Australian Capital Territory is shown as a whole. See <a href="#region-method">regional coverage notes</a> for omitted unknown spending and rounding differences.</p></details></div></figcaption>
+ <div class="story-plot"><p class="plot-title">Destination spending by state · 2025</p><div class="semantic-legend" data-legend="states" aria-label="Chart colour legend"></div><div id="chart06" class="chart"></div><div id="state-detail" class="state-detail" aria-live="polite"><p>Hover a rectangle for its spending and share, or choose a state above for all its values. Small rectangles may not fit a label.</p></div><div class="chart-tools" data-chart="06-treemap" data-table="regions"></div></div>
+ <figcaption class="story-note"><h3>Big cities lead spending; regional shares differ</h3><p class="chart-intro">Sydney and Melbourne lead in dollars. Yet Regional New South Wales represents <strong>30.8%</strong> of its state’s displayed spending, compared with <strong>16.2%</strong> for Regional Victoria. State totals conceal this contrast.</p><div class="figure-method"><p>06 / Rectangle area represents spending in AUD. Destinations are grouped within states, identified by colour and abbreviated headings. Percentages in labels and hover details refer to each state’s displayed destination total. Choose a state for its total and every destination’s amount and share; other states remain visible. Source: Tourism Research Australia.</p><details class="caption-detail"><summary>Region boundaries and coverage</summary><p>Percentages are rounded independently and may not add to exactly 100%. Region definitions differ, so this is not a uniform city-versus-rural comparison. Gold Coast and Perth follow the source’s region boundaries; the Australian Capital Territory is shown as a whole. See <a href="#region-method">regional coverage notes</a> for omitted unknown spending and rounding differences.</p></details></div></figcaption>
  </figure>
 </div></section>
 <section class="chapter wrap" id="origins">
