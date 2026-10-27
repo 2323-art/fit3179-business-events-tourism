@@ -7,7 +7,7 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=c568e77ed71a"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=838698589767"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Refresh the app.js content hash whenever its code changes, especially when chart structures change. -->
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
 <script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=d21f84975965"></script>
@@ -79,8 +79,7 @@
    <div class="mix-card"><label for="reference-state">Reference state</label><select id="reference-state"></select><div id="state-reference-chart" class="chart" aria-label="Reference state visitor and spending shares"></div></div>
    <div class="mix-card"><label for="comparison-state">Comparison state</label><select id="comparison-state"></select><div id="state-mix-chart" class="chart" aria-label="Comparison state visitor and spending shares"></div></div>
   </div>
-  <button id="reset-state-comparison" type="button">Reset to NSW and Victoria</button>
-  <p class="comparison-note">2025 shares within each state; both scales run 0–100%.</p><details class="caption-detail"><summary>Share calculation</summary><p>Each bar totals its three published traveller groups. Component rounding can differ from separate state totals. These are within-state shares, not shares of Australia. <a href="#sources">Sources</a>.</p></details><div class="chart-tools" data-chart="state-mix" data-table="state-mix"></div>
+  <div class="state-mix-footer"><div class="state-mix-notes"><p class="comparison-note">2025 shares within each state; both scales run 0–100%.</p><details class="caption-detail"><summary>Share calculation</summary><p>Each bar totals its three published traveller groups. Component rounding can differ from separate state totals. These are within-state shares, not shares of Australia. <a href="#sources">Sources</a>.</p></details></div><button id="reset-state-comparison" type="button">Reset to NSW and Victoria</button></div><div class="chart-tools" data-chart="state-mix" data-table="state-mix"></div>
  </div>
 </aside>
 <!-- INTERVIEW: Figure 06: chart06 is the mount point for specification 06. The chart-tools data attributes select its data table and specification links. -->

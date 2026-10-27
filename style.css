@@ -377,7 +377,7 @@ body p,.methods li,body figcaption:not(.story-note),
 .mix-values p{font-size:14px;margin:3px 0;font-variant-numeric:tabular-nums}
 .mix-values p:first-child{font-weight:600;margin-top:8px}
 #reset-state-comparison{display:block;font:inherit;font-size:14px;background:white;border:1px solid var(--line);padding:8px 12px;margin:16px 0 16px auto;cursor:pointer}
-.state-mix-content>.comparison-note{max-width:none}
+.state-mix-notes>.comparison-note{max-width:none;margin:0}
 .market-overview-panel{padding:16px 12px;margin:16px 0;background:var(--pale);border:1px solid var(--line)}
 .market-overview-panel[hidden]{display:none}
 .market-overview-panel h4{font-size:15px;margin:0 0 12px}
@@ -464,3 +464,10 @@ body p,.methods li,body figcaption:not(.story-note),
 .state-share-card .share-traveller:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 .state-share-card tr.is-highlighted{background:#e4edf8;outline:2px solid #162B4D;outline-offset:-2px}
 .state-mix-content>.mix-feedback-hint{max-width:none;margin:0 0 16px}
+
+/* Align the chart notes with the reset control (Layout, S8 p.4). */
+.state-mix-footer{display:flex;justify-content:space-between;align-items:flex-start;gap:16px 24px;margin-top:16px}
+.state-mix-notes{min-width:0;flex:1;padding-top:8px}
+.state-mix-footer #reset-state-comparison{flex-shrink:0;margin:0}
+.state-mix-notes>.caption-detail{margin-top:8px}
+@media(max-width:650px){.state-mix-footer{flex-wrap:wrap}.state-mix-notes{flex-basis:100%;padding-top:0}.state-mix-footer #reset-state-comparison{margin-left:auto}}
