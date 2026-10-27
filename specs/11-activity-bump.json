@@ -43,7 +43,7 @@
   "data": [
     {
       "name": "activities",
-      "url": "data/activities.json",
+      "url": "data/activities.json?v=e9b63cc0972c",
       "transform": [
         {
           "type": "formula",
