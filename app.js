@@ -20,6 +20,17 @@ const displayName=value=>typeof value==='string'?value.replace(/\b(USA|UK|NSW|VI
 const formatChange=n=>new Intl.NumberFormat('en-AU',{style:'percent',maximumFractionDigits:1,signDisplay:'exceptZero'}).format(Math.abs(n)<.0005?0:n);
 // Linked calculation: show both yearly averages and their percentage change.
 // INTERVIEW: All markets is an overview state; Malaysia is explicitly the starting example for the table.
+// Build emphasis with text nodes so dynamic country names remain plain text.
+function setNarrativeEmphasis(target,text,phrases){
+ const matches=phrases.map(phrase=>({start:text.indexOf(phrase),phrase})).filter(m=>m.start>=0).sort((a,b)=>a.start-b.start||b.phrase.length-a.phrase.length);
+ const fragment=document.createDocumentFragment();let cursor=0;
+ for(const match of matches){
+  if(match.start<cursor)continue;
+  fragment.append(document.createTextNode(text.slice(cursor,match.start)));
+  const strong=document.createElement('strong');strong.textContent=match.phrase;fragment.append(strong);cursor=match.start+match.phrase.length;
+ }
+ fragment.append(document.createTextNode(text.slice(cursor)));target.replaceChildren(fragment);
+}
 function updateComparison(focus){
  const country=focus==='All markets'?'Malaysia':focus;
 // INTERVIEW: find() retrieves one record for each year; these records are already prepared in data/markets.json.
@@ -41,7 +52,7 @@ function updateComparison(focus){
 
  const tripGrowth=after.visitors/before.visitors-1,spendGrowth=after.spend/before.spend-1;
  const interpretation=tripGrowth>0&&tripAfter<tripBefore?'Lower average spending offsets some of the visitor growth.':tripGrowth<0&&tripAfter>tripBefore?'Higher average spending offsets some of the fall in visits.':tripGrowth>0&&tripAfter>tripBefore?'More trips and higher averages reinforce spending growth.':tripGrowth<0&&tripAfter<tripBefore?'Fewer trips and lower averages both reduce total spending.':'Both visitor volume and spending per trip shape the total.';
- document.getElementById('market-insight').textContent='Heatmap: total spending; card: average spending per trip. '+interpretation;
+ setNarrativeEmphasis(document.getElementById('market-insight'),'Heatmap: total spending; card: average spending per trip. '+interpretation,['total spending','average spending per trip']);
  document.getElementById('market-rate-detail').textContent=`Nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. All spending here is within Australia. Average spending per trip = total spending ÷ visitor trips. Calculations use published estimates before display rounding; change factors multiply. Different annual visitor groups are compared, not causes.`;
  const changeStory=tripGrowth>0&&spendGrowth>0?`gained visitors, while spending grew ${spendGrowth<tripGrowth?'more slowly':'faster'}`:tripGrowth<0&&spendGrowth<0?`lost visitors, while spending fell ${spendGrowth<tripGrowth?'faster':'more slowly'}`:tripGrowth>0&&spendGrowth<0?'gained visitors while spending fell':tripGrowth<0&&spendGrowth>0?'lost visitors while spending rose':'shows different changes in visits and spending';
  const changeSummary=`${displayName(country)} ${changeStory} from 2024 to 2025.`;
@@ -61,7 +72,7 @@ function updateMarketSummary(){
  const lead=row?`In ${year}, ${displayName(row.country)} recorded ${formatTrips(row.visitors)} trips and AUD ${(row.spend/1e6).toFixed(1)}m in spending.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending in ${year}.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending in ${year}.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
  document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the cluster.';
- syncMarketOverview(year,focus,detail);const change=updateComparison(focus);document.getElementById('market-summary').textContent=lead+' '+change;scheduleProse();
+ syncMarketOverview(year,focus,detail);const change=updateComparison(focus);setNarrativeEmphasis(document.getElementById('market-summary'),lead+' '+change,['leads both trips and spending','leads trips','leads spending','spending grew more slowly','spending grew faster','spending fell faster','spending fell more slowly','spending fell','spending rose']);scheduleProse();
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
 // INTERVIEW: async/await lets the browser keep working while requests and rendering finish.
@@ -407,7 +418,7 @@ function showStateTraveller(group=stateTravellerPinned){
   summary=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'.':`Overnight visitors hold a larger spending share in ${displayName(rows[0].spend_share>rows[1].spend_share?referenceState:comparisonState)}.`;
  }
  const target=document.getElementById('state-mix-summary');
- if(target.textContent!==summary){target.textContent=summary;scheduleProse()}
+ if(target.textContent!==summary){setNarrativeEmphasis(target,summary,['larger spending share','spending share exceeds visit share','spending share trails visit share','spending share matches visit share']);scheduleProse()}
 }
 function pinStateTraveller(group){stateTravellerPinned=stateTravellerPinned===group?'':group;showStateTraveller()}
 function bindStateMixFeedback(view){
@@ -455,7 +466,7 @@ function updateStateMix(){
   table.append(head,body);host.append(label,title,table);
  }
  showStateTraveller();
- document.getElementById('state-mix-context').textContent='Compare the visit and spending bars within each state. A larger spending share reveals a greater contribution than visit counts alone suggest. Map selections update the comparison state.';
+ setNarrativeEmphasis(document.getElementById('state-mix-context'),'Compare the visit and spending bars within each state. A larger spending share reveals a greater contribution than visit counts alone suggest. Map selections update the comparison state.',['larger spending share','greater contribution']);
 }
 function buildStateComparison(){
  document.querySelector('.state-mix-panel').addEventListener('keydown',event=>{if(event.key==='Escape'){stateTravellerPinned='';showStateTraveller()}});
