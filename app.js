@@ -57,7 +57,7 @@ function updateMarketSummary(){
  const year=Number(view.signal('year')),focus=view.signal('focus'),rows=marketRows.filter(r=>r.year===year);
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
- document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads spending among published origins');
+ document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':'trips versus spending');
  document.getElementById('market-summary').textContent=row?`Compare ${displayName(row.country)} with nearby markets.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
  document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the crowded cluster.';
