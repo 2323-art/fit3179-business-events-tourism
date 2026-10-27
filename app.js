@@ -2,14 +2,14 @@
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
 // INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The destination treemap uses rectangle area for AUD spending.
-const charts=['01-waffle','02-spend-per-trip','03-origin-spending','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-bump','12-per-night'];
+const charts=['01-waffle','02-spend-per-trip','03-origin-spending','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-spending-change','11-activity-bump','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
 window.chartViews={};window.chartFailures=[];
 // INTERVIEW: Cache data used by the HTML summaries and controls. selectedState persists across chart redraws.
 let marketRows=[];
-let activityFocus='Shopping';
+let activityPinned='Shopping';
 // Match the activity specification's data revision so charts, tables and downloads bypass the old two-year cache.
 const activityDataVersion='e9b63cc0972c';
 let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states',referenceState='NSW',comparisonState='VIC';
@@ -65,6 +65,34 @@ function updateMarketSummary(){
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
 // INTERVIEW: async/await lets the browser keep working while requests and rendering finish.
+async function bindActivityFeedback(view){
+ const container=document.getElementById('chart11');
+ const rows=view.data('activities');
+ const activities=[...new Set(rows.map(row=>row.activity))];
+ const feedback=document.getElementById('activity-feedback');
+ const update=()=>{
+  const activity=view.signal('activityFocus');
+  feedback.replaceChildren();
+  if(!activity){feedback.textContent='Hover an activity to compare participation across years.';return;}
+  const title=document.createElement('strong');title.textContent=displayName(activity);feedback.append(title);
+  for(const row of rows.filter(row=>row.activity===activity).sort((a,b)=>a.year-b.year)){
+   const item=document.createElement('span');item.textContent=`${row.year}: ${row.participation} · rank ${row.rank}`;feedback.append(item);
+  }
+ };
+ view.addSignalListener('activityPinned',(_,value)=>{activityPinned=value});
+ view.addSignalListener('activityFocus',update);
+ await view.signal('activityPinned',activityPinned).runAsync();update();
+ container.onmouseleave=()=>view.signal('activityHover','').runAsync();
+ container.onkeydown=event=>{
+  if(event.key==='Escape'){event.preventDefault();view.signal('activityHover','').signal('activityPinned','').runAsync();}
+  else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+   event.preventDefault();const current=activities.indexOf(view.signal('activityFocus'));
+   const direction=['ArrowLeft','ArrowUp'].includes(event.key)?-1:1;
+   view.signal('activityHover','').signal('activityPinned',activities[(current+direction+activities.length)%activities.length]).runAsync();
+  }
+ };
+}
+
 async function renderChart(name,index){
 // INTERVIEW: padStart(2,0) produces the two-digit chart ID, for example index 7 becomes chart08. aria-busy describes loading state.
  const el=document.getElementById('chart'+String(index+1).padStart(2,'0'));
@@ -83,7 +111,25 @@ async function renderChart(name,index){
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
   else if(index===5){spec.width=width;spec.height=width<400?640:580}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform.find(t=>t.filter?.includes('originFocus')).filter="originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"}
-  else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
+  else if(index===9){
+   spec.width=Math.max(110,width-(width<500?180:210));
+   if(width<500){
+    spec.layer[1].encoding.x.axis.values=[-150,0,150];
+    spec.layer[1].encoding.x.title=['Spending change','(AUD millions)'];
+    for(const layer of spec.layer.filter(layer=>layer.encoding.y)){
+     layer.encoding.y.axis.labelLimit=105;
+     layer.encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";
+    }
+   }
+   const rows=await (await fetch(spec.data.url,{cache:'no-cache'})).json();
+   const before=rows.find(row=>row.label==='2024'&&row.kind==='Total').value;
+   const after=rows.find(row=>row.label==='2025'&&row.kind==='Total').value;
+   document.getElementById('spending-before').textContent='AUD '+before.toFixed(2)+'bn';
+   document.getElementById('spending-after').textContent='AUD '+after.toFixed(2)+'bn';
+   document.getElementById('spending-net').textContent=(after<before?'−':'+')+'AUD '+(Math.abs(after-before)*1000).toFixed(1)+'m';
+   document.getElementById('spending-net-rate').textContent=Math.abs((after/before-1)*100).toFixed(1)+'% '+(after<before?'decrease':'increase');
+   spec.data={values:rows};
+  }
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
   if(index===7)spec.height=width<400?360:440;
@@ -106,7 +152,7 @@ async function renderChart(name,index){
 // INTERVIEW: Store the View, restore state selection, and register listeners only for the scatterplot year/focus parameters.
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
-  if(index===10){await result.view.signal('activityFocus',activityFocus).runAsync();result.view.addSignalListener('activityFocus',(_,value)=>{activityFocus=value})}
+  if(index===10)await bindActivityFeedback(result.view);
   if(index===0)await bindWaffleFeedback(result.view);
   if(index===2)await bindOriginSpending(result.view);
   if(index===6)bindOriginMapFeedback(result.view);
@@ -542,7 +588,7 @@ async function start(){
 function buildColourLegends(){
  for(const host of document.querySelectorAll('[data-legend]')){
   const kind=host.dataset.legend;
-  const entries=kind==='international'?[colourSemantics.travellers[2]]:kind==='waterfall'?[{...colourSemantics.travellers[2],label:'International spending total'},...colourSemantics.change]:colourSemantics[kind];
+  const entries=kind==='international'?[colourSemantics.travellers[2]]:kind==='spending-change'?[...colourSemantics.change,{label:'Remainder',colour:'#66758B'}]:colourSemantics[kind];
   if(kind==='states'){
    const reset=document.createElement('button');reset.type='button';reset.textContent='All states and territories';reset.dataset.state='All states';reset.setAttribute('aria-pressed',String(selectedState==='All states'));reset.addEventListener('click',()=>selectState('All states'));host.append(reset);
   }

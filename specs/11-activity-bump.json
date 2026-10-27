@@ -9,23 +9,39 @@
     "right": 0
   },
   "autosize": "none",
-  "description": "Ranks among six selected activities of international business-event attendees, 2023\u20132025. 2023 shares are rounded published percentages. Rank 1 is most common within this fixed set, not among all surveyed activities.",
+  "description": "Ranks among six selected activities of international business-event attendees, 2023–2025. 2023 shares are rounded published percentages. Rank 1 is most common within this fixed set, not among all surveyed activities.",
   "signals": [
     {
-      "name": "activityFocus",
+      "name": "activityPinned",
       "value": "Shopping",
-      "bind": {
-        "input": "select",
-        "name": "Highlight activity: ",
-        "options": [
-          "Dining",
-          "Shopping",
-          "Sightseeing",
-          "Gardens",
-          "National/state parks",
-          "Museums & galleries"
-        ]
-      }
+      "on": [
+        {
+          "events": "@activity_hits:click, @activity_points:click, @left_labels:click, @right_labels:click",
+          "update": "activityPinned == datum.activity ? '' : datum.activity"
+        },
+        {
+          "events": "view:keydown[event.key === 'Escape']",
+          "update": "''"
+        }
+      ]
+    },
+    {
+      "name": "activityHover",
+      "value": "",
+      "on": [
+        {
+          "events": "@activity_hits:mouseover, @activity_points:mouseover, @left_labels:mouseover, @right_labels:mouseover",
+          "update": "datum.activity"
+        },
+        {
+          "events": "@activity_hits:mouseout, @activity_points:mouseout, @left_labels:mouseout, @right_labels:mouseout",
+          "update": "''"
+        }
+      ]
+    },
+    {
+      "name": "activityFocus",
+      "update": "activityHover || activityPinned"
     },
     {
       "name": "compact",
@@ -203,7 +219,43 @@
                 "value": "monotone"
               }
             }
-          }
+          },
+          "interactive": false
+        },
+        {
+          "type": "line",
+          "from": {
+            "data": "series"
+          },
+          "sort": {
+            "field": "datum.year"
+          },
+          "encode": {
+            "update": {
+              "x": {
+                "scale": "year",
+                "field": "year"
+              },
+              "y": {
+                "scale": "rank",
+                "field": "rank"
+              },
+              "stroke": {
+                "value": "transparent"
+              },
+              "strokeWidth": {
+                "value": 14
+              },
+              "interpolate": {
+                "value": "monotone"
+              },
+              "cursor": {
+                "value": "pointer"
+              }
+            }
+          },
+          "interactive": true,
+          "name": "activity_hits"
         }
       ]
     },
@@ -240,6 +292,9 @@
           },
           "description": {
             "signal": "datum.activity + ', ' + datum.year + ': rank ' + datum.rank + ' of these six, participation ' + datum.participation"
+          },
+          "cursor": {
+            "value": "pointer"
           }
         }
       }
@@ -294,6 +349,9 @@
           },
           "tooltip": {
             "signal": "{'Activity':datum.activity,'Year':datum.year,'Rank among these six':datum.rank,'Participation':datum.participation,'Precision':datum.precision,'Source':datum.source}"
+          },
+          "cursor": {
+            "value": "pointer"
           }
         }
       }
@@ -337,7 +395,8 @@
             "signal": "!compact && datum.activity == activityFocus ? 1 : 0"
           }
         }
-      }
+      },
+      "interactive": false
     },
     {
       "type": "text",
@@ -389,6 +448,9 @@
           },
           "tooltip": {
             "signal": "{'Activity':datum.activity,'Year':datum.year,'Rank among these six':datum.rank,'Participation':datum.participation,'Precision':datum.precision,'Source':datum.source}"
+          },
+          "cursor": {
+            "value": "pointer"
           }
         }
       }
@@ -432,7 +494,8 @@
             "signal": "datum.activity == activityFocus ? 1 : 0"
           }
         }
-      }
+      },
+      "interactive": false
     }
   ]
 }
