@@ -1,0 +1,169 @@
+{
+  "source": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_populated_places_simple.geojson",
+  "retrieved": "2026-10-27",
+  "licence": "Public domain",
+  "places": [
+    {
+      "country": "Canada",
+      "place": "Ottawa",
+      "administration": "Canada",
+      "coordinates": [
+        -75.701961,
+        45.418643
+      ]
+    },
+    {
+      "country": "France",
+      "place": "Paris",
+      "administration": "France",
+      "coordinates": [
+        2.352992,
+        48.858092
+      ]
+    },
+    {
+      "country": "Germany",
+      "place": "Berlin",
+      "administration": "Germany",
+      "coordinates": [
+        13.399603,
+        52.523764
+      ]
+    },
+    {
+      "country": "Hong Kong",
+      "place": "Hong Kong",
+      "administration": "Hong Kong S.A.R.",
+      "coordinates": [
+        114.183064,
+        22.306927
+      ]
+    },
+    {
+      "country": "Indonesia",
+      "place": "Jakarta",
+      "administration": "Indonesia",
+      "coordinates": [
+        106.827492,
+        -6.172472
+      ]
+    },
+    {
+      "country": "Korea",
+      "place": "Seoul",
+      "administration": "South Korea",
+      "coordinates": [
+        126.997785,
+        37.568295
+      ]
+    },
+    {
+      "country": "Netherlands",
+      "place": "Amsterdam",
+      "administration": "Netherlands",
+      "coordinates": [
+        4.914694,
+        52.351914
+      ]
+    },
+    {
+      "country": "Philippines",
+      "place": "Manila",
+      "administration": "Philippines",
+      "coordinates": [
+        120.980271,
+        14.606105
+      ]
+    },
+    {
+      "country": "Viet Nam",
+      "place": "Hanoi",
+      "administration": "Vietnam",
+      "coordinates": [
+        105.848068,
+        21.035273
+      ]
+    },
+    {
+      "country": "Australia",
+      "place": "Canberra",
+      "administration": "Australia",
+      "coordinates": [
+        149.129026,
+        -35.283029
+      ]
+    },
+    {
+      "country": "New Zealand",
+      "place": "Wellington",
+      "administration": "New Zealand",
+      "coordinates": [
+        174.777201,
+        -41.292068
+      ]
+    },
+    {
+      "country": "China",
+      "place": "Beijing",
+      "administration": "China",
+      "coordinates": [
+        116.394201,
+        39.90172
+      ]
+    },
+    {
+      "country": "USA",
+      "place": "Washington,  D.C.",
+      "administration": "United States of America",
+      "coordinates": [
+        -77.011364,
+        38.901495
+      ]
+    },
+    {
+      "country": "Singapore",
+      "place": "Singapore",
+      "administration": "Singapore",
+      "coordinates": [
+        103.853875,
+        1.294979
+      ]
+    },
+    {
+      "country": "UK",
+      "place": "London",
+      "administration": "United Kingdom",
+      "coordinates": [
+        -0.118668,
+        51.501941
+      ]
+    },
+    {
+      "country": "India",
+      "place": "New Delhi",
+      "administration": "India",
+      "coordinates": [
+        77.19998,
+        28.600023
+      ]
+    },
+    {
+      "country": "Japan",
+      "place": "Tokyo",
+      "administration": "Japan",
+      "coordinates": [
+        139.749462,
+        35.686963
+      ]
+    },
+    {
+      "country": "Malaysia",
+      "place": "Kuala Lumpur",
+      "administration": "Malaysia",
+      "coordinates": [
+        101.688699,
+        3.139797
+      ]
+    }
+  ]
+}

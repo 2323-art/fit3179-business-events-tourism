@@ -195,28 +195,9 @@ table('per-night',night)
 # INTERVIEW: WORLD BASEMAP: retain country names and rounded geometry; omit Antarctica from this story map.
 world=json.loads((R/'world-original.geojson').read_text(encoding='utf-8'))
 save('world',dict(type='FeatureCollection',features=[dict(type='Feature',properties={'name':f['properties']['ADMIN']},geometry=dict(type=f['geometry']['type'],coordinates=round_coords(f['geometry']['coordinates']))) for f in world['features'] if f['properties']['ADMIN']!='Antarctica']))
-places=json.loads((R/'places-original.geojson').read_text(encoding='utf-8'))
-def location(prefix):
- found=[f for f in places['features'] if f['properties'].get('NAME','').startswith(prefix)]
- assert len(found)==1,(prefix,len(found))
- return found[0]['geometry']['coordinates']
-capital={'New Zealand':'Wellington','China':'Beijing','USA':'Washington','Singapore':'Singapore','UK':'London','India':'New Delhi','Japan':'Tokyo','Malaysia':'Kuala Lumpur'}
-dest=location('Canberra');origins=[];links=[]
-# INTERVIEW: FLOW GEOMETRY: generate 61 points along a spherical great-circle connection between representative capitals.
-# INTERVIEW: This is a schematic connection, not an observed flight itinerary; the visitor count controls stroke width separately.
-def great_circle(a,b):
- def vec(p):
-  lon,lat=map(math.radians,p);return [math.cos(lat)*math.cos(lon),math.cos(lat)*math.sin(lon),math.sin(lat)]
- va,vb=vec(a),vec(b);omega=math.acos(sum(x*y for x,y in zip(va,vb)));out=[]
- for i in range(61):
-  t=i/60;v=[(math.sin((1-t)*omega)*x+math.sin(t*omega)*y)/math.sin(omega) for x,y in zip(va,vb)]
-  out.append([round(math.degrees(math.atan2(v[1],v[0])),3),round(math.degrees(math.atan2(v[2],math.hypot(v[0],v[1]))),3)])
- return out
-# INTERVIEW: Take the eight largest published origin markets in 2025 and connect each representative capital to Canberra.
-for r in sorted([r for r in market if r['year']==2025],key=lambda r:-r['visitors'])[:8]:
- coord=location(capital[r['country']]);origins.append(dict(country=r['country'],visitors=r['visitors'],longitude=coord[0],latitude=coord[1]))
- links.append(dict(type='Feature',properties={'country':r['country'],'visitors':r['visitors']},geometry={'type':'LineString','coordinates':great_circle(coord,dest)}))
-save('routes',dict(type='FeatureCollection',features=links));table('origins',origins)
+# Build all individually located markets from preserved TRA and Natural Earth inputs.
+from origin_map import build as build_origin_map
+build_origin_map()
 
 # INTERVIEW: Record source provenance and processing decisions so the displayed data can be traced back to the official snapshots.
 sources=[dict(id='TRA',title='Tourism Research Australia: Business events data',url='https://www.tra.gov.au/en/tourism-statistics/business-events-data',reference='Calendar years 2024 and 2025; public report refreshed 21 May 2026',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Selected attendance-or-accompaniment union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break. International total spending split into Australian and overseas amounts. State traveller shares use 2025 Category Total components, normalised within each jurisdiction; State Total all-tourism rows are excluded.'),dict(id='ABS',title='ABS National, state and territory population, March 2026',url='https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026',reference='June 2025 population from Table 4, Data1 row 187 columns T:AA',retrieved='2026-10-05',licence='Commonwealth of Australia, CC BY 4.0',transform='Joined eight jurisdictions to TRA spending; spending divided by residents.'),dict(id='NE',title='Natural Earth vector map data',url='https://www.naturalearthdata.com/',reference='1:110m countries and populated places; 1:50m Australian states',retrieved='2026-10-05',licence='Public domain',transform='Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows.')]

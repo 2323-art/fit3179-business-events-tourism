@@ -122,15 +122,16 @@ async function renderChart(name,index){
  finally{el.setAttribute('aria-busy','false')}
 }
 // Route hover previews an origin; click or keyboard activation pins it.
+const originMapDataVersion='b232080d1a70';
 let originMapRows=[],originMapPinned='All origins';
 function showOriginMap(country=originMapPinned){
  const row=originMapRows.find(r=>r.country===country);
  const total=originMapRows.reduce((sum,r)=>sum+r.visitors,0);
  if(!total)return;
  document.getElementById('origin-map-value').textContent=formatTrips(row?row.visitors:total);
- document.getElementById('origin-map-name').textContent=row?displayName(row.country):'the eight origins shown';
+ document.getElementById('origin-map-name').textContent=row?displayName(row.country):'the '+originMapRows.length+' origins shown';
  document.getElementById('origin-map-detail').textContent=row
-  ?(row.visitors/total*100).toFixed(1)+'% of trips from these eight origins.'
+  ?(row.visitors/total*100).toFixed(1)+'% of trips from these '+originMapRows.length+' origins.'
   :'2025 · selected origins only';
  document.querySelectorAll('#origin-key button').forEach(button=>{
   button.classList.toggle('is-previewed',button.dataset.origin===country);
@@ -398,7 +399,7 @@ function syncMarketOverview(year,focus,detail){
 // INTERVIEW: DATA ALTERNATIVE: load the same prepared values into a readable HTML table inside a native dialog.
 // INTERVIEW: National data are limited to 2025 here because the domestic survey changed. Region parents are excluded to avoid double counting.
 async function showTable(name){
- let rows=await (await fetch('data/'+name+'.json'+(name==='activities'?'?v='+activityDataVersion:''),{cache:'no-cache'})).json();
+ let rows=await (await fetch('data/'+name+'.json'+(name==='activities'?'?v='+activityDataVersion:name==='origins'?'?v='+originMapDataVersion:''),{cache:'no-cache'})).json();
  if(name==='national')rows=rows.filter(r=>r.year===2025);
  if(name==='regions')rows=rows.filter(r=>r.value>0).map(r=>({region:r.name,state:r.parent,spend:r.value}));
  const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',rank:'Rank among these six',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
@@ -423,7 +424,7 @@ document.querySelectorAll('.chart-tools').forEach(el=>{
  const close=()=>{details.open=false;summary.focus()};
  const b=document.createElement('button');b.type='button';b.textContent='Read data table';
  b.addEventListener('click',()=>{close();showTable(el.dataset.table)});
- const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv'+(el.dataset.table==='activities'?'?v='+activityDataVersion:el.dataset.table==='origin-spending'?'?v=4f1f80c24e4b':'');csv.textContent='Download data';csv.setAttribute('download','');csv.addEventListener('click',close);
+ const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv'+(el.dataset.table==='activities'?'?v='+activityDataVersion:el.dataset.table==='origins'?'?v='+originMapDataVersion:el.dataset.table==='origin-spending'?'?v=4f1f80c24e4b':'');csv.textContent='Download data';csv.setAttribute('download','');csv.addEventListener('click',close);
  const spec=document.createElement('a');spec.href='specs/'+el.dataset.chart+'.json';spec.textContent='Chart specification';
  panel.append(b,csv,spec);details.append(summary,panel);el.append(details);
  details.addEventListener('toggle',()=>{
@@ -456,7 +457,7 @@ async function start(){
 // INTERVIEW: Load category colours for HTML legends and destination values for the selected-state detail list.
   [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
   buildColourLegends();buildStateComparison();
-  originMapRows=await (await fetch('data/origins.json')).json();
+  originMapRows=await (await fetch('data/origins.json?v='+originMapDataVersion,{cache:'no-cache'})).json();
 // INTERVIEW: Create origin buttons from actual data. Clicking sets originFocus; conditional opacity fades unrelated routes.
 // INTERVIEW: aria-pressed tells assistive technology which button is selected.
   for(const row of [{country:'All origins'},...originMapRows]){

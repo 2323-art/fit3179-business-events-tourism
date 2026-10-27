@@ -77,3 +77,8 @@ Run `python reproduce/origin_spending.py --check` to verify the saved summary, C
 The six published origins with the highest **2025 total trip spending** are selected from `tra-international-markets.json`. Source amounts in thousands are converted to AUD. Spending outside Australia equals total trip spending minus spending in Australia. All nodes and ribbons share one absolute AUD scale; gaps carry no data. Other countries is national international union spending minus the six selected origins, including other published markets, unlisted origins and rounding. It is an unranked aggregate. Both destination totals cover all international origins. “Retained in Australia” means reported Australian spending, not net economic retention. Country selection changes emphasis and the detail card, never totals or widths.
 
 Design grounding: S42 Week 6 networks/trees/flows, PDF pages 21–24 (Sankey); S5 Marks and channels, pages 4–5 (quantitative size); S61 Manipulate view, pages 8–12 (selection and highlighting). Applying a conserved two-destination flow to these source attributes is our design inference.
+
+
+### Expanded origin-map geometry
+
+Run `python reproduce/origin_map.py --check` to verify the 17 origin rows, CSV and routes. Omit `--check` to regenerate. Inputs are the preserved 2025 TRA visitors attribute and `data/source/origin-map-places.json`, a named-place and administration-matched subset of Natural Earth 10m populated places. The source URL and retrieval date are embedded in that file. The builder explicitly excludes Scandinavia, checks counts against all other published markets, and produces 61-point schematic great-circle links to Canberra. It is also called by `build_data.py`.

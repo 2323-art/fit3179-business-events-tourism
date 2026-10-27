@@ -24,7 +24,7 @@
     "reference": "1:110m countries and populated places; 1:50m Australian states",
     "retrieved": "2026-10-05",
     "licence": "Public domain",
-    "transform": "Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows."
+    "transform": "Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows. Origin map expanded to 17 individually located published markets using a preserved 10m populated-places subset (origin-map-places.json, retrieved 27 October 2026). Scandinavia is excluded as a regional aggregate. Hong Kong uses its representative city; Korea uses Seoul. Connections are schematic great circles to Canberra."
   },
   {
     "id": "TRA-SOTI-2023",

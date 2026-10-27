@@ -278,3 +278,8 @@ Focus uses outlines and opacity while preserving traveller colours, stacked widt
 ### Origin-map feedback · 27 October 2026
 
 The map now previews the hovered origin in a visitor-trip card above the explanation. Routes, origin points, labels and buttons share the selection. Click or keyboard activation pins an origin; Escape or All origins restores the overview. The card shows 513,000 trips across the eight displayed origins, or the selected origin’s count and share of that displayed subset. Rounded source counts, geographical positions and route widths are unchanged. Selection survives resizing. This applies S61 (Manipulate view, PDF pp.9–11): hover and persistent selection are distinct, and highlighting preserves the quantitative width channel. Verified map hover/click, keyboard selection/reset, and mobile persistence without horizontal overflow.
+
+
+### Expanded origin map · 27 October 2026
+
+The origin controls now sit above the map, and the standalone hover instruction is removed. Nine origins were added: Hong Kong, Korea, Philippines, Germany, Indonesia, Canada, Viet Nam, France and Netherlands. All 17 individually located published markets sum to 619,000 rounded visitor trips, approximately 84.7% of the national international total. Scandinavia (8,000) is a regional aggregate and remains excluded rather than being assigned a country point. Card shares use the 17 displayed markets. Overview labels show the original eight larger origins; selecting or hovering reveals each smaller origin. Source points are preserved from Natural Earth; widths remain proportional to visitor trips.

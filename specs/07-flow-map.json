@@ -66,7 +66,7 @@
     },
     {
       "data": {
-        "url": "data/routes.json",
+        "url": "data/routes.json?v=aeba931d1472",
         "format": {
           "type": "json",
           "property": "features"
@@ -138,7 +138,7 @@
     },
     {
       "data": {
-        "url": "data/origins.json"
+        "url": "data/origins.json?v=b232080d1a70"
       },
       "mark": {
         "type": "circle",
@@ -230,7 +230,7 @@
     },
     {
       "data": {
-        "url": "data/origins.json"
+        "url": "data/origins.json?v=b232080d1a70"
       },
       "mark": {
         "type": "text",
@@ -271,7 +271,7 @@
       },
       "transform": [
         {
-          "filter": "originFocus == 'All origins' || datum.country == originFocus"
+          "filter": "originFocus == 'All origins' ? (datum.visitors >= 21000) : datum.country == originFocus"
         },
         {
           "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
@@ -285,5 +285,6 @@
       "name": "originFocus",
       "value": "All origins"
     }
-  ]
+  ],
+  "description": "Seventeen individually located published origin markets in 2025. Scandinavia is excluded because it is a grouped region. Cities represent origins; lines are schematic, not observed flight routes."
 }
