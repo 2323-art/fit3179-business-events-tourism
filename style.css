@@ -328,7 +328,7 @@ body p,.methods li,body figcaption:not(.story-note),
 /* Navigation starts below the subtitle and sticks within the entire story.
    S8 pp.4–6 support the shared alignment; sticky behaviour follows the supplied reference. */
 .masthead{padding-block:10px;gap:0;box-shadow:none}
-.hero-heading{padding-top:24px}
+.hero-heading.wrap{width:100%;max-width:none;padding:32px max(18px,calc((100% - 952px)/2)) 24px;background:#e8edf2}
 .hero-heading .hero-title{padding-bottom:18px;border-bottom:0;margin:0}
 .hero-heading .hero-title h1{margin-bottom:16px}
 .hero-heading .title-prelude{margin-bottom:8px}
@@ -341,7 +341,7 @@ body p,.methods li,body figcaption:not(.story-note),
 .chapter-nav .wordmark:hover{text-decoration:underline;text-underline-offset:4px}
 .opening{padding-top:24px}
 @media(max-width:800px){
- .hero-heading{padding-top:20px}
+ .hero-heading.wrap{padding:24px 18px 18px}
  .chapter-nav{display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:8px 18px}
  .chapter-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px}
  .chapter-nav a{text-align:center;padding:7px 10px}

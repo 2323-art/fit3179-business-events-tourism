@@ -1,4 +1,4 @@
-# Beyond the conference badge
+# Tourism and Business
 
 An original FIT3179 DV2 data story about Australia's business-event visitors, created by Jack (Wong Jing Yuan), Monash University Malaysia, 5 October 2026.
 
@@ -146,6 +146,8 @@ The 2025 national table supplies 20,675,736 trips (shown as **20.7m**) and AUD 1
 Desktop and phone browser checks confirmed the cards fit their containers, all 13 charts render, and expanded definitions preserve the ten-word line ceiling. Cards share a row on desktop and stack on phones. Chart data and specifications are unchanged.
 
 ## Implementation and accessibility
+
+The user-selected title is **Tourism and Business**, used in the hero and browser tab. Its full-width pale grey background (`#e8edf2`) subtly separates the title area from the white navigation and story. Black text and the existing blue emphasis preserve readable contrast (S3 physical PDF pp. 6–7).
 
 The chapter buttons now sit immediately below the hero subtitle, following the user's annotated placement. The separate upper brand strip is removed. “THE VISITOR ECONOMY” now sits to the left of the chapter buttons and links back to the title; “AUSTRALIA / 2025” stays removed. The chapter navigation is a direct child of the main story: it sticks at the viewport top after reaching it, as observed in the supplied [Funko reference](https://emilchinjiazhen.github.io/FIT3179-DV2-Funko/#global). It highlights the current chapter using `aria-current="location"`. Its measured height supplies the anchor offset, including the phone layout with the brand above two rows of chapter buttons. S8 physical PDF pp. 4–6 supports alignment and grouping; the sticky behaviour and dimensions are reference-informed implementation choices. Direct chapter URLs are aligned again after chart rendering settles, unless the reader has already interacted. Browser checks verified desktop and phone anchor clearance, scroll-driven active states, keyboard activation, all 13 charts and no page overflow.
 
