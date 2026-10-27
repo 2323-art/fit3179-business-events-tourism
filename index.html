@@ -7,10 +7,10 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=9d3747f7fe8d"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=c140b2a7349d"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Refresh the app.js content hash whenever its code changes, especially when chart structures change. -->
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=3273ab0ada3f"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=e80e980e2459"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
@@ -97,14 +97,13 @@
  </figure>
 <section class="market-pair" aria-label="Compare international visitor markets">
  <div class="market-shared-controls" role="group" aria-label="Shared market chart controls">
-  <label for="market-year">Scatter year<select id="market-year"><option value="2024">2024</option><option value="2025" selected>2025</option></select></label>
   <label for="market-country">Highlight market<select id="market-country"><option>All markets</option></select></label>
   <label for="market-scale">Scatter scale<select id="market-scale"><option>All markets</option><option>Smaller markets</option></select></label>
   <button id="reset-market" type="button">Reset charts</button>
  </div>
  <p class="market-interaction-hint">Hover either chart to compare; click to keep. Escape clears.</p>
  <div class="two-col markets-row">
-  <figure><h3 id="market-heading">2025 · trips versus spending</h3><div class="chart market-view"><div class="semantic-legend" data-legend="international" aria-label="Chart colour legend"></div><div id="chart08" class="chart"></div><aside id="market-overview-panel" class="market-overview-panel" hidden aria-labelledby="market-overview-heading"><h4 id="market-overview-heading">All markets · context for the detail</h4><div id="market-overview-chart" class="chart" aria-label="All markets with the smaller-market detail area outlined"></div><p>Dashed box = enlarged area; all markets remain visible.</p></aside><p id="market-scale-note" class="control-hint" aria-live="polite"></p></div><div class="chart-tools" data-chart="08-market-scatter" data-table="markets"></div></figure>
+  <figure><h3 id="market-heading">2025 · trips versus spending</h3><div class="chart market-view"><div class="semantic-legend" data-legend="international" aria-label="Chart colour legend"></div><div id="chart08" class="chart"></div><div class="market-year-control"><label for="market-year">Scatter year<select id="market-year"><option value="2024">2024</option><option value="2025" selected>2025</option></select></label></div><p id="market-scale-note" class="control-hint" aria-live="polite"></p><aside id="market-overview-panel" class="market-overview-panel" hidden aria-labelledby="market-overview-heading"><h4 id="market-overview-heading">All markets · context for the detail</h4><div id="market-overview-chart" class="chart" aria-label="All markets with the smaller-market detail area outlined"></div><p>Dashed box = enlarged area; all markets remain visible.</p></aside></div><div class="chart-tools" data-chart="08-market-scatter" data-table="markets"></div></figure>
   <figure><h3>Change by measure · 2024–2025</h3><div id="chart09" class="chart"></div><div class="chart-tools" data-chart="09-change-heatmap" data-table="changes"></div></figure>
  </div>
  <aside class="market-insight"><div class="market-rate-card" aria-live="polite"><h3 id="market-insight-title">Malaysia · spending per trip</h3><p id="market-rate-change" class="rate-change"></p><p id="market-rate-values"></p></div><div class="story-explanation"><h3>Visitor volume and spending tell different stories</h3><p id="market-summary" aria-live="polite"></p><p id="market-insight" aria-live="polite"></p><details class="caption-detail"><summary>Stay length and calculation</summary><p id="market-rate-detail"></p></details></div></aside>

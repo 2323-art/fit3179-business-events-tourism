@@ -62,7 +62,7 @@ function updateMarketSummary(){
  document.getElementById('market-heading').textContent=year+' · trips versus spending';
  const lead=row?`In ${year}, ${displayName(row.country)} recorded ${formatTrips(row.visitors)} trips and AUD ${(row.spend/1e6).toFixed(1)}m in spending.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending in ${year}.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending in ${year}.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
- document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the crowded cluster.';
+ document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the cluster.';
  syncMarketOverview(year,focus,detail);const change=updateComparison(focus);document.getElementById('market-summary').textContent=lead+' '+change;scheduleProse();
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
@@ -88,6 +88,7 @@ async function renderChart(name,index){
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
+  if(index===7)spec.height=width<400?360:440;
   if(index===2){spec.width=width;spec.height=width<400?660:580;}
   if(index===3)spec.height=Math.min(400,width*.98);
   if(index===4)spec.height=Math.min(360,width*.9);
