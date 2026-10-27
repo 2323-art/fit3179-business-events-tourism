@@ -6,7 +6,7 @@
     "reference": "Calendar years 2024 and 2025; public report refreshed 21 May 2026",
     "retrieved": "2026-10-05",
     "licence": "Commonwealth of Australia, CC BY 4.0",
-    "transform": "Selected attendance-or-accompaniment union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break. International total spending split into Australian and overseas amounts. State traveller shares use 2025 Category Total components, normalised within each jurisdiction; State Total all-tourism rows are excluded."
+    "transform": "Selected attendance-or-accompaniment union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break. International total spending split into Australian and overseas amounts. State traveller shares use 2025 Category Total components, normalised within each jurisdiction; State Total all-tourism rows are excluded. Origin-spending Sankey selects the six highest total-trip-spending published origins; Other countries is national international attendance-or-accompaniment union spending minus those six, separately for total and Australian spending. Includes remaining published markets, unlisted origins and rounding; the aggregate is not ranked."
   },
   {
     "id": "ABS",

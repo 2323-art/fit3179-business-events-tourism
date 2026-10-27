@@ -6,69 +6,78 @@
     "amount": 554169000,
     "y0": 0,
     "y1": 554169000,
-    "extent": 2957108000
+    "extent": 4855405000
   },
   {
     "kind": "source",
     "country": "China",
     "label": "China",
     "amount": 500820000,
-    "y0": 654169000,
-    "y1": 1154989000,
-    "extent": 2957108000
+    "y0": 704169000,
+    "y1": 1204989000,
+    "extent": 4855405000
   },
   {
     "kind": "source",
     "country": "United Kingdom",
     "label": "United Kingdom",
     "amount": 463745000,
-    "y0": 1254989000,
-    "y1": 1718734000,
-    "extent": 2957108000
+    "y0": 1354989000,
+    "y1": 1818734000,
+    "extent": 4855405000
   },
   {
     "kind": "source",
     "country": "New Zealand",
     "label": "New Zealand",
     "amount": 455958000,
-    "y0": 1818734000,
-    "y1": 2274692000,
-    "extent": 2957108000
+    "y0": 1968734000,
+    "y1": 2424692000,
+    "extent": 4855405000
   },
   {
     "kind": "source",
     "country": "India",
     "label": "India",
     "amount": 278834000,
-    "y0": 2374692000,
-    "y1": 2653526000,
-    "extent": 2957108000
+    "y0": 2574692000,
+    "y1": 2853526000,
+    "extent": 4855405000
   },
   {
     "kind": "source",
     "country": "Singapore",
     "label": "Singapore",
     "amount": 203582000,
-    "y0": 2753526000,
-    "y1": 2957108000,
-    "extent": 2957108000
+    "y0": 3003526000,
+    "y1": 3207108000,
+    "extent": 4855405000
+  },
+  {
+    "kind": "source",
+    "country": "Other countries",
+    "label": "Other countries",
+    "amount": 1498297000,
+    "y0": 3357108000,
+    "y1": 4855405000,
+    "extent": 4855405000
   },
   {
     "kind": "target",
     "country": "",
     "label": "Retained in Australia",
-    "amount": 1453319000,
-    "y0": 190000000.0,
-    "y1": 1643319000.0,
-    "extent": 2957108000
+    "amount": 2339479000,
+    "y0": 390000000.0,
+    "y1": 2729479000.0,
+    "extent": 4855405000
   },
   {
     "kind": "target",
     "country": "",
     "label": "Spent outside Australia",
-    "amount": 1003789000,
-    "y0": 1763319000.0,
-    "y1": 2767108000.0,
-    "extent": 2957108000
+    "amount": 1615926000,
+    "y0": 2849479000.0,
+    "y1": 4465405000.0,
+    "extent": 4855405000
   }
 ]

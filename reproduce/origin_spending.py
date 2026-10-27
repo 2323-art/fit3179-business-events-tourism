@@ -1,4 +1,4 @@
-"""Rebuild the six-origin Sankey from the preserved TRA market snapshot."""
+"""Rebuild the top-six plus other-countries Sankey from the preserved TRA market snapshot."""
 import argparse
 import csv
 import io
@@ -26,12 +26,26 @@ def outputs():
     rows = sorted(rows, key=lambda r: (-r['total_trip_spend'], r['country']))[:6]
     assert len(rows) == 6
     rows = [dict(rank=i+1, **r) for i, r in enumerate(rows)]
+    summary = json.loads((ROOT / 'data/source/tra-summary-dashboard.json').read_text(encoding='utf-8'))
+    national, = [r for r in summary if r['Year'] == 2025 and r['Type'] == 'International'
+                and r['Category'] == 'Attended or accompanied someone else to business event total']
+    national_total = round(national['Total trip spend ($000)'] * 1000)
+    national_inside = round(national['Spend in Australia ($000)'] * 1000)
+    other_total = national_total - sum(r['total_trip_spend'] for r in rows)
+    other_inside = national_inside - sum(r['in_australia'] for r in rows)
+    assert 0 <= other_inside <= other_total
+    # Residual includes other published markets, unlisted origins and source rounding.
+    rows.append(dict(rank=None, country='Other countries', year=2025,
+                     total_trip_spend=other_total, in_australia=other_inside,
+                     outside_australia=other_total-other_inside, share=other_inside/other_total))
+    assert sum(r['total_trip_spend'] for r in rows) == national_total
+    assert sum(r['in_australia'] for r in rows) == national_inside
     # All ribbon endpoints use AUD coordinates and the same vertical scale.
-    source_gap, target_gap = 100000000, 120000000
+    source_gap, target_gap = 150000000, 120000000
     inside_total = sum(r['in_australia'] for r in rows)
     outside_total = sum(r['outside_australia'] for r in rows)
-    extent = inside_total + outside_total + 5 * source_gap
-    offset = (5 * source_gap - target_gap) / 2
+    extent = inside_total + outside_total + (len(rows)-1) * source_gap
+    offset = ((len(rows)-1) * source_gap - target_gap) / 2
     destinations = [('in_australia', 'Retained in Australia', offset, inside_total),
                     ('outside_australia', 'Spent outside Australia', offset+inside_total+target_gap, outside_total)]
     nodes, links = [], []
@@ -78,7 +92,7 @@ def build(check=False):
             assert path.read_text(encoding='utf-8') == content, 'Stale output: '+name
         else:
             path.write_text(content, encoding='utf-8')
-    print('Verified six ranked origins, twelve conserved flows and two destination totals.')
+    print('Verified six ranked origins plus other countries, fourteen conserved flows and national destination totals.')
 
 
 if __name__ == '__main__':

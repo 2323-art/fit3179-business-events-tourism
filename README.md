@@ -244,7 +244,7 @@ This applies S63 *Treemap, dendrogram, network and chord* p. 1 on details for sm
 
 ### Current figure 03: six-origin spending Sankey
 
-Replaces the coin grid with the top six published 2025 origin countries, ranked by **total trip spending**: United States, China, United Kingdom, New Zealand, India and Singapore. Blue ribbons lead to **Retained in Australia**; grey ribbons lead to **Spent outside Australia**. The shared AUD scale conserves every country's spending across both destinations. All displayed destination totals cover these six origins only (AUD 2.457108bn combined; AUD 1.453319bn in Australia).
+Replaces the coin grid with the top six published 2025 origin countries, ranked by **total trip spending**: United States, China, United Kingdom, New Zealand, India and Singapore. Blue ribbons lead to **Retained in Australia**; grey ribbons lead to **Spent outside Australia**. The shared AUD scale conserves every country's spending across both destinations. Other countries combines the national remainder after removing those six (including unlisted origins and rounding). Destination totals now cover all origins: AUD 3.955405bn combined; AUD 2.339479bn in Australia; AUD 1.615926bn outside Australia. The aggregate is not ranked.
 
 Hover previews a country's amounts and Australian share. Clicking or choosing the keyboard-accessible dropdown pins the country; selecting All six countries restores the overview. All ribbons and destination totals remain present. The three-dot menu supplies the matching six-row table, CSV and specification. `reproduce/origin_spending.py --check` validates source ranking, converted amounts, every ribbon's conservation and the destination totals.
 

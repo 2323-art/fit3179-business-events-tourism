@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "2025 top six published origin countries ranked by total trip spending. Ribbon widths preserve absolute AUD amounts. Retained means reported spending in Australia, not net economic retention.",
+  "description": "2025 top six published origin countries by total trip spending, plus Other countries calculated as the national total minus these six. Includes unlisted origins and source rounding. Ribbon widths preserve absolute AUD amounts. Retained means spending in Australia, not net economic retention.",
   "width": 570,
-  "height": 500,
+  "height": 580,
   "padding": 0,
   "autosize": "none",
   "background": "white",
@@ -27,11 +27,11 @@
   "data": [
     {
       "name": "links",
-      "url": "data/origin-spending-links.json"
+      "url": "data/origin-spending-links.json?v=5acab6caf36a"
     },
     {
       "name": "nodes",
-      "url": "data/origin-spending-nodes.json"
+      "url": "data/origin-spending-nodes.json?v=86baa1d33c22"
     },
     {
       "name": "sources",

@@ -52,5 +52,14 @@
     "in_australia": 102035000,
     "outside_australia": 101547000,
     "share": 0.5011985342515547
+  },
+  {
+    "rank": null,
+    "country": "Other countries",
+    "year": 2025,
+    "total_trip_spend": 1498297000,
+    "in_australia": 886160000,
+    "outside_australia": 612137000,
+    "share": 0.5914448203527071
   }
 ]
