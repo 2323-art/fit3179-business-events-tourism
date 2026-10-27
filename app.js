@@ -130,7 +130,21 @@ async function bindActivityFeedback(view){
  const update=()=>{
   const activity=view.signal('activityFocus');
   feedback.replaceChildren();
-  if(!activity){feedback.textContent='Hover an activity to compare participation across years.';return;}
+  const cardValue=document.getElementById('activity-stat-value');
+  const cardCaption=document.getElementById('activity-stat-caption');
+  const cardChange=document.getElementById('activity-stat-change');
+  if(!activity){
+   feedback.textContent='Hover an activity to compare participation across years.';
+   cardValue.textContent='—';cardCaption.textContent='Hover an activity to see its 2025 participation.';cardChange.textContent='';return;
+  }
+  const latest=rows.find(row=>row.activity===activity&&row.year===2025);
+  const earliest=rows.find(row=>row.activity===activity&&row.year===2023);
+  cardValue.textContent=latest.participation;
+  const cardName=document.createElement('strong');cardName.textContent=displayName(activity)+' in 2025';
+  cardCaption.replaceChildren(document.createTextNode('of international event attendees reported'),document.createElement('br'),cardName);
+  const difference=(latest.share-earliest.share)*100;
+  cardChange.textContent=Math.abs(difference)<0.05?'Approximately unchanged from 2023.':`About ${Math.abs(difference).toFixed(1)} percentage points ${difference>0?'above':'below'} 2023.`;
+
   const title=document.createElement('strong');title.textContent=displayName(activity);feedback.append(title);
   for(const row of rows.filter(row=>row.activity===activity).sort((a,b)=>a.year-b.year)){
    const item=document.createElement('span');item.textContent=`${row.year}: ${row.participation} · rank ${row.rank}`;feedback.append(item);
