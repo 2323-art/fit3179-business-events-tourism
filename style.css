@@ -480,3 +480,10 @@ body p,.methods li,body figcaption:not(.story-note),
 .origin-map-card #origin-map-value{display:block;font:italic 54px/1.15 Georgia,serif;letter-spacing:-.03em;color:#2457D6;margin-bottom:10px}
 .origin-map-card #origin-map-detail{font-size:var(--type-small);line-height:1.5;margin:0}
 .origin-key button.is-previewed{outline:2px solid var(--blue);outline-offset:2px}
+
+/* Full-width origin map, followed by aligned card and explanation columns. */
+.story-row.story-row--origins{grid-template-columns:minmax(0,1fr)}
+.story-row--origins>.story-plot{grid-column:1;grid-row:1}
+.story-row--origins>.story-note{grid-column:1;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:32px;align-items:start}
+.story-row--origins .origin-map-card{margin:0;padding:0;border-bottom:0}
+@media(max-width:650px){.story-row--origins>.story-note{grid-template-columns:minmax(0,1fr);gap:24px}}
