@@ -221,7 +221,7 @@ function scheduleProse(){cancelAnimationFrame(proseFrame);proseFrame=requestAnim
 document.fonts.ready.then(scheduleProse);addEventListener('resize',scheduleProse);
 // Keep anchor headings below the navigation, including its two-row phone layout.
 const chapterNav=document.querySelector('.chapter-nav');
-const chapterLinks=[...chapterNav.querySelectorAll('a')];
+const chapterLinks=[...chapterNav.querySelectorAll('.chapter-links a')];
 const storyChapters=chapterLinks.map(link=>document.querySelector(link.getAttribute('href')));
 let chapterFrame;
 function updateChapterNav(){
