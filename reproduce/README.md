@@ -12,6 +12,8 @@ The Sankey now isolates the 2025 international total-trip spending split. The st
 
 ## Verify or rebuild chart 10 only
 
+The current display is `specs/10-spending-change.json`: diverging bars plus a national summary. The underlying filenames and commands retain `waterfall` for compatibility. The display uses `value` for contributions and total rows for the summary; legacy cumulative `start`/`end` fields remain in downloads but are not plotted.
+
 From the repository root, these commands use Python's standard library and the included snapshots:
 
 ```powershell

@@ -2,7 +2,7 @@
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
 // INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The destination treemap uses rectangle area for AUD spending.
-const charts=['01-waffle','02-spend-per-trip','03-origin-spending','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-bump','12-per-night'];
+const charts=['01-waffle','02-spend-per-trip','03-origin-spending','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-spending-change','11-activity-bump','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
@@ -111,7 +111,26 @@ async function renderChart(name,index){
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
   else if(index===5){spec.width=width;spec.height=width<400?640:580}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform.find(t=>t.filter?.includes('originFocus')).filter="originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"}
-  else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
+  else if(index===9){
+   spec.width=Math.max(110,width-(width<500?180:210));
+   if(width<500){
+    spec.layer[1].encoding.x.axis.values=[-150,0,150];
+    spec.layer[1].encoding.x.title=['Spending change','(AUD millions)'];
+    for(const layer of spec.layer.filter(layer=>layer.encoding.y)){
+     layer.encoding.y.axis.labelLimit=110;
+     layer.encoding.y.axis.labelFontSize=13;
+     layer.encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";
+    }
+   }
+   const rows=await (await fetch(spec.data.url,{cache:'no-cache'})).json();
+   const before=rows.find(row=>row.label==='2024'&&row.kind==='Total').value;
+   const after=rows.find(row=>row.label==='2025'&&row.kind==='Total').value;
+   document.getElementById('spending-before').textContent='AUD '+before.toFixed(2)+'bn';
+   document.getElementById('spending-after').textContent='AUD '+after.toFixed(2)+'bn';
+   document.getElementById('spending-net').textContent=(after<before?'−':'+')+'AUD '+(Math.abs(after-before)*1000).toFixed(1)+'m';
+   document.getElementById('spending-net-rate').textContent=Math.abs((after/before-1)*100).toFixed(1)+'% '+(after<before?'decrease':'increase');
+   spec.data={values:rows};
+  }
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
   if(index===7)spec.height=width<400?360:440;
@@ -474,12 +493,12 @@ async function showTable(name){
  const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',rank:'Rank among these six',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
 if(name==='origin-spending')Object.assign(labels,{rank:'Rank by total trip spending',total_trip_spend:'Total trip spending (AUD)',in_australia:'Retained in Australia (AUD)',outside_australia:'Spent outside Australia (AUD)',share:'Share retained in Australia'});
 // INTERVIEW: Hide coordinates and layout-order columns from this reader-facing table; retain them in the underlying download.
- const hidden=new Set(['longitude','latitude','label_lon','label_lat','order']);
+ const hidden=new Set(['longitude','latitude','label_lon','label_lat','order',...(name==='waterfall'?['start','end']:[])]);
  const table=document.createElement('table');const head=document.createElement('thead'),body=document.createElement('tbody');
  const keys=Object.keys(rows[0]||{}).filter(k=>!hidden.has(k));const hr=document.createElement('tr');keys.forEach(key=>{const th=document.createElement('th');th.textContent=labels[key]||key.replaceAll('_',' ');th.scope='col';hr.append(th)});head.append(hr);
  rows.forEach(row=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=row[key]===null?(name==='origin-spending'&&key==='rank'?'Not ranked':'Not available'):key==='year'?String(row[key]):typeof row[key]==='number'?new Intl.NumberFormat('en-AU',{maximumFractionDigits:['share','change','visitor_share','spend_share'].includes(key)?1:4,...(['share','change','visitor_share','spend_share'].includes(key)?{style:'percent'}:{})}).format(row[key]):displayName(row[key]);tr.append(td)});body.append(tr)});table.append(head,body);
  document.getElementById('data-note').textContent=(name==='origin-spending'?'Top six published origins ranked by 2025 total trip spending, plus Other countries. Other countries equals the national total minus these six, including unlisted origins and rounding. The aggregate is not ranked. Outside spending is total trip spending minus spending in Australia. Retained means reported Australian spending, not net economic retention. ':name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='state-mix'?'2025 business-event totals by traveller group, not all tourism. Shares use the sum of the three published components within each state; rounding may differ from the separate state total. ':name==='activities'?'Six activities with values in all three years. Rank is among these six only. 2023 percentages are published whole numbers; later values are dashboard estimates. Activities can overlap. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
- document.getElementById('table-wrap').replaceChildren(table);document.getElementById('data-title').textContent=name.replaceAll('-',' ')+' · chart data';document.getElementById('data-dialog').showModal();
+ document.getElementById('table-wrap').replaceChildren(table);document.getElementById('data-title').textContent=(name==='waterfall'?'Spending change':name.replaceAll('-',' '))+' · chart data';document.getElementById('data-dialog').showModal();
 }
 // INTERVIEW: Create a table button, CSV download and specification link for each figure, using its HTML data-table/data-chart attributes.
 document.querySelectorAll('.chart-tools').forEach(el=>{
@@ -570,7 +589,7 @@ async function start(){
 function buildColourLegends(){
  for(const host of document.querySelectorAll('[data-legend]')){
   const kind=host.dataset.legend;
-  const entries=kind==='international'?[colourSemantics.travellers[2]]:kind==='waterfall'?[{...colourSemantics.travellers[2],label:'International spending total'},...colourSemantics.change]:colourSemantics[kind];
+  const entries=kind==='international'?[colourSemantics.travellers[2]]:kind==='spending-change'?[...colourSemantics.change,{label:'Remainder',colour:'#66758B'}]:colourSemantics[kind];
   if(kind==='states'){
    const reset=document.createElement('button');reset.type='button';reset.textContent='All states and territories';reset.dataset.state='All states';reset.setAttribute('aria-pressed',String(selectedState==='All states'));reset.addEventListener('click',()=>selectState('All states'));host.append(reset);
   }

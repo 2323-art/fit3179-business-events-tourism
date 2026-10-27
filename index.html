@@ -7,10 +7,10 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=196817a7a944"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=c6605d88bbf3"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Refresh the app.js content hash whenever its code changes, especially when chart structures change. -->
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=400a83dbc28b"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=302d70abd5c3"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
@@ -113,8 +113,8 @@
 </section>
 <!-- INTERVIEW: Figure 10: chart10 is the mount point for specification 10. The chart-tools data attributes select its data table and specification links. -->
  <figure class="story-row">
- <div class="story-plot"><p class="plot-title">International spending change · 2024–2025</p><div class="semantic-legend" data-legend="waterfall" aria-label="Chart colour legend"></div><div id="chart10" class="chart"></div><div class="chart-tools" data-chart="10-waterfall" data-table="waterfall"></div></div>
- <figcaption class="story-note"><div class="story-explanation"><h3>Published markets explain only part of the decline</h3><p class="chart-intro">About <strong>78% of the net decline</strong> sits in the unpublished-origin and rounding remainder. Gains from some named markets do not offset the overall fall. The chart reconciles the decline, but cannot identify which unlisted origins drove it.</p><div class="figure-method"><p>10 / The remainder is not a measured country group. <a href="#sources">Sources</a>.</p><details class="caption-detail"><summary>How the change is reconciled</summary><p>Totals start at zero; the running-total detail enlarges changes. The six largest published market changes appear separately. “Other published markets” combines the remaining 12.</p><p>“Unpublished + rounding” is the national change minus all 18 published-market changes. Contributions reconcile the totals; they do not explain causes.</p></details></div></div></figcaption>
+ <div class="story-plot"><p class="plot-title">International spending change · 2024–2025</p><div class="spending-change-summary" aria-label="National international visitor spending in Australia"><div class="spending-total-pair"><span>2024 <strong id="spending-before">AUD 2.51bn</strong></span><span aria-hidden="true">→</span><span>2025 <strong id="spending-after">AUD 2.34bn</strong></span></div><p><strong id="spending-net">−AUD 172.4m</strong><span id="spending-net-rate">6.9% decrease</span></p></div><div class="semantic-legend" data-legend="spending-change" aria-label="Chart colour legend"></div><div id="chart10" class="chart"></div><div class="chart-tools" data-chart="10-spending-change" data-table="waterfall"></div></div>
+ <figcaption class="story-note"><div class="story-explanation"><h3>Published markets explain only part of the decline</h3><p class="chart-intro">About <strong>78% of the net decline</strong> sits in the unpublished-origin and rounding remainder. Gains from some named markets do not offset the overall fall. The chart reconciles the decline, but cannot identify which unlisted origins drove it.</p><div class="figure-method"><p>10 / Bars show spending changes from zero, in AUD millions. The grey remainder is not a measured country group. <a href="#sources">Sources</a>.</p><details class="caption-detail"><summary>How the change is reconciled</summary><p>National totals appear above the chart. Positive bars extend right; negative bars extend left. The gap separates the unpublished-origin and rounding remainder from published-market changes. The six largest published market changes appear separately. “Other published markets” combines the remaining 12.</p><p>“Unpublished + rounding” is the national change minus all 18 published-market changes. Contributions reconcile the totals; they do not explain causes.</p></details></div></div></figcaption>
  </figure>
 </section>
 <section class="band" id="beyond"><div class="chapter wrap">

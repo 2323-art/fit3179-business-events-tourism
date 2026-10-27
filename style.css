@@ -411,6 +411,12 @@ body p,.methods li,body figcaption:not(.story-note),
 /* S8 pp.4–6: align the chart and explanation in the page's existing columns. */
 .story-row.story-row--bump{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
 .story-row--bump .control-hint{margin:0 0 16px;max-width:80ch}
+.spending-change-summary{padding:0 0 16px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.spending-total-pair{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:14px}
+.spending-total-pair strong{display:block;color:var(--blue);font-size:21px;line-height:1.4;font-variant-numeric:tabular-nums}
+.spending-change-summary>p{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 14px;margin:12px 0 0}
+.spending-change-summary #spending-net{font-size:26px;line-height:1.25;font-variant-numeric:tabular-nums}
+.spending-change-summary #spending-net-rate{font-size:14px}
 @media(max-width:800px){
  .story-row.story-row--bump{grid-template-columns:minmax(0,1fr)}
  .story-row--bump>.story-plot{grid-column:1;grid-row:1}

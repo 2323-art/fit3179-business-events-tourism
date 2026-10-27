@@ -1,0 +1,255 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Change in international business-event visitor spending in Australia, 2024 to 2025. Bars start at zero; the separately shaded remainder is not a measured country group.",
+  "width": 400,
+  "height": 405,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#000000",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 170,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20,
+      "subtitleFontSize": 15,
+      "subtitleLineHeight": 20,
+      "subtitleColor": "#000000",
+      "offset": 14
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  "data": {
+    "url": "data/waterfall.json"
+  },
+  "transform": [
+    {
+      "filter": "datum.kind != 'Total'"
+    },
+    {
+      "calculate": "datum.label == 'USA' ? 'United States' : datum.label",
+      "as": "display_name"
+    },
+    {
+      "calculate": "datum.value * 1000",
+      "as": "change_m"
+    },
+    {
+      "calculate": "datum.label == 'Unpublished + rounding' ? 'Remainder' : datum.kind",
+      "as": "group"
+    },
+    {
+      "calculate": "datum.label == 'Unpublished + rounding' ? 'National change minus all published-market changes; not a measured country group' : datum.label == 'Other published markets' ? 'Combined change of the other 12 published origins' : 'Published origin-market change'",
+      "as": "scope"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#65758B",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        }
+      },
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "rows"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "size": 24
+      },
+      "encoding": {
+        "y": {
+          "field": "display_name",
+          "type": "ordinal",
+          "sort": [
+            "China",
+            "New Zealand",
+            "Viet Nam",
+            "United States",
+            "Japan",
+            "Singapore",
+            "Other published markets",
+            "",
+            "Unpublished + rounding"
+          ],
+          "scale": {
+            "domain": [
+              "China",
+              "New Zealand",
+              "Viet Nam",
+              "United States",
+              "Japan",
+              "Singapore",
+              "Other published markets",
+              "",
+              "Unpublished + rounding"
+            ]
+          },
+          "title": null,
+          "axis": {
+            "labelAngle": 0,
+            "labelLimit": 150,
+            "labelPadding": 8,
+            "ticks": false,
+            "labelExpr": "datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label"
+          }
+        },
+        "x": {
+          "field": "change_m",
+          "type": "quantitative",
+          "title": "Spending change (AUD millions)",
+          "scale": {
+            "domain": [
+              -150,
+              150
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              -150,
+              -75,
+              0,
+              75,
+              150
+            ],
+            "format": "+.0f",
+            "labelExpr": "datum.value == 0 ? '0' : format(datum.value, '+.0f')"
+          }
+        },
+        "x2": {
+          "datum": 0
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Increase",
+              "Decrease",
+              "Remainder"
+            ],
+            "range": [
+              "#762A83",
+              "#C45118",
+              "#66758B"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "display_name",
+            "title": "Origin / group"
+          },
+          {
+            "field": "change_m",
+            "title": "Change (AUD millions)",
+            "format": "+.3f"
+          },
+          {
+            "field": "scope",
+            "title": "Coverage"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 14,
+        "color": "#162B4D"
+      },
+      "encoding": {
+        "y": {
+          "field": "display_name",
+          "type": "ordinal",
+          "sort": [
+            "China",
+            "New Zealand",
+            "Viet Nam",
+            "United States",
+            "Japan",
+            "Singapore",
+            "Other published markets",
+            "",
+            "Unpublished + rounding"
+          ],
+          "scale": {
+            "domain": [
+              "China",
+              "New Zealand",
+              "Viet Nam",
+              "United States",
+              "Japan",
+              "Singapore",
+              "Other published markets",
+              "",
+              "Unpublished + rounding"
+            ]
+          },
+          "title": null,
+          "axis": {
+            "labelAngle": 0,
+            "labelLimit": 150,
+            "labelPadding": 8,
+            "ticks": false,
+            "labelExpr": "datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label"
+          }
+        },
+        "x": {
+          "value": {
+            "expr": "width + 8"
+          }
+        },
+        "text": {
+          "field": "change_m",
+          "type": "quantitative",
+          "format": "+.1f"
+        }
+      }
+    }
+  ]
+}
