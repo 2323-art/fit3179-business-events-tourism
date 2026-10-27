@@ -532,7 +532,11 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-pair>.market-insight{align-items:start;margin-top:24px}
 .market-pair .story-explanation>h3{max-width:none;margin-bottom:12px}
 .market-pair #market-summary{margin:0 0 12px;max-width:none;min-height:0}
-.market-pair-methods{padding-top:12px}
+.market-pair-methods{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:12px 24px;padding-top:12px;font-size:14px}
+.market-pair-methods>p{margin:0;max-width:none}
+.market-pair-methods>.caption-detail{margin:0;max-width:44ch;font-size:inherit}
+.market-pair-methods>.caption-detail>summary{padding:0}
+@media(max-width:650px){.market-pair-methods{grid-template-columns:minmax(0,1fr)}}
 .market-pair-methods>.market-comparison{margin-top:16px}
 @media(max-width:650px){.market-shared-controls label{flex:1 1 100%;min-width:0}.market-shared-controls button{margin-left:0}.market-shared-controls select{flex:1;min-width:0;width:auto}}
 
