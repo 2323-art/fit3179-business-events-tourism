@@ -7,7 +7,7 @@
 <title>Beyond the conference badge · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=7bcc0cf3901d"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=7b854e134f6c"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
 <script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=40d72ffb2717"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
@@ -19,12 +19,18 @@
 <!-- INTERVIEW: Story sequence: visitor value, Australian destinations, international markets, then activity/per-night comparisons. -->
 <main id="story">
 <section class="opening wrap" id="top">
- <!-- INTERVIEW: The title spans the opening; the introduction and definition precede all four numbered chapters. -->
+ <!-- INTERVIEW: Three headline cards introduce scale and spending mix. Rounded from the 2025 national table. -->
  <div class="hero-title"><h1><span class="title-prelude">Beyond the</span>Conference <em>Badge</em></h1><p class="hero-subtitle">Why visitor numbers alone do not explain Australia's business-event spending</p></div>
- <div class="hero-copy"><p class="eyebrow">A business-events field guide</p><p class="standfirst">A busy events market is not only about visitor numbers. Which trips generate spending, where is it concentrated, and does more travel mean more spending?</p><p>In 2025, business-event visitors spent <strong>AUD 17.2 billion in Australia</strong>. Follow the contrast between volume and spending—from trip types and destinations to international changes since 2024.</p><a class="read-on" href="#mix">Follow the visitor dollar <span aria-hidden="true">↓</span></a></div>
- <aside class="hero-definition"><h3>What counts?</h3><p>Visitors who attend—or accompany someone attending—a business meeting, corporate event, conference, convention, seminar, exhibition or trade fair. These estimates cover spending during the <strong>whole trip</strong>, not just at the event. Most local attendees are outside the tourism surveys. All amounts are in <strong>Australian dollars (AUD)</strong>; “bn” means billion and “m” means million.</p></aside>
-
-
+ <div class="hero-stats" role="group" aria-label="Australian business-event tourism: key statistics for 2025">
+  <div class="stat-card"><h2>Visitor volume · 2025</h2><p class="stat-value">20.7m</p><p class="stat-description">Business-event visitor trips across Australia.</p></div>
+  <div class="stat-card"><h2>Visitor spending · 2025</h2><p class="stat-value"><span class="stat-currency">AUD</span> 17.2bn</p><p class="stat-description">Spent within Australia during visitors’ whole trips.</p></div>
+  <div class="stat-card"><h2>Domestic overnight · 2025</h2><p class="stat-value">70%</p><p class="stat-description">Of spending came from domestic overnight trips.</p></div>
+ </div>
+ <div class="hero-context">
+  <div class="stats-meta"><p>2025 estimates; trips, not unique people.<br>Source: <a href="#sources">Tourism Research Australia</a>.</p><p>AUD = Australian dollars; m = million; bn = billion.</p></div>
+  <details class="hero-scope"><summary>Who counts as a business-event visitor?</summary><p>Visitors who attend—or accompany someone attending—a business meeting, corporate event, conference, convention, seminar, exhibition or trade fair. These estimates cover spending during the <strong>whole trip</strong>, not just at the event. Most local attendees are outside the tourism surveys.</p></details>
+ </div>
+ <a class="read-on" href="#mix">Follow the visitor dollar <span aria-hidden="true">↓</span></a>
 </section>
 
 <!-- INTERVIEW: Chapter 1: compare per-trip amounts and distinguish total trip spending from spending within Australia. -->

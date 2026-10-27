@@ -127,6 +127,14 @@ The user's ten-word maximum is enforced for rendered prose, headings, captions, 
 
 `tests/layout-check.html` provides an independent, read-only browser audit. Serve the repository and open that page; use **Audit rendered text** after changing controls or resizing. It measures text ranges by their rendered baselines, checks SVG text lines, and reports chart count and page overflow. Checks at wide desktop, small-laptop and phone widths found a maximum of ten words, no over-limit SVG text lines, all 13 charts, and no horizontal page overflow. Coverage included all eight open method notes, Canada / 2024, Australian Capital Territory and the national data dialog. The paired views were also visually checked at 966 pixels; the first chapter was inspected at 390 pixels. Source data, chart specifications and analytical claims were not changed.
 
+## Statistic-led opening — 27 October 2026
+
+The opening's two explanatory paragraphs and always-visible definition panel are replaced by three equal statistic cards. The user supplied [Postmarked Australia](https://limkianbong.github.io/Data-Visualisation-2/#collections) as the reference for a small label, prominent value and short explanation. These independently authored cards retain the tourism site's colours and type. The subtitle keeps the story question; an expandable definition preserves scope, while year, source, units and the distinction between trips and unique people stay visible.
+
+The 2025 national table supplies 20,675,736 trips (shown as **20.7m**) and AUD 17,233,270,000 spent in Australia (shown as **AUD 17.2bn**). Domestic overnight spending is AUD 12,015,989,000 ÷ AUD 17,233,270,000 = 69.7255% (shown as **70%**). These cards preview scale and traveller mix; they do not claim event-only expenditure or total economic impact. Course basis: S3 physical PDF p. 10 (typographic hierarchy) and S8 pp. 2, 4–6 (emphasis, shared alignment, grouping and columns).
+
+Desktop and phone browser checks confirmed the cards fit their containers, all 13 charts render, and expanded definitions preserve the ten-word line ceiling. Cards share a row on desktop and stack on phones. Chart data and specifications are unchanged.
+
 ## Implementation and accessibility
 
 Figure 08 keeps both 2024 and 2025 values visible for the chosen market, with compact visitor-axis labels defined in the axis title. Its **All markets** preset spans 0–200,000 trips and AUD 0–400m; **Smaller markets** spans 0–40,000 trips and AUD 0–120m and excludes records outside those bounds. Both presets use fixed domains across years. The visible note reports how many of the 18 markets remain, and prompts readers to return to the overview if their selected market is outside the detail. The table and rate summary still describe the selected market even when its dot is out of view.
