@@ -47,6 +47,10 @@
     {
       "name": "stateFocus",
       "value": "VIC"
+    },
+    {
+      "name": "travellerFocus",
+      "value": ""
     }
   ],
   "transform": [
@@ -143,6 +147,18 @@
         "title": "Share"
       },
       {
+        "field": "visitor_share",
+        "type": "quantitative",
+        "format": ".1%",
+        "title": "Visit share"
+      },
+      {
+        "field": "spend_share",
+        "type": "quantitative",
+        "format": ".1%",
+        "title": "Spending share"
+      },
+      {
         "field": "visitors",
         "type": "quantitative",
         "format": ",.0f",
@@ -154,10 +170,32 @@
         "format": "$,.0f",
         "title": "Spending (AUD)"
       }
-    ]
+    ],
+    "opacity": {
+      "condition": {
+        "test": "travellerFocus == '' || datum.traveller == travellerFocus",
+        "value": 1
+      },
+      "value": 0.25
+    },
+    "stroke": {
+      "condition": {
+        "test": "travellerFocus != '' && datum.traveller == travellerFocus",
+        "value": "#162B4D"
+      },
+      "value": "transparent"
+    },
+    "strokeWidth": {
+      "condition": {
+        "test": "travellerFocus != '' && datum.traveller == travellerFocus",
+        "value": 2
+      },
+      "value": 0
+    }
   },
   "mark": {
     "type": "bar",
-    "size": 30
+    "size": 30,
+    "cursor": "pointer"
   }
 }

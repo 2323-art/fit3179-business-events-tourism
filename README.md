@@ -267,3 +267,9 @@ A three-pixel blue rule runs down the right of each explanatory block, following
 ### State-share cards · 27 October 2026
 
 The reference and comparison states' exact visit/spending shares now appear in two cards beside the traveller-mix explanation, replacing the lists beneath the bar charts. Each card identifies its state and uses labelled percentage columns and the existing traveller colours. Both selectors, linked map selections and reset update these cards through the existing state-comparison data. Cards stack on narrow screens; the bar charts retain their full comparison width. Desktop, small-laptop, mobile and representative state changes were visually checked.
+
+### Linked traveller feedback · 27 October 2026
+
+Hovering a segment in either state-composition chart or a traveller row in either card previews that group across both charts and both cards. The explanation compares its spending and visit shares. Clicking pins the group; clicking again or Escape clears it. Card labels are native keyboard-focusable buttons. State changes and resize preserve a pinned group; Reset to NSW and Victoria clears it. Tooltips include both shares and the underlying visit/spending amounts.
+
+Focus uses outlines and opacity while preserving traveller colours, stacked widths and all observations (S61 Manipulate view, pp.9–11). Browser checks confirmed hover, card and bar clicks, keyboard Enter/Escape, state changes, resize persistence and reset. All twelve bar segments remain, with unchanged geometry during highlighting; no chart errors or mobile page overflow were observed.

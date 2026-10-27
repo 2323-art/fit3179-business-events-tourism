@@ -7,10 +7,10 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=2135696b4691"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=c568e77ed71a"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- Refresh the app.js content hash whenever its code changes, especially when chart structures change. -->
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=92329afcd5c9"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=d21f84975965"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
@@ -74,6 +74,7 @@
  <div class="story-explanation"><p class="eyebrow">05 / Compare the traveller mix</p><h3 id="state-mix-title">Two states, two spending stories</h3><p id="state-mix-summary" aria-live="polite"></p><p id="state-mix-context" class="control-hint">Choose two states to compare their visit and spending shares.</p></div>
  <div class="state-share-cards" role="group" aria-label="Selected states: visit and spending shares" aria-live="polite"><article id="state-reference-values" class="state-share-card"></article><article id="state-mix-values" class="state-share-card"></article></div>
  <div class="state-mix-content"><div class="semantic-legend" data-legend="travellers" aria-label="Traveller colours"></div>
+  <p class="control-hint mix-feedback-hint">Hover to compare; click to keep. Escape clears highlighting.</p>
   <div class="state-mix-pair">
    <div class="mix-card"><label for="reference-state">Reference state</label><select id="reference-state"></select><div id="state-reference-chart" class="chart" aria-label="Reference state visitor and spending shares"></div></div>
    <div class="mix-card"><label for="comparison-state">Comparison state</label><select id="comparison-state"></select><div id="state-mix-chart" class="chart" aria-label="Comparison state visitor and spending shares"></div></div>

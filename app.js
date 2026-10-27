@@ -261,6 +261,39 @@ function bindDestinationFeedback(view){
  select.onchange=()=>choose(select.value).catch(console.error);
  select.value=destinationSelected;showDestination();
 }
+// Hover previews a traveller group; a click pins it across both state views.
+let stateTravellerPinned='';
+const stateTravellers=['Domestic day','Domestic overnight','International'];
+function showStateTraveller(group=stateTravellerPinned){
+ for(const key of ['state-reference','state-mix']){
+  const view=window.chartViews[key];
+  if(view&&view.signal('travellerFocus')!==group)view.signal('travellerFocus',group).runAsync().catch(console.error);
+ }
+ document.querySelectorAll('.state-share-card [data-traveller]').forEach(row=>{
+  row.classList.toggle('is-highlighted',row.dataset.traveller===group);
+  row.querySelector('button').setAttribute('aria-pressed',String(row.dataset.traveller===stateTravellerPinned));
+ });
+ const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller===(group||'Domestic overnight')));
+ if(rows.some(r=>!r))return;
+ let summary;
+ if(group){
+  const relation=r=>Math.abs(r.spend_share-r.visitor_share)<1e-9?'matches':r.spend_share>r.visitor_share?'exceeds':'trails';
+  const first=relation(rows[0]),second=relation(rows[1]);
+  summary=first===second?`${group}: spending share ${first} visit share ${referenceState===comparisonState?'in '+displayName(referenceState):'in both states'}.`:`${group}: spending share ${first} visit share in ${displayName(referenceState)}, but ${second} it in ${displayName(comparisonState)}.`;
+ }else{
+  summary=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'.':`Overnight visitors hold a larger spending share in ${displayName(rows[0].spend_share>rows[1].spend_share?referenceState:comparisonState)}.`;
+ }
+ const target=document.getElementById('state-mix-summary');
+ if(target.textContent!==summary){target.textContent=summary;scheduleProse()}
+}
+function pinStateTraveller(group){stateTravellerPinned=stateTravellerPinned===group?'':group;showStateTraveller()}
+function bindStateMixFeedback(view){
+ const groupOf=item=>stateTravellers.includes(item?.datum?.traveller)?item.datum.traveller:'';
+ view.addEventListener('mouseover',(_,item)=>{const group=groupOf(item);if(group)showStateTraveller(group)});
+ view.addEventListener('mouseout',()=>showStateTraveller());
+ view.addEventListener('click',(_,item)=>{const group=groupOf(item);if(group)pinStateTraveller(group)});
+ showStateTraveller();
+}
 // Linked composition extends the visit map: same geography, a new traveller-type dimension.
 async function renderStateMix(){
  const basePromise=fetch('specs/state-mix.json',{cache:'no-cache'}).then(response=>response.json());
@@ -268,7 +301,7 @@ async function renderStateMix(){
   const el=document.getElementById(id);el.setAttribute('aria-busy','true');
   try{
    const spec=structuredClone(await basePromise);spec.width=Math.max(160,el.clientWidth-105);spec.params[0].value=code;
-   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});window.chartViews[key]=result.view;
+   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});window.chartViews[key]=result.view;bindStateMixFeedback(result.view);
   }catch(error){window.chartFailures.push({name:key,message:error.message});el.textContent='The comparison could not load. Use the data table below.';console.error(error)}
   finally{el.setAttribute('aria-busy','false')}
  }));
@@ -287,7 +320,10 @@ function updateStateMix(){
   head.append(header);
   for(const row of stateMixRows.filter(r=>r.code===code)){
    const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';
-   const group=document.createElement('span');group.className='share-traveller';
+   tr.dataset.traveller=row.traveller;
+   const group=document.createElement('button');group.type='button';group.className='share-traveller';group.setAttribute('aria-label','Highlight '+row.traveller+' across both states');group.setAttribute('aria-pressed','false');
+   tr.onmouseenter=()=>showStateTraveller(row.traveller);tr.onmouseleave=()=>showStateTraveller();
+   group.onfocus=()=>showStateTraveller(row.traveller);group.onblur=()=>showStateTraveller();group.onclick=()=>pinStateTraveller(row.traveller);
    const swatch=document.createElement('i');swatch.className=({'Domestic day':'day','Domestic overnight':'overnight','International':'international'})[row.traveller];swatch.setAttribute('aria-hidden','true');
    const name=document.createElement('span');name.textContent=row.traveller;group.append(swatch,name);th.append(group);tr.append(th);
    for(const value of [row.visitor_share,row.spend_share]){const td=document.createElement('td');td.textContent=pct(value);tr.append(td)}
@@ -295,19 +331,18 @@ function updateStateMix(){
   }
   table.append(head,body);host.append(label,title,table);
  }
- const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
- if(rows.some(r=>!r))return;
- document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'.':`Overnight visitors hold a larger spending share in ${displayName(rows[0].spend_share>rows[1].spend_share?referenceState:comparisonState)}.`;
+ showStateTraveller();
  document.getElementById('state-mix-context').textContent='Compare the visit and spending bars within each state. A larger spending share reveals a greater contribution than visit counts alone suggest. Map selections update the comparison state.';
 }
 function buildStateComparison(){
+ document.querySelector('.state-mix-panel').addEventListener('keydown',event=>{if(event.key==='Escape'){stateTravellerPinned='';showStateTraveller()}});
  for(const id of ['reference-state','comparison-state']){
   const select=document.getElementById(id);
   for(const state of colourSemantics.states){const option=document.createElement('option');option.value=state.key;option.textContent=state.label;select.append(option)}
  }
  document.getElementById('reference-state').addEventListener('change',async e=>{referenceState=e.target.value;updateStateMix();await window.chartViews['state-reference']?.signal('stateFocus',referenceState).runAsync()});
  document.getElementById('comparison-state').addEventListener('change',e=>selectState(e.target.value));
- document.getElementById('reset-state-comparison').addEventListener('click',async()=>{referenceState='NSW';comparisonState='VIC';await selectState('All states');await window.chartViews['state-reference']?.signal('stateFocus',referenceState).runAsync()});
+ document.getElementById('reset-state-comparison').addEventListener('click',async()=>{stateTravellerPinned='';referenceState='NSW';comparisonState='VIC';await selectState('All states');await window.chartViews['state-reference']?.signal('stateFocus',referenceState).runAsync()});
  updateStateMix();
 }
 // Week 10 focus+context: this overview retains all markets while the main view enlarges the cluster.

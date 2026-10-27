@@ -458,3 +458,9 @@ body p,.methods li,body figcaption:not(.story-note),
 .share-traveller i{width:7px;height:7px;flex-shrink:0}
 @media(max-width:980px){.state-mix-panel{grid-template-columns:minmax(0,1fr)}.state-share-cards{max-width:660px;width:100%}}
 @media(max-width:540px){.state-share-cards{grid-template-columns:minmax(0,1fr)}.state-share-card h4{min-height:0}.state-share-card{padding:16px}.state-share-card tbody th{font-size:14px}.state-share-card td{font-size:18px}}
+
+/* Focus outlines preserve the existing traveller colour meanings (S61 pp.9–11). */
+.state-share-card .share-traveller{border:0;background:transparent;color:inherit;font:inherit;line-height:inherit;text-align:left;padding:0;width:100%;cursor:pointer}
+.state-share-card .share-traveller:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.state-share-card tr.is-highlighted{background:#e4edf8;outline:2px solid #162B4D;outline-offset:-2px}
+.state-mix-content>.mix-feedback-hint{max-width:none;margin:0 0 16px}
