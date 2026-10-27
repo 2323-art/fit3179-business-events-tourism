@@ -66,7 +66,7 @@
     },
     {
       "data": {
-        "url": "data/routes.json?v=aeba931d1472",
+        "url": "data/routes.json?v=2cdaebf786b0",
         "format": {
           "type": "json",
           "property": "features"
@@ -131,6 +131,9 @@
       },
       "transform": [
         {
+          "filter": "originRegion == 'All regions' || datum.properties.region == originRegion"
+        },
+        {
           "calculate": "datum.properties.country == \"USA\" ? \"United States\" : datum.properties.country == \"UK\" ? \"United Kingdom\" : datum.properties.country == \"NSW\" ? \"New South Wales\" : datum.properties.country == \"VIC\" ? \"Victoria\" : datum.properties.country == \"QLD\" ? \"Queensland\" : datum.properties.country == \"WA\" ? \"Western Australia\" : datum.properties.country == \"SA\" ? \"South Australia\" : datum.properties.country == \"ACT\" ? \"Australian Capital Territory\" : datum.properties.country == \"NT\" ? \"Northern Territory\" : datum.properties.country == \"TAS\" ? \"Tasmania\" : datum.properties.country",
           "as": "country_full"
         }
@@ -138,7 +141,7 @@
     },
     {
       "data": {
-        "url": "data/origins.json?v=b232080d1a70"
+        "url": "data/origins.json?v=f2fa72d13a49"
       },
       "mark": {
         "type": "circle",
@@ -192,6 +195,9 @@
       },
       "transform": [
         {
+          "filter": "originRegion == 'All regions' || datum.region == originRegion"
+        },
+        {
           "calculate": "datum.country == \"USA\" ? \"United States\" : datum.country == \"UK\" ? \"United Kingdom\" : datum.country == \"NSW\" ? \"New South Wales\" : datum.country == \"VIC\" ? \"Victoria\" : datum.country == \"QLD\" ? \"Queensland\" : datum.country == \"WA\" ? \"Western Australia\" : datum.country == \"SA\" ? \"South Australia\" : datum.country == \"ACT\" ? \"Australian Capital Territory\" : datum.country == \"NT\" ? \"Northern Territory\" : datum.country == \"TAS\" ? \"Tasmania\" : datum.country",
           "as": "country_full"
         }
@@ -230,7 +236,7 @@
     },
     {
       "data": {
-        "url": "data/origins.json?v=b232080d1a70"
+        "url": "data/origins.json?v=f2fa72d13a49"
       },
       "mark": {
         "type": "text",
@@ -271,6 +277,9 @@
       },
       "transform": [
         {
+          "filter": "originRegion == 'All regions' || datum.region == originRegion"
+        },
+        {
           "filter": "originFocus == 'All origins' ? (datum.visitors >= 21000) : datum.country == originFocus"
         },
         {
@@ -284,6 +293,10 @@
     {
       "name": "originFocus",
       "value": "All origins"
+    },
+    {
+      "name": "originRegion",
+      "value": "All regions"
     }
   ],
   "description": "Seventeen individually located published origin markets in 2025. Scandinavia is excluded because it is a grouped region. Cities represent origins; lines are schematic, not observed flight routes."

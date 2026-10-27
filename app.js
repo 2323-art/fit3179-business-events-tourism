@@ -85,7 +85,7 @@ async function renderChart(name,index){
   if(index===7&&width<360)spec.layer[0].encoding.x.axis.values={expr:"marketScale == 'Smaller markets' ? [0,20000,40000] : [0,100000,200000]"};
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
   else if(index===5){spec.width=width;spec.height=width<400?640:580}
-  else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
+  else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform.find(t=>t.filter?.includes('originFocus')).filter="originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"}
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
@@ -122,33 +122,62 @@ async function renderChart(name,index){
  finally{el.setAttribute('aria-busy','false')}
 }
 // Route hover previews an origin; click or keyboard activation pins it.
-const originMapDataVersion='b232080d1a70';
-let originMapRows=[],originMapPinned='All origins';
+const originMapDataVersion='f2fa72d13a49';
+let originMapRows=[],originMapPinned='All origins',originMapRegion='All regions';
+const visibleOriginRows=()=>originMapRows.filter(r=>originMapRegion==='All regions'||r.region===originMapRegion);
 function showOriginMap(country=originMapPinned){
- const row=originMapRows.find(r=>r.country===country);
- const total=originMapRows.reduce((sum,r)=>sum+r.visitors,0);
+ const rows=visibleOriginRows(),row=rows.find(r=>r.country===country);
+ const total=rows.reduce((sum,r)=>sum+r.visitors,0);
  if(!total)return;
  document.getElementById('origin-map-value').textContent=formatTrips(row?row.visitors:total);
- document.getElementById('origin-map-name').textContent=row?displayName(row.country):'the '+originMapRows.length+' origins shown';
+ document.getElementById('origin-map-name').textContent=row?displayName(row.country)
+  :originMapRegion==='All regions'?'the '+rows.length+' origins shown':originMapRegion;
  document.getElementById('origin-map-detail').textContent=row
-  ?(row.visitors/total*100).toFixed(1)+'% of trips from these '+originMapRows.length+' origins.'
-  :'2025 · selected origins only';
+  ?(row.visitors/total*100).toFixed(1)+(originMapRegion==='All regions'
+   ?'% of trips from these '+rows.length+' origins.' :'% of displayed '+originMapRegion+' trips.')
+  :'2025 · '+rows.length+' published '+(rows.length===1?'origin':'origins')+' shown';
  document.querySelectorAll('#origin-key button').forEach(button=>{
-  button.classList.toggle('is-previewed',button.dataset.origin===country);
-  button.setAttribute('aria-pressed',String(button.dataset.origin===originMapPinned));
+  button.setAttribute('aria-pressed',String(button.dataset.region===originMapRegion));
  });
  const view=window.chartViews['07-flow-map'];
- if(view&&view.signal('originFocus')!==country)view.signal('originFocus',country).runAsync().catch(console.error);
+ const focus=row?country:'All origins';
+ if(view&&(view.signal('originFocus')!==focus||view.signal('originRegion')!==originMapRegion))
+  view.signal('originRegion',originMapRegion).signal('originFocus',focus).runAsync().catch(console.error);
  scheduleProse();
+}
+function updateOriginCountries(){
+ const selector=document.getElementById('origin-country');
+ const rows=visibleOriginRows().slice().sort((a,b)=>displayName(a.country).localeCompare(displayName(b.country)));
+ selector.replaceChildren(new Option(originMapRegion==='All regions'?'All countries':'All countries in '+originMapRegion,'All origins'),
+  ...rows.map(r=>new Option(displayName(r.country)+' · '+formatTrips(r.visitors),r.country)));
+ selector.value=originMapPinned;
 }
 function pinOriginMap(country){
  originMapPinned=originMapPinned===country?'All origins':country;
+ document.getElementById('origin-country').value=originMapPinned;
  showOriginMap();
+}
+function buildOriginMapControls(){
+ const host=document.getElementById('origin-key');
+ for(const region of ['All regions','Asia','Europe','North America','Oceania']){
+  const button=document.createElement('button');button.type='button';button.dataset.region=region;
+  button.textContent=region;button.setAttribute('aria-pressed',String(region===originMapRegion));
+  button.addEventListener('click',()=>{
+   originMapRegion=region;originMapPinned='All origins';updateOriginCountries();showOriginMap();
+  });host.append(button);
+ }
+ updateOriginCountries();
+ document.getElementById('origin-country').addEventListener('change',event=>{
+  originMapPinned=event.target.value;showOriginMap();
+ });
+ document.getElementById('chart07').closest('figure').addEventListener('keydown',event=>{
+  if(event.key==='Escape'){originMapPinned='All origins';document.getElementById('origin-country').value=originMapPinned;showOriginMap()}
+ });
 }
 function bindOriginMapFeedback(view){
  const originOf=item=>{
   const country=item?.datum?.properties?.country||item?.datum?.country;
-  return originMapRows.some(r=>r.country===country)?country:null;
+  return visibleOriginRows().some(r=>r.country===country)?country:null;
  };
  view.addEventListener('mouseover',(_,item)=>{const country=originOf(item);if(country)showOriginMap(country)});
  view.addEventListener('mouseout',()=>showOriginMap());
@@ -458,18 +487,7 @@ async function start(){
   [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
   buildColourLegends();buildStateComparison();
   originMapRows=await (await fetch('data/origins.json?v='+originMapDataVersion,{cache:'no-cache'})).json();
-// INTERVIEW: Create origin buttons from actual data. Clicking sets originFocus; conditional opacity fades unrelated routes.
-// INTERVIEW: aria-pressed tells assistive technology which button is selected.
-  for(const row of [{country:'All origins'},...originMapRows]){
-   const button=document.createElement('button');button.type='button';button.dataset.origin=row.country;button.setAttribute('aria-pressed',String(row.country==='All origins'));button.textContent=displayName(row.country)+(row.visitors?' · '+formatTrips(row.visitors):'');
-   button.addEventListener('mouseenter',()=>showOriginMap(row.country));
-   button.addEventListener('mouseleave',()=>showOriginMap());
-   button.addEventListener('focus',()=>showOriginMap(row.country));
-   button.addEventListener('blur',()=>showOriginMap());
-   button.addEventListener('click',()=>pinOriginMap(row.country));
-   document.getElementById('origin-key').append(button);
-  }
-  document.getElementById('chart07').closest('figure').addEventListener('keydown',event=>{if(event.key==='Escape'){originMapPinned='All origins';showOriginMap()}});
+  buildOriginMapControls();
  }catch(error){console.error('Could not load comparison controls',error)}
  await Promise.all([...charts.map(renderChart),renderStateMix(),renderMarketOverview()]);updateMarketSummary();updateStateMix();document.documentElement.dataset.chartsReady='true';
 }

@@ -283,3 +283,8 @@ The map now previews the hovered origin in a visitor-trip card above the explana
 ### Expanded origin map · 27 October 2026
 
 The origin controls now sit above the map, and the standalone hover instruction is removed. Nine origins were added: Hong Kong, Korea, Philippines, Germany, Indonesia, Canada, Viet Nam, France and Netherlands. All 17 individually located published markets sum to 619,000 rounded visitor trips, approximately 84.7% of the national international total. Scandinavia (8,000) is a regional aggregate and remains excluded rather than being assigned a country point. Card shares use the 17 displayed markets. Overview labels show the original eight larger origins; selecting or hovering reveals each smaller origin. Source points are preserved from Natural Earth; widths remain proportional to visitor trips.
+
+
+### Regional map controls · 27 October 2026
+
+Replaced the 17 origin buttons with All regions, Asia, Europe, North America and Oceania. Region selection filters routes, points and country options; the alphabetical country/territory dropdown highlights an individual origin. The card totals the visible regional subset, and selected-country shares explicitly use that subset. Changing regions resets the country; Escape clears the country while keeping the region. Region and country selections survive resizing. Verified Europe (4 origins, 76,000 trips), Asia (10, 292,000), Germany (17.1% of displayed European trips), Malaysia (7.2% of displayed Asian trips), and the complete reset (17, 619,000).

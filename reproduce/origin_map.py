@@ -7,6 +7,13 @@ import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+REGIONS = {
+    'Asia': ['China', 'Hong Kong', 'India', 'Indonesia', 'Japan', 'Korea', 'Malaysia', 'Philippines', 'Singapore', 'Viet Nam'],
+    'Europe': ['France', 'Germany', 'Netherlands', 'UK'],
+    'North America': ['Canada', 'USA'],
+    'Oceania': ['New Zealand'],
+}
+REGION_OF = {country: region for region, countries in REGIONS.items() for country in countries}
 
 
 def great_circle(a, b):
@@ -36,10 +43,11 @@ def outputs():
     origins, routes = [], []
     for country in sorted(set(counts)&set(coords), key=lambda c: (-counts[c], c)):
         coord = coords[country]
-        origins.append(dict(country=country, visitors=counts[country], longitude=coord[0], latitude=coord[1]))
-        routes.append(dict(type='Feature', properties=dict(country=country, visitors=counts[country]),
+        origins.append(dict(country=country, visitors=counts[country], longitude=coord[0], latitude=coord[1], region=REGION_OF[country]))
+        routes.append(dict(type='Feature', properties=dict(country=country, visitors=counts[country], region=REGION_OF[country]),
                            geometry=dict(type='LineString', coordinates=great_circle(coord, coords['Australia']))))
     assert len(origins) == len(routes) == 17
+    assert set(REGION_OF) == {r['country'] for r in origins}
     assert sum(r['visitors'] for r in origins) == sum(counts.values())-counts['Scandinavia']
     result = {'origins.json': json.dumps(origins, ensure_ascii=False, separators=(',', ':'))+'\n',
               'routes.json': json.dumps(dict(type='FeatureCollection', features=routes), separators=(',', ':'))+'\n'}

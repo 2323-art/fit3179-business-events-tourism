@@ -82,3 +82,5 @@ Design grounding: S42 Week 6 networks/trees/flows, PDF pages 21–24 (Sankey); S
 ### Expanded origin-map geometry
 
 Run `python reproduce/origin_map.py --check` to verify the 17 origin rows, CSV and routes. Omit `--check` to regenerate. Inputs are the preserved 2025 TRA visitors attribute and `data/source/origin-map-places.json`, a named-place and administration-matched subset of Natural Earth 10m populated places. The source URL and retrieval date are embedded in that file. The builder explicitly excludes Scandinavia, checks counts against all other published markets, and produces 61-point schematic great-circle links to Canberra. It is also called by `build_data.py`.
+
+The origin-map builder also assigns explicit geographic regions: Asia (10 origins), Europe (4), North America (2), and Oceania (1). These are display groupings, not additional TRA observations. The region field is preserved in origins JSON/CSV and route properties; no origin belongs to multiple regions.

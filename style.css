@@ -487,3 +487,11 @@ body p,.methods li,body figcaption:not(.story-note),
 .story-row--origins>.story-note{grid-column:1;grid-row:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:32px;align-items:start}
 .story-row--origins .origin-map-card{margin:0;padding:0;border-bottom:0}
 @media(max-width:650px){.story-row--origins>.story-note{grid-template-columns:minmax(0,1fr);gap:24px}}
+
+/* Regional overview and country detail share one compact control row. */
+.origin-map-controls{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-start;margin:12px 0 20px}
+.origin-control-label,.origin-country-control label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.origin-map-controls .origin-key{margin:0}
+.origin-country-control{flex:1;min-width:220px;max-width:310px}
+.origin-country-control select{width:100%;min-height:36px;font:inherit;font-size:14px;padding:7px 10px;background:white;color:#000;border:1px solid var(--line)}
+@media(max-width:650px){.origin-country-control{flex-basis:100%;max-width:none}}
