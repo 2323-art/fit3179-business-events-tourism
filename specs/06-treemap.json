@@ -242,7 +242,10 @@
         },
         "update": {
           "fillOpacity": {
-            "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : .25"
+            "signal": "stateFocus == 'All states' || datum.parent == stateFocus || datum.id == destinationFocus ? 1 : .25"
+          },
+          "cursor": {
+            "value": "pointer"
           }
         }
       },
@@ -265,7 +268,7 @@
             "field": "label_text"
           },
           "opacity": {
-            "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : .65"
+            "signal": "stateFocus == 'All states' || datum.parent == stateFocus || datum.id == destinationFocus ? 1 : .65"
           },
           "font": {
             "value": "IBM Plex Sans"
@@ -305,7 +308,7 @@
             "signal": "'AUD ' + format(datum.value/1e6, ',.0f') + 'm\\n' + format(datum.state_share, '.1%') + ' of state'"
           },
           "opacity": {
-            "signal": "stateFocus == 'All states' || datum.parent == stateFocus ? 1 : .65"
+            "signal": "stateFocus == 'All states' || datum.parent == stateFocus || datum.id == destinationFocus ? 1 : .65"
           },
           "font": {
             "value": "IBM Plex Sans"
@@ -364,12 +367,50 @@
           }
         }
       }
+    },
+    {
+      "name": "destination_outline",
+      "type": "rect",
+      "from": {
+        "data": "leaves"
+      },
+      "interactive": false,
+      "aria": false,
+      "encode": {
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "value": "transparent"
+          },
+          "stroke": {
+            "value": "#000000"
+          },
+          "strokeWidth": {
+            "signal": "datum.id == destinationFocus ? 3 : 0"
+          }
+        }
+      }
     }
   ],
   "signals": [
     {
       "name": "stateFocus",
       "value": "All states"
+    },
+    {
+      "name": "destinationFocus",
+      "value": ""
     }
   ],
   "description": "2025 business-event visitor spending by state and destination. Rectangle area represents AUD spending, not within-state share. State groups retain the existing colours; exact amounts and within-state shares are available in tooltips and the selected-state detail."

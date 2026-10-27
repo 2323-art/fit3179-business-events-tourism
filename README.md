@@ -235,3 +235,9 @@ Figure 03 replaces the displayed Sankey with a ten-by-ten coin array, following 
 The icon choice applies the ISOTYPE example in S41 *Week 5 workshop*, physical PDF p.19, which was visually inspected; that lecture qualifies memory/engagement benefits rather than promising faster reading. The dollar symbol and location palette are implementation choices. Dark dollar glyphs on neutral coins and white glyphs on blue coins preserve contrast. The earlier `03-sankey.json` remains as a historical audit artifact and is no longer loaded by the page.
 
 Browser verification confirmed 100 coins (59 Australia, 41 overseas), the overseas tooltip amount of AUD 1,615,926,000, and a readable 390-pixel layout without horizontal overflow.
+
+### Live destination feedback
+
+Figure 06 now previews a hovered destination with a black outline and a matching statistic card above the explanation. The card shows spending, the destination/state and its share of that state's displayed destination total. Hover preserves rectangle geometry and category colours; an out-of-focus destination becomes legible while previewed. Clicking retains the destination and uses the existing linked state selection. A destination dropdown exposes even tiny rectangles to keyboard and touch users. Leaving hover restores the retained destination, or the largest destination in the selected state. Resetting all states restores Sydney as the initial example.
+
+This applies S63 *Treemap, dendrogram, network and chord* p. 1 on details for small tiles and S61 *Manipulate View* pp. 10–11 on visible selection feedback. Browser checks covered hover and restoration, unchanged rectangle paths, ACT whole-territory 100%, Regional Victoria, Hobart and the South, Gold Coast, state-button changes/reset, and preserved selection at 390 pixels without horizontal overflow. Shares remain based on displayed state totals; source data were unchanged.

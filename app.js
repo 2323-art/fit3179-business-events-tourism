@@ -10,6 +10,8 @@ window.chartViews={};window.chartFailures=[];
 // INTERVIEW: Cache data used by the HTML summaries and controls. selectedState persists across chart redraws.
 let marketRows=[];
 let activityFocus='Shopping';
+// Match the activity specification's data revision so charts, tables and downloads bypass the old two-year cache.
+const activityDataVersion='e9b63cc0972c';
 let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states',referenceState='NSW',comparisonState='VIC';
 // INTERVIEW: These helpers format numbers and expand abbreviations for readers; they do not change the underlying observations.
 const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
@@ -83,7 +85,15 @@ async function renderChart(name,index){
   if(index===2){spec.width=Math.min(width-12,380);spec.height=spec.width;}
   if(index===3)spec.height=Math.min(400,width*.98);
   if(index===4)spec.height=Math.min(360,width*.9);
-  if(index===10){spec.width=width;spec.height=390}
+  if(index===10){
+   spec.width=width;spec.height=390;
+   const dataset=spec.data.find(d=>d.name==='activities');
+   const response=await fetch(dataset.url,{cache:'no-cache'});
+   if(!response.ok)throw new Error('Activity data could not be retrieved');
+   const rows=await response.json();
+   if(rows.length!==18||new Set(rows.map(r=>r.activity+'|'+r.year)).size!==18||rows.some(r=>!Number.isInteger(r.rank)||r.rank<1||r.rank>6||![2023,2024,2025].includes(r.year))||[2023,2024,2025].some(year=>rows.filter(r=>r.year===year).length!==6))throw new Error('Activity data does not match the three-year ranked chart');
+   dataset.values=rows;delete dataset.url;
+  }
   if(index===11)spec.height=240;
 // INTERVIEW: Embed the specification into the container. SVG gives scalable vector marks; actions:false hides the default editor menu.
 // INTERVIEW: The loader base is the site directory, excluding a chapter hash, so relative data URLs remain valid.
@@ -95,6 +105,7 @@ async function renderChart(name,index){
   if(index===0)await bindWaffleFeedback(result.view);
   if(index===3)await bindSpendingMap(result.view);
   if(index===4)await bindVisitsMap(result.view);
+  if(index===5)bindDestinationFeedback(result.view);
   if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
   if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);result.view.addSignalListener('marketScale',updateMarketSummary);updateMarketSummary()}
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
@@ -177,6 +188,45 @@ async function bindVisitsMap(view){
  view.addEventListener('click',(_,item)=>{const code=codeOf(item);if(code)selectState(code).catch(console.error)});
  updateVisitsCard();
 }
+// Destination hover previews detail without changing rectangle areas or state selection.
+let destinationSelected='';
+function destinationName(row){return row.name==='ACT (all)'?'Whole territory':displayName(row.name).replace('Hobart & south','Hobart and the South')}
+function showDestination(id=destinationSelected){
+ const leaves=regionRows.filter(r=>r.value>0);
+ const eligible=selectedState==='All states'?leaves:leaves.filter(r=>r.parent===selectedState);
+ const row=leaves.find(r=>r.id===id)||eligible.reduce((best,r)=>!best||r.value>best.value?r:best,null);
+ if(!row)return;
+ const total=leaves.filter(r=>r.parent===row.parent).reduce((sum,r)=>sum+r.value,0);
+ document.getElementById('destination-value').textContent='$'+(row.value>=1e9?(row.value/1e9).toFixed(2)+'bn':(row.value/1e6).toLocaleString('en-AU',{maximumFractionDigits:1})+'m');
+ document.getElementById('destination-name').textContent=destinationName(row);
+ document.getElementById('destination-state').textContent=displayName(row.parent);
+ document.getElementById('destination-share').textContent=(row.value/total*100).toFixed(1)+'% of displayed state spending.';
+ window.chartViews['06-treemap']?.signal('destinationFocus',id&&row.id===id?id:'').runAsync().catch(console.error);
+}
+function syncDestinationSelection(state){
+ const row=regionRows.find(r=>r.id===destinationSelected);
+ if(state==='All states'||row?.parent!==state)destinationSelected='';
+ document.getElementById('destination-choice').value=destinationSelected;
+ showDestination();
+}
+function bindDestinationFeedback(view){
+ const select=document.getElementById('destination-choice');
+ const leaves=regionRows.filter(r=>r.value>0);
+ if(select.options.length===1)for(const row of [...leaves].sort((a,b)=>(a.parent+a.name).localeCompare(b.parent+b.name))){
+  const option=document.createElement('option');option.value=row.id;option.textContent=destinationName(row)+' — '+displayName(row.parent);select.append(option);
+ }
+ const choose=async id=>{
+  destinationSelected=id;select.value=id;
+  const row=leaves.find(r=>r.id===id);
+  if(row)await selectState(row.parent);else showDestination();
+ };
+ const idOf=item=>leaves.some(r=>r.id===item?.datum?.id)?item.datum.id:null;
+ view.addEventListener('mouseover',(_,item)=>{const id=idOf(item);if(id)showDestination(id)});
+ view.addEventListener('mouseout',()=>showDestination());
+ view.addEventListener('click',(_,item)=>{const id=idOf(item);if(id)choose(id).catch(console.error)});
+ select.onchange=()=>choose(select.value).catch(console.error);
+ select.value=destinationSelected;showDestination();
+}
 // Linked composition extends the visit map: same geography, a new traveller-type dimension.
 async function renderStateMix(){
  const basePromise=fetch('specs/state-mix.json',{cache:'no-cache'}).then(response=>response.json());
@@ -234,7 +284,7 @@ function syncMarketOverview(year,focus,detail){
 // INTERVIEW: DATA ALTERNATIVE: load the same prepared values into a readable HTML table inside a native dialog.
 // INTERVIEW: National data are limited to 2025 here because the domestic survey changed. Region parents are excluded to avoid double counting.
 async function showTable(name){
- let rows=await (await fetch('data/'+name+'.json')).json();
+ let rows=await (await fetch('data/'+name+'.json'+(name==='activities'?'?v='+activityDataVersion:''),{cache:'no-cache'})).json();
  if(name==='national')rows=rows.filter(r=>r.year===2025);
  if(name==='regions')rows=rows.filter(r=>r.value>0).map(r=>({region:r.name,state:r.parent,spend:r.value}));
  const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',rank:'Rank among these six',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
@@ -258,7 +308,7 @@ document.querySelectorAll('.chart-tools').forEach(el=>{
  const close=()=>{details.open=false;summary.focus()};
  const b=document.createElement('button');b.type='button';b.textContent='Read data table';
  b.addEventListener('click',()=>{close();showTable(el.dataset.table)});
- const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv';csv.textContent='Download data';csv.setAttribute('download','');csv.addEventListener('click',close);
+ const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv'+(el.dataset.table==='activities'?'?v='+activityDataVersion:'');csv.textContent='Download data';csv.setAttribute('download','');csv.addEventListener('click',close);
  const spec=document.createElement('a');spec.href='specs/'+el.dataset.chart+'.json';spec.textContent='Chart specification';
  panel.append(b,csv,spec);details.append(summary,panel);el.append(details);
  details.addEventListener('toggle',()=>{
@@ -329,6 +379,7 @@ function buildColourLegends(){
 async function selectState(state){
  selectedState=state;
  updateVisitsCard();
+ syncDestinationSelection(state);
  if(state!=='All states')comparisonState=state;
  updateStateMix();
  await Promise.all(['05-symbol-map','06-treemap','state-mix'].map(name=>window.chartViews[name]?.signal('stateFocus',name==='state-mix'?comparisonState:state).runAsync()));
