@@ -41,18 +41,17 @@ function updateComparison(focus){
  document.getElementById('market-insight-title').textContent=displayName(country)+' · spending per trip';
  document.getElementById('market-rate-change').textContent=formatChange(tripAfter/tripBefore-1);
  document.getElementById('market-rate-values').textContent=`${money(tripBefore)} → ${money(tripAfter)} · 2024–2025`;
- const tripDirection=after.visitors>before.visitors?'More':after.visitors<before.visitors?'Fewer':'Similar';
- const rateDirection=tripAfter>tripBefore?'higher':tripAfter<tripBefore?'lower':'similar';
  const tripGrowth=after.visitors/before.visitors-1,spendGrowth=after.spend/before.spend-1;
  const interpretation=tripGrowth>0&&tripAfter<tripBefore?'Lower average spending offsets some of the visitor growth.':tripGrowth<0&&tripAfter>tripBefore?'Higher average spending offsets some of the fall in visits.':tripGrowth>0&&tripAfter>tripBefore?'More trips and higher averages reinforce spending growth.':tripGrowth<0&&tripAfter<tripBefore?'Fewer trips and lower averages both reduce total spending.':'Both visitor volume and spending per trip shape the total.';
- document.getElementById('market-insight').textContent=`${tripDirection} trips, ${rateDirection} average spending per trip. ${interpretation}`;
+ document.getElementById('market-insight').textContent=interpretation;
  document.getElementById('market-rate-detail').textContent=`Nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. Calculations use unrounded estimates; change factors multiply. Different annual visitor groups are compared, not causes.`;
  const changeStory=tripGrowth>0&&spendGrowth>0?`gained visitors, while spending grew ${spendGrowth<tripGrowth?'more slowly':'faster'}`:tripGrowth<0&&spendGrowth<0?`lost visitors, while spending fell ${spendGrowth<tripGrowth?'faster':'more slowly'}`:tripGrowth>0&&spendGrowth<0?'gained visitors while spending fell':tripGrowth<0&&spendGrowth>0?'lost visitors while spending rose':'shows different changes in visits and spending';
- document.getElementById('change-summary').textContent=`${displayName(country)} ${changeStory}. Read across the highlighted row to compare nights as well.`;
+ const changeSummary=`${displayName(country)} ${changeStory} from 2024 to 2025.`;
 // INTERVIEW: LINKING: send the same country to the heatmap signal. runAsync() evaluates the chart update.
 // INTERVIEW: The signal controls the outline/text layer; it does not remove the other heatmap rows.
  const heatmap=window.chartViews['09-change-heatmap'];
  if(heatmap&&heatmap.signal('marketFocus')!==country)heatmap.signal('marketFocus',country).runAsync().catch(console.error);
+ return changeSummary;
 }
 // INTERVIEW: Read the scatterplot signals, find the current-year leaders with reduce(), and update the surrounding narrative.
 function updateMarketSummary(){
@@ -60,11 +59,11 @@ function updateMarketSummary(){
  const year=Number(view.signal('year')),focus=view.signal('focus'),rows=marketRows.filter(r=>r.year===year);
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
- document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':'trips versus spending');
- document.getElementById('market-summary').textContent=row?`Compare ${displayName(row.country)} with markets at a similar visitor level. A higher position means more spending for a similar trip volume.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending. Compare the remaining markets to see how spending differs at similar visitor volumes.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending. Their different positions show why visitor volume alone does not identify the highest-spending market.`;
+ document.getElementById('market-heading').textContent=year+' · trips versus spending';
+ const lead=row?`In ${year}, ${displayName(row.country)} recorded ${formatTrips(row.visitors)} trips and AUD ${(row.spend/1e6).toFixed(1)}m in spending.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending in ${year}.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending in ${year}.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
  document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the crowded cluster.';
- syncMarketOverview(year,focus,detail);updateComparison(focus);scheduleProse();
+ syncMarketOverview(year,focus,detail);const change=updateComparison(focus);document.getElementById('market-summary').textContent=lead+' '+change;scheduleProse();
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
 // INTERVIEW: async/await lets the browser keep working while requests and rendering finish.
@@ -116,7 +115,7 @@ async function renderChart(name,index){
   if(index===4)await bindVisitsMap(result.view);
   if(index===5)bindDestinationFeedback(result.view);
   if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
-  if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);result.view.addSignalListener('marketScale',updateMarketSummary);updateMarketSummary()}
+  if(index===7||index===8){bindMarketFeedback(result.view);await applyMarketFocus();}
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
@@ -429,7 +428,7 @@ async function renderMarketOverview(){
  try{
   const spec=await (await fetch('specs/08-market-overview.json',{cache:'no-cache'})).json();
   spec.width=Math.max(160,document.getElementById('chart08').clientWidth-100);
-  const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});window.chartViews['08-market-overview']=result.view;
+  const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});window.chartViews['08-market-overview']=result.view;bindMarketFeedback(result.view);
  }catch(error){window.chartFailures.push({name:'08-market-overview',message:error.message});el.textContent='The overview could not load. Choose All markets above for context.';console.error(error)}
 }
 function syncMarketOverview(year,focus,detail){
@@ -486,17 +485,51 @@ document.addEventListener('keydown',event=>{
 // INTERVIEW: Close the dialog using its button or a click on the backdrop. The native dialog also supports Escape.
 document.getElementById('close-dialog').addEventListener('click',()=>document.getElementById('data-dialog').close());
 document.getElementById('data-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
-// INTERVIEW: Reset all three scatterplot controls to the initial overview; updateMarketSummary also refreshes the linked table/heatmap.
-document.getElementById('reset-market').addEventListener('click',async()=>{
+// Shared controls keep a pinned market distinct from transient hover previews.
+let marketPinned='All markets',marketYear=2025,marketScaleChoice='All markets';
+async function applyMarketFocus(country=marketPinned){
  const view=window.chartViews['08-market-scatter'];if(!view)return;
- await view.signal('year',2025).signal('focus','All markets').signal('marketScale','All markets').runAsync();updateMarketSummary();
+ if(view.signal('year')!==marketYear||view.signal('focus')!==country||view.signal('marketScale')!==marketScaleChoice)
+  await view.signal('year',marketYear).signal('focus',country).signal('marketScale',marketScaleChoice).runAsync();
+ updateMarketSummary();
+}
+function bindMarketFeedback(view){
+ const countryOf=item=>marketRows.some(r=>r.country===item?.datum?.country)?item.datum.country:null;
+ let preview=null;
+ view.addEventListener('mousemove',(_,item)=>{
+  const country=countryOf(item)||marketPinned;
+  if(country!==preview){preview=country;applyMarketFocus(country).catch(console.error)}
+ });
+ view.container().onmouseleave=()=>{preview=null;applyMarketFocus().catch(console.error)};
+ view.addEventListener('click',(_,item)=>{
+  const country=countryOf(item);if(!country)return;
+  marketPinned=marketPinned===country?'All markets':country;
+  document.getElementById('market-country').value=marketPinned;
+  applyMarketFocus().catch(console.error);
+ });
+}
+function buildMarketControls(){
+ const select=document.getElementById('market-country');
+ const countries=[...new Set(marketRows.map(r=>r.country))].sort((a,b)=>displayName(a).localeCompare(displayName(b)));
+ select.replaceChildren(new Option('All markets','All markets'),...countries.map(c=>new Option(displayName(c),c)));
+ select.addEventListener('change',()=>{marketPinned=select.value;applyMarketFocus().catch(console.error)});
+ document.getElementById('market-year').addEventListener('change',event=>{marketYear=Number(event.target.value);applyMarketFocus().catch(console.error)});
+ document.getElementById('market-scale').addEventListener('change',event=>{marketScaleChoice=event.target.value;applyMarketFocus().catch(console.error)});
+ document.querySelector('.market-pair').addEventListener('keydown',event=>{if(event.key==='Escape'){marketPinned='All markets';select.value=marketPinned;applyMarketFocus().catch(console.error)}});
+}
+document.getElementById('reset-market').addEventListener('click',()=>{
+ marketPinned='All markets';marketYear=2025;marketScaleChoice='All markets';
+ document.getElementById('market-country').value=marketPinned;
+ document.getElementById('market-year').value=marketYear;
+ document.getElementById('market-scale').value=marketScaleChoice;
+ applyMarketFocus().catch(console.error);
 });
 // INTERVIEW: STARTUP: wait for fonts, load control data, build legends/origin buttons, then render the figures and their supporting views.
 // INTERVIEW: Promise.all waits for independent chart renders together; it does not deliberately load them one at a time.
 async function start(){
  await document.fonts.ready;
  try{
-  marketRows=await (await fetch('data/markets.json')).json();
+  marketRows=await (await fetch('data/markets.json')).json();buildMarketControls();
 // INTERVIEW: Load category colours for HTML legends and destination values for the selected-state detail list.
   [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
   buildColourLegends();buildStateComparison();
@@ -611,9 +644,9 @@ start().then(()=>{scheduleProse();scheduleChapterNav();settleInitialAnchor()});l
 // INTERVIEW: State selection is restored inside renderChart using selectedState; finalise releases old chart resources.
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
  renderQueue=renderQueue.then(async()=>{
-  previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),marketScale=prior?.signal('marketScale');
+  previousWidth=innerWidth;
   Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all([...charts.map(renderChart),renderStateMix(),renderMarketOverview()]);
-  if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).signal('marketScale',marketScale).runAsync();
+  await applyMarketFocus();
   updateMarketSummary();scheduleProse();
  }).catch(console.error);
  },200)});

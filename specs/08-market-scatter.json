@@ -47,77 +47,15 @@
   "params": [
     {
       "name": "year",
-      "value": 2025,
-      "bind": {
-        "input": "select",
-        "options": [
-          2024,
-          2025
-        ],
-        "name": "Year: "
-      }
+      "value": 2025
     },
     {
       "name": "focus",
-      "value": "All markets",
-      "bind": {
-        "input": "select",
-        "options": [
-          "All markets",
-          "Canada",
-          "China",
-          "France",
-          "Germany",
-          "Hong Kong",
-          "India",
-          "Indonesia",
-          "Japan",
-          "Korea",
-          "Malaysia",
-          "Netherlands",
-          "New Zealand",
-          "Philippines",
-          "Scandinavia",
-          "Singapore",
-          "UK",
-          "USA",
-          "Viet Nam"
-        ],
-        "name": "Highlight: ",
-        "labels": [
-          "All markets",
-          "Canada",
-          "China",
-          "France",
-          "Germany",
-          "Hong Kong",
-          "India",
-          "Indonesia",
-          "Japan",
-          "Korea",
-          "Malaysia",
-          "Netherlands",
-          "New Zealand",
-          "Philippines",
-          "Scandinavia",
-          "Singapore",
-          "United Kingdom",
-          "United States",
-          "Viet Nam"
-        ]
-      }
+      "value": "All markets"
     },
     {
       "name": "marketScale",
-      "value": "All markets",
-      "bind": {
-        "input": "select",
-        "name": "Scale: ",
-        "options": [
-          "All markets",
-          "Smaller markets"
-        ]
-      }
+      "value": "All markets"
     }
   ],
   "transform": [
@@ -148,7 +86,8 @@
         "type": "circle",
         "size": 85,
         "stroke": "white",
-        "strokeWidth": 1
+        "strokeWidth": 1,
+        "cursor": "pointer"
       },
       "encoding": {
         "x": {
@@ -214,7 +153,21 @@
             "title": "Spending (Australian dollars)",
             "format": "$,.0f"
           }
-        ]
+        ],
+        "stroke": {
+          "condition": {
+            "test": "datum.country == focus",
+            "value": "#162B4D"
+          },
+          "value": "white"
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "datum.country == focus",
+            "value": 2
+          },
+          "value": 1
+        }
       },
       "transform": [
         {
@@ -247,7 +200,8 @@
           "expr": "datum.visitors > (marketScale == 'Smaller markets' ? 25000 : 130000) ? 'right' : 'left'"
         },
         "fontSize": 15,
-        "color": "#162B4D"
+        "color": "#162B4D",
+        "cursor": "pointer"
       },
       "encoding": {
         "x": {

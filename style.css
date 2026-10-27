@@ -506,3 +506,20 @@ body p,.methods li,body figcaption:not(.story-note),
 #chart07{background:white}
 #chart07 svg{display:block}
 #chart07 .vega-bindings:empty{display:none}
+
+/* One shared control bar, paired views, and a combined reading below. */
+.market-pair{margin-top:32px}
+.market-shared-controls{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-end;padding:16px;background:var(--plot-ground);border:1px solid var(--line)}
+.market-shared-controls label{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600}
+.market-shared-controls select,.market-shared-controls button{font:inherit;font-size:14px;color:#000;background:white;border:1px solid var(--line);padding:8px 12px;min-height:38px}
+.market-shared-controls select{min-width:120px}
+.market-shared-controls button{cursor:pointer;margin-left:auto}
+.market-pair>.market-interaction-hint{max-width:none;font-size:14px;margin:12px 0 20px}
+.market-pair>.markets-row{margin-top:0;padding-bottom:0;align-items:start}
+.market-pair .markets-row>figure>h3{font-size:20px;line-height:1.4;margin:0 48px 20px 0}
+.market-pair>.market-insight{align-items:start;margin-top:24px}
+.market-pair .story-explanation>h3{max-width:none;margin-bottom:12px}
+.market-pair #market-summary{margin:0 0 12px;max-width:none;min-height:0}
+.market-pair-methods{padding-top:12px}
+.market-pair-methods>.market-comparison{margin-top:16px}
+@media(max-width:650px){.market-shared-controls label{flex:1;min-width:130px}.market-shared-controls button{margin-left:0}.market-shared-controls select{width:100%}}

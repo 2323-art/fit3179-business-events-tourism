@@ -288,3 +288,8 @@ The origin controls now sit above the map, and the standalone hover instruction 
 ### Regional map controls · 27 October 2026
 
 Replaced the 17 origin buttons with All regions, Asia, Europe, North America and Oceania. Region selection filters routes, points and country options; the alphabetical country/territory dropdown highlights an individual origin. The card totals the visible regional subset, and selected-country shares explicitly use that subset. Changing regions resets the country; Escape clears the country while keeping the region. Region and country selections survive resizing. Verified Europe (4 origins, 76,000 trips), Asia (10, 292,000), Germany (17.1% of displayed European trips), Malaysia (7.2% of displayed Asian trips), and the complete reset (17, 619,000).
+
+
+### Linked market-chart layout · 27 October 2026
+
+The scatterplot and change heatmap now share controls above the pair and one combined explanation below, beside the existing spending-per-trip card. Scatter year and scatter scale are explicitly scoped: the heatmap always compares 2024–2025. Hovering either chart previews the same market across both charts, the overview, exact-value table and narrative. Clicking pins it; the market selector supports keyboard selection; Escape clears the market and Reset charts restores all three controls. Resizing preserves the pinned market, year and scale. Verified 2024/2025 changes, small-market bounds and overview for out-of-range China, heatmap-to-scatter clicking, scatter-to-heatmap hover preview, mobile width, and reset. Counts, spending observations, heatmap changes and colour domains are unchanged. S61 pp.9–11 supports distinct transient/persistent selection; S8 pp.4–6 supports aligned shared controls and grouped explanation.

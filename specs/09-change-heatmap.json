@@ -93,7 +93,8 @@
       "mark": {
         "type": "rect",
         "stroke": "white",
-        "strokeWidth": 2
+        "strokeWidth": 2,
+        "cursor": "pointer"
       },
       "encoding": {
         "color": {
@@ -168,13 +169,15 @@
         "type": "rect",
         "fillOpacity": 0,
         "stroke": "#162B4D",
-        "strokeWidth": 3
+        "strokeWidth": 3,
+        "cursor": "pointer"
       }
     },
     {
       "mark": {
         "type": "text",
-        "fontSize": 15
+        "fontSize": 15,
+        "cursor": "pointer"
       },
       "encoding": {
         "text": {
