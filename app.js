@@ -111,6 +111,7 @@ async function renderChart(name,index){
   if(index===10){await result.view.signal('activityFocus',activityFocus).runAsync();result.view.addSignalListener('activityFocus',(_,value)=>{activityFocus=value})}
   if(index===0)await bindWaffleFeedback(result.view);
   if(index===2)await bindOriginSpending(result.view);
+  if(index===6)bindOriginMapFeedback(result.view);
   if(index===3)await bindSpendingMap(result.view);
   if(index===4)await bindVisitsMap(result.view);
   if(index===5)bindDestinationFeedback(result.view);
@@ -119,6 +120,39 @@ async function renderChart(name,index){
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
+}
+// Route hover previews an origin; click or keyboard activation pins it.
+let originMapRows=[],originMapPinned='All origins';
+function showOriginMap(country=originMapPinned){
+ const row=originMapRows.find(r=>r.country===country);
+ const total=originMapRows.reduce((sum,r)=>sum+r.visitors,0);
+ if(!total)return;
+ document.getElementById('origin-map-value').textContent=formatTrips(row?row.visitors:total);
+ document.getElementById('origin-map-name').textContent=row?displayName(row.country):'the eight origins shown';
+ document.getElementById('origin-map-detail').textContent=row
+  ?(row.visitors/total*100).toFixed(1)+'% of trips from these eight origins.'
+  :'2025 · selected origins only';
+ document.querySelectorAll('#origin-key button').forEach(button=>{
+  button.classList.toggle('is-previewed',button.dataset.origin===country);
+  button.setAttribute('aria-pressed',String(button.dataset.origin===originMapPinned));
+ });
+ const view=window.chartViews['07-flow-map'];
+ if(view&&view.signal('originFocus')!==country)view.signal('originFocus',country).runAsync().catch(console.error);
+ scheduleProse();
+}
+function pinOriginMap(country){
+ originMapPinned=originMapPinned===country?'All origins':country;
+ showOriginMap();
+}
+function bindOriginMapFeedback(view){
+ const originOf=item=>{
+  const country=item?.datum?.properties?.country||item?.datum?.country;
+  return originMapRows.some(r=>r.country===country)?country:null;
+ };
+ view.addEventListener('mouseover',(_,item)=>{const country=originOf(item);if(country)showOriginMap(country)});
+ view.addEventListener('mouseout',()=>showOriginMap());
+ view.addEventListener('click',(_,item)=>{const country=originOf(item);if(country)pinOriginMap(country)});
+ showOriginMap();
 }
 // Source countries split into two spending locations, with conserved AUD widths.
 let spendingOriginSelected='';
@@ -422,13 +456,19 @@ async function start(){
 // INTERVIEW: Load category colours for HTML legends and destination values for the selected-state detail list.
   [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
   buildColourLegends();buildStateComparison();
-  const origins=await (await fetch('data/origins.json')).json();
+  originMapRows=await (await fetch('data/origins.json')).json();
 // INTERVIEW: Create origin buttons from actual data. Clicking sets originFocus; conditional opacity fades unrelated routes.
 // INTERVIEW: aria-pressed tells assistive technology which button is selected.
-  for(const row of [{country:'All origins'},...origins]){
+  for(const row of [{country:'All origins'},...originMapRows]){
    const button=document.createElement('button');button.type='button';button.dataset.origin=row.country;button.setAttribute('aria-pressed',String(row.country==='All origins'));button.textContent=displayName(row.country)+(row.visitors?' · '+formatTrips(row.visitors):'');
-   button.addEventListener('click',async()=>{const view=window.chartViews['07-flow-map'];if(!view)return;await view.signal('originFocus',row.country).runAsync();document.querySelectorAll('#origin-key button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));});document.getElementById('origin-key').append(button);
+   button.addEventListener('mouseenter',()=>showOriginMap(row.country));
+   button.addEventListener('mouseleave',()=>showOriginMap());
+   button.addEventListener('focus',()=>showOriginMap(row.country));
+   button.addEventListener('blur',()=>showOriginMap());
+   button.addEventListener('click',()=>pinOriginMap(row.country));
+   document.getElementById('origin-key').append(button);
   }
+  document.getElementById('chart07').closest('figure').addEventListener('keydown',event=>{if(event.key==='Escape'){originMapPinned='All origins';showOriginMap()}});
  }catch(error){console.error('Could not load comparison controls',error)}
  await Promise.all([...charts.map(renderChart),renderStateMix(),renderMarketOverview()]);updateMarketSummary();updateStateMix();document.documentElement.dataset.chartsReady='true';
 }
@@ -538,10 +578,9 @@ start().then(()=>{scheduleProse();scheduleChapterNav();settleInitialAnchor()});l
 // INTERVIEW: State selection is restored inside renderChart using selectedState; finalise releases old chart resources.
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
  renderQueue=renderQueue.then(async()=>{
-  previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),marketScale=prior?.signal('marketScale'),originFocus=window.chartViews['07-flow-map']?.signal('originFocus');
+  previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),marketScale=prior?.signal('marketScale');
   Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all([...charts.map(renderChart),renderStateMix(),renderMarketOverview()]);
   if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).signal('marketScale',marketScale).runAsync();
-  if(originFocus!==undefined&&window.chartViews['07-flow-map'])await window.chartViews['07-flow-map'].signal('originFocus',originFocus).runAsync();
   updateMarketSummary();scheduleProse();
  }).catch(console.error);
  },200)});

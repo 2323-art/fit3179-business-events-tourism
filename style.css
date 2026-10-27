@@ -471,3 +471,8 @@ body p,.methods li,body figcaption:not(.story-note),
 .state-mix-footer #reset-state-comparison{flex-shrink:0;margin:0}
 .state-mix-notes>.caption-detail{margin-top:8px}
 @media(max-width:650px){.state-mix-footer{flex-wrap:wrap}.state-mix-notes{flex-basis:100%;padding-top:0}.state-mix-footer #reset-state-comparison{margin-left:auto}}
+
+/* Flow-map selection preserves the width encoding and international blue. */
+.origin-map-card #origin-map-value{display:block;font:italic 54px/1.15 Georgia,serif;letter-spacing:-.03em;color:#2457D6;margin-bottom:10px}
+.origin-map-card #origin-map-detail{font-size:var(--type-small);line-height:1.5;margin:0}
+.origin-key button.is-previewed{outline:2px solid var(--blue);outline-offset:2px}

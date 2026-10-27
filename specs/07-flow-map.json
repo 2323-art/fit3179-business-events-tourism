@@ -75,7 +75,8 @@
       "mark": {
         "type": "geoshape",
         "filled": false,
-        "strokeOpacity": 1
+        "strokeOpacity": 1,
+        "cursor": "pointer"
       },
       "encoding": {
         "strokeWidth": {
@@ -142,7 +143,8 @@
       "mark": {
         "type": "circle",
         "size": 50,
-        "color": "#162B4D"
+        "color": "#162B4D",
+        "cursor": "pointer"
       },
       "encoding": {
         "longitude": {
@@ -165,7 +167,28 @@
             "title": "Visitor trips",
             "format": ",.0f"
           }
-        ]
+        ],
+        "opacity": {
+          "condition": {
+            "test": "originFocus == 'All origins' || datum.country == originFocus",
+            "value": 1
+          },
+          "value": 0.2
+        },
+        "stroke": {
+          "condition": {
+            "test": "datum.country == originFocus",
+            "value": "#2457D6"
+          },
+          "value": "transparent"
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "datum.country == originFocus",
+            "value": 2
+          },
+          "value": 0
+        }
       },
       "transform": [
         {
@@ -222,7 +245,8 @@
         },
         "dy": {
           "expr": "datum.country == 'UK' ? -24 : datum.country == 'Singapore' ? 20 : datum.country == 'Malaysia' ? -10 : datum.country == 'Japan' ? -4 : -12"
-        }
+        },
+        "cursor": "pointer"
       },
       "encoding": {
         "longitude": {

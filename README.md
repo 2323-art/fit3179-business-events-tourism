@@ -273,3 +273,8 @@ The reference and comparison states' exact visit/spending shares now appear in t
 Hovering a segment in either state-composition chart or a traveller row in either card previews that group across both charts and both cards. The explanation compares its spending and visit shares. Clicking pins the group; clicking again or Escape clears it. Card labels are native keyboard-focusable buttons. State changes and resize preserve a pinned group; Reset to NSW and Victoria clears it. Tooltips include both shares and the underlying visit/spending amounts.
 
 Focus uses outlines and opacity while preserving traveller colours, stacked widths and all observations (S61 Manipulate view, pp.9–11). Browser checks confirmed hover, card and bar clicks, keyboard Enter/Escape, state changes, resize persistence and reset. All twelve bar segments remain, with unchanged geometry during highlighting; no chart errors or mobile page overflow were observed.
+
+
+### Origin-map feedback · 27 October 2026
+
+The map now previews the hovered origin in a visitor-trip card above the explanation. Routes, origin points, labels and buttons share the selection. Click or keyboard activation pins an origin; Escape or All origins restores the overview. The card shows 513,000 trips across the eight displayed origins, or the selected origin’s count and share of that displayed subset. Rounded source counts, geographical positions and route widths are unchanged. Selection survives resizing. This applies S61 (Manipulate view, PDF pp.9–11): hover and persistent selection are distinct, and highlighting preserves the quantitative width channel. Verified map hover/click, keyboard selection/reset, and mobile persistence without horizontal overflow.
