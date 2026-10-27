@@ -1,15 +1,15 @@
 /* Local Vega/Vega-Lite specifications; viewport changes preserve control values. */
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
-// INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The treemap uses a Vega specification directly.
-const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
+// INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. Destination panels use a shared percentage scale.
+const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-destination-shares','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
 window.chartViews={};window.chartFailures=[];
 // INTERVIEW: Cache data used by the HTML summaries and controls. selectedState persists across chart redraws.
 let marketRows=[];
-let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states';
+let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states',referenceState='NSW',comparisonState='VIC';
 // INTERVIEW: These helpers format numbers and expand abbreviations for readers; they do not change the underlying observations.
 const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
 const formatMoney=n=>new Intl.NumberFormat('en-AU',{maximumFractionDigits:1}).format(n/1e6)+' million Australian dollars';
@@ -53,8 +53,8 @@ function updateMarketSummary(){
  document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':displayName(spendLeader.country)+' leads spending among published origins');
  document.getElementById('market-summary').textContent=row?`${displayName(row.country)}: about ${formatTrips(row.visitors)} visitor trips and ${formatMoney(row.spend).replace(' million Australian dollars','m AUD')} spent in Australia in ${year}. Other dots within the chosen scale remain for comparison.`:`Among the 18 published markets in ${year}, ${displayName(spendLeader.country)} generated ${formatMoney(spendLeader.spend).replace(' million Australian dollars','m AUD')} from ${formatTrips(spendLeader.visitors)} trips. ${displayName(tripLeader.country)} had ${formatTrips(tripLeader.visitors)} trips but ${formatMoney(tripLeader.spend).replace(' million Australian dollars','m AUD')} in spending. More trips did not identify the spending leader.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
- document.getElementById('market-scale-note').textContent=detail?`Detail: ${rows.filter(inside).length} of ${rows.length} markets; up to 40,000 trips and AUD 120m. Both years use these same bounds. ${row&&!inside(row)?displayName(row.country)+' is outside this detail; choose All markets to see it.':'Choose All markets to restore the overview.'}`:'Overview: all 18 published markets. Choose Smaller markets to spread out the crowded lower-left cluster. Each scale keeps the same bounds across years.';
- updateComparison(focus);scheduleProse();
+ document.getElementById('market-scale-note').textContent=detail?`Detail: ${rows.filter(inside).length} of ${rows.length} markets; up to 40,000 trips and AUD 120m. Both years use these same bounds. ${row&&!inside(row)?displayName(row.country)+' is outside this detail and is outlined in the compact overview.':'The compact overview keeps all markets in context.'}`:'Overview: all 18 published markets. Choose Smaller markets to spread out the crowded lower-left cluster. Each scale keeps the same bounds across years.';
+ syncMarketOverview(year,focus,detail);updateComparison(focus);scheduleProse();
 }
 // INTERVIEW: CHART LOADING PIPELINE: find container -> fetch specification -> adapt dimensions -> embed -> retain View.
 // INTERVIEW: async/await lets the browser keep working while requests and rendering finish.
@@ -74,7 +74,7 @@ async function renderChart(name,index){
   if(index===8&&width<400)spec.layer[2].mark.fontSize=13;
   if(index===7&&width<360)spec.layer[0].encoding.x.axis.values={expr:"marketScale == 'Smaller markets' ? [0,20000,40000] : [0,100000,200000]"};
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
-  else if(index===5){spec.width=width;spec.height=width<800?540:380}
+  else if(index===5){spec.columns=width>=540?2:1;const panelWidth=Math.floor((width-(spec.columns-1)*28)/spec.columns)-12;for(const panel of spec.concat){panel.width=panelWidth;if(spec.columns===1){panel.height={step:62};panel.encoding.y.scale.domain=panel.encoding.y.sort}}}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
@@ -98,23 +98,56 @@ async function renderChart(name,index){
 }
 // Linked composition extends the visit map: same geography, a new traveller-type dimension.
 async function renderStateMix(){
- const el=document.getElementById('state-mix-chart');el.setAttribute('aria-busy','true');
- try{
-  const spec=await (await fetch('specs/state-mix.json',{cache:'no-cache'})).json();
-  const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});
-  window.chartViews['state-mix']=result.view;
-  await result.view.signal('stateFocus',selectedState).runAsync();
- }catch(error){window.chartFailures.push({name:'state-mix',message:error.message});el.innerHTML='<p class="chart-error">The traveller mix could not load. Its data table remains available below.</p>';console.error(error)}
- finally{el.setAttribute('aria-busy','false')}
+ const basePromise=fetch('specs/state-mix.json',{cache:'no-cache'}).then(response=>response.json());
+ await Promise.all([['state-reference','state-reference-chart',referenceState],['state-mix','state-mix-chart',comparisonState]].map(async([key,id,code])=>{
+  const el=document.getElementById(id);el.setAttribute('aria-busy','true');
+  try{
+   const spec=structuredClone(await basePromise);spec.width=Math.max(160,el.clientWidth-105);spec.params[0].value=code;
+   const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});window.chartViews[key]=result.view;
+  }catch(error){window.chartFailures.push({name:key,message:error.message});el.textContent='The comparison could not load. Use the data table below.';console.error(error)}
+  finally{el.setAttribute('aria-busy','false')}
+ }));
 }
 function updateStateMix(){
- const code=selectedState==='All states'?'NSW':selectedState;
- const rows=stateMixRows.filter(r=>r.code===code);if(rows.length!==3)return;
- const pct=n=>new Intl.NumberFormat('en-AU',{style:'percent',minimumFractionDigits:1,maximumFractionDigits:1}).format(n);
- const day=rows.find(r=>r.traveller==='Domestic day'),overnight=rows.find(r=>r.traveller==='Domestic overnight');
- document.getElementById('state-mix-title').textContent=rows[0].state+' · visitor mix and spending mix';
- document.getElementById('state-mix-summary').textContent=`Domestic day visitors make ${pct(day.visitor_share)} of state visits but ${pct(day.spend_share)} of spending. Domestic overnight visitors account for ${pct(overnight.visitor_share)} of visits and ${pct(overnight.spend_share)} of spending. The national contrast varies from place to place.`;
- document.getElementById('state-mix-context').textContent=selectedState==='All states'?'New South Wales is the starting example. Select a state in either legend to compare its visitor mix.':'The selected state also highlights the visit map and destination treemap. Use All states and territories to restore the overview and New South Wales example.';
+ const pct=n=>(n*100).toFixed(1)+'%';
+ document.getElementById('reference-state').value=referenceState;
+ document.getElementById('comparison-state').value=comparisonState;
+ for(const [code,id] of [[referenceState,'state-reference-values'],[comparisonState,'state-mix-values']]){
+  const host=document.getElementById(id);host.replaceChildren();
+  const label=document.createElement('p');label.textContent='Visit share / spending share';host.append(label);
+  for(const row of stateMixRows.filter(r=>r.code===code)){
+   const line=document.createElement('p');line.textContent=row.traveller+': '+pct(row.visitor_share)+' / '+pct(row.spend_share);host.append(line);
+  }
+ }
+ const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
+ if(rows.some(r=>!r))return;
+ document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'. Choose a different comparison state to see the contrast.':`Domestic overnight visitors account for ${pct(rows[0].visitor_share)} of visits and ${pct(rows[0].spend_share)} of spending in ${displayName(referenceState)}, versus ${pct(rows[1].visitor_share)} of visits and ${pct(rows[1].spend_share)} of spending in ${displayName(comparisonState)}.`;
+ document.getElementById('state-mix-context').textContent='The reference stays fixed. Selecting a state in either legend changes the comparison state and highlights the visit map and destination panels.';
+}
+function buildStateComparison(){
+ for(const id of ['reference-state','comparison-state']){
+  const select=document.getElementById(id);
+  for(const state of colourSemantics.states){const option=document.createElement('option');option.value=state.key;option.textContent=state.label;select.append(option)}
+ }
+ document.getElementById('reference-state').addEventListener('change',async e=>{referenceState=e.target.value;updateStateMix();await window.chartViews['state-reference']?.signal('stateFocus',referenceState).runAsync()});
+ document.getElementById('comparison-state').addEventListener('change',e=>selectState(e.target.value));
+ document.getElementById('reset-state-comparison').addEventListener('click',async()=>{referenceState='NSW';comparisonState='VIC';await selectState('All states');await window.chartViews['state-reference']?.signal('stateFocus',referenceState).runAsync()});
+ updateStateMix();
+}
+// Week 10 focus+context: this overview retains all markets while the main view enlarges the cluster.
+async function renderMarketOverview(){
+ const el=document.getElementById('market-overview-chart');
+ try{
+  const spec=await (await fetch('specs/08-market-overview.json',{cache:'no-cache'})).json();
+  spec.width=Math.max(160,document.getElementById('chart08').clientWidth-100);
+  const result=await vegaEmbed(el,spec,{actions:false,renderer:'svg',loader:vega.loader({baseURL:chartBaseURL})});window.chartViews['08-market-overview']=result.view;
+ }catch(error){window.chartFailures.push({name:'08-market-overview',message:error.message});el.textContent='The overview could not load. Choose All markets above for context.';console.error(error)}
+}
+function syncMarketOverview(year,focus,detail){
+ document.getElementById('market-overview-panel').hidden=!detail;
+ document.getElementById('market-overview-heading').textContent=year+' · all markets in context';
+ const view=window.chartViews['08-market-overview'];
+ if(view&&(view.signal('year')!==year||view.signal('focus')!==focus))view.signal('year',year).signal('focus',focus).runAsync().catch(console.error);
 }
 
 // INTERVIEW: DATA ALTERNATIVE: load the same prepared values into a readable HTML table inside a native dialog.
@@ -142,7 +175,7 @@ document.getElementById('reset-market').addEventListener('click',async()=>{
  const view=window.chartViews['08-market-scatter'];if(!view)return;
  await view.signal('year',2025).signal('focus','All markets').signal('marketScale','All markets').runAsync();updateMarketSummary();
 });
-// INTERVIEW: STARTUP: wait for fonts, load control data, build legends/origin buttons, then render all 12 charts.
+// INTERVIEW: STARTUP: wait for fonts, load control data, build legends/origin buttons, then render the figures and their supporting views.
 // INTERVIEW: Promise.all waits for independent chart renders together; it does not deliberately load them one at a time.
 async function start(){
  await document.fonts.ready;
@@ -150,7 +183,7 @@ async function start(){
   marketRows=await (await fetch('data/markets.json')).json();
 // INTERVIEW: Load category colours for HTML legends and destination values for the selected-state detail list.
   [colourSemantics,regionRows,stateMixRows]=await Promise.all(['colour-semantics','regions','state-mix'].map(async name=>(await fetch('data/'+name+'.json')).json()));
-  buildColourLegends();
+  buildColourLegends();buildStateComparison();
   const origins=await (await fetch('data/origins.json')).json();
 // INTERVIEW: Create origin buttons from actual data. Clicking sets originFocus; conditional opacity fades unrelated routes.
 // INTERVIEW: aria-pressed tells assistive technology which button is selected.
@@ -159,7 +192,7 @@ async function start(){
    button.addEventListener('click',async()=>{const view=window.chartViews['07-flow-map'];if(!view)return;await view.signal('originFocus',row.country).runAsync();document.querySelectorAll('#origin-key button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));});document.getElementById('origin-key').append(button);
   }
  }catch(error){console.error('Could not load comparison controls',error)}
- await Promise.all([...charts.map(renderChart),renderStateMix()]);updateMarketSummary();updateStateMix();document.documentElement.dataset.chartsReady='true';
+ await Promise.all([...charts.map(renderChart),renderStateMix(),renderMarketOverview()]);updateMarketSummary();updateStateMix();document.documentElement.dataset.chartsReady='true';
 }
 // INTERVIEW: Build visible legends from colour-semantics.json. Chart specifications contain matching colour scales.
 // INTERVIEW: State entries are buttons because they also select data; other legend entries are explanatory labels.
@@ -184,12 +217,13 @@ function buildColourLegends(){
   }
  }
 }
-// INTERVIEW: COORDINATED STATE SELECTION: send one state to BOTH the symbol map and treemap, then show its regions below.
+// INTERVIEW: COORDINATED STATE SELECTION: send one state to BOTH the symbol map and destination panels, then show its regions below.
 // INTERVIEW: The optional ?. call skips a View that has not loaded yet. Promise.all waits for both available updates.
 async function selectState(state){
  selectedState=state;
+ if(state!=='All states')comparisonState=state;
  updateStateMix();
- await Promise.all(['05-symbol-map','06-treemap','state-mix'].map(name=>window.chartViews[name]?.signal('stateFocus',state).runAsync()));
+ await Promise.all(['05-symbol-map','06-destination-shares','state-mix'].map(name=>window.chartViews[name]?.signal('stateFocus',name==='state-mix'?comparisonState:state).runAsync()));
 // INTERVIEW: Synchronise the pressed appearance of both state legends, so their controls agree.
  document.querySelectorAll('[data-state]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.state===state)));
  const detail=document.getElementById('state-detail');detail.replaceChildren();
@@ -264,7 +298,7 @@ start().then(()=>{scheduleProse();scheduleChapterNav();settleInitialAnchor()});l
 addEventListener('resize',()=>{if(Math.abs(innerWidth-previousWidth)<20)return;clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{
  renderQueue=renderQueue.then(async()=>{
   previousWidth=innerWidth;const prior=window.chartViews['08-market-scatter'];const year=prior?.signal('year'),focus=prior?.signal('focus'),marketScale=prior?.signal('marketScale'),originFocus=window.chartViews['07-flow-map']?.signal('originFocus');
-  Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all([...charts.map(renderChart),renderStateMix()]);
+  Object.values(window.chartViews).forEach(v=>v.finalize());await Promise.all([...charts.map(renderChart),renderStateMix(),renderMarketOverview()]);
   if(year!==undefined&&window.chartViews['08-market-scatter'])await window.chartViews['08-market-scatter'].signal('year',year).signal('focus',focus).signal('marketScale',marketScale).runAsync();
   if(originFocus!==undefined&&window.chartViews['07-flow-map'])await window.chartViews['07-flow-map'].signal('originFocus',originFocus).runAsync();
   updateMarketSummary();scheduleProse();

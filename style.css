@@ -348,3 +348,21 @@ body p,.methods li,body figcaption:not(.story-note),
  .chapter-nav .wordmark{text-align:left;padding:2px 0}
 }
 @media print{.chapter-nav{display:none}}
+
+/* Week 10 juxtaposition: equal-width panels keep both state compositions visible. */
+.state-mix-panel{grid-template-columns:minmax(0,1fr)}
+.state-mix-panel>div:first-child{max-width:76ch}
+.state-mix-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.mix-card{min-width:0;border:1px solid var(--line);padding:18px;background:white}
+.mix-card label{display:block;font-weight:600;margin-bottom:8px}
+.mix-card select{display:block;width:100%;font:inherit;padding:8px;border:1px solid var(--line);background:white;color:var(--ink);margin-bottom:16px}
+.mix-card .chart{min-height:160px}
+.mix-values p{font-size:14px;margin:3px 0;font-variant-numeric:tabular-nums}
+.mix-values p:first-child{font-weight:600;margin-top:8px}
+#reset-state-comparison{font:inherit;font-size:14px;background:white;border:1px solid var(--line);padding:8px 12px;margin:16px 0;cursor:pointer}
+.market-overview-panel{padding:16px 12px;margin:16px 0;background:var(--pale);border:1px solid var(--line)}
+.market-overview-panel[hidden]{display:none}
+.market-overview-panel h4{font-size:15px;margin:0 0 12px}
+.market-overview-panel .chart{min-height:0}
+.market-overview-panel p{font-size:13px;line-height:1.5;margin:8px 0 0}
+@media(max-width:650px){.state-mix-pair{grid-template-columns:minmax(0,1fr);gap:16px}.mix-card{padding:14px}}

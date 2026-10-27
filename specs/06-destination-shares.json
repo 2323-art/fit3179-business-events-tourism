@@ -1,0 +1,1180 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#000000",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  "data": {
+    "url": "data/regions.json"
+  },
+  "params": [
+    {
+      "name": "stateFocus",
+      "value": "All states"
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.value > 0"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "value",
+          "as": "state_total"
+        }
+      ],
+      "groupby": [
+        "parent"
+      ]
+    },
+    {
+      "calculate": "datum.value / datum.state_total",
+      "as": "share"
+    },
+    {
+      "calculate": "datum.name == 'ACT (all)' ? 'Whole territory (no split)' : datum.name == 'Hobart & south' ? 'Hobart and the South' : datum.name",
+      "as": "destination_label"
+    },
+    {
+      "calculate": "format(datum.share, '.1%') + ' · AUD ' + format(datum.value / 1e6, ',.0f') + 'm'",
+      "as": "value_label"
+    }
+  ],
+  "concat": [
+    {
+      "title": {
+        "text": "New South Wales",
+        "subtitle": [
+          "Displayed total · AUD 5.848bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'NSW'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Sydney",
+            "Regional NSW"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Sydney",
+              "Regional NSW",
+              "empty-0"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#443675"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Victoria",
+        "subtitle": [
+          "Displayed total · AUD 3.712bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'VIC'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Melbourne",
+            "Regional VIC"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Melbourne",
+              "Regional VIC",
+              "empty-0"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#795637"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Queensland",
+        "subtitle": [
+          "Displayed total · AUD 3.665bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'QLD'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Brisbane",
+            "Regional QLD",
+            "Gold Coast"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Brisbane",
+              "Regional QLD",
+              "Gold Coast"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#748128"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Western Australia",
+        "subtitle": [
+          "Displayed total · AUD 1.707bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'WA'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Perth region",
+            "Regional WA"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Perth region",
+              "Regional WA",
+              "empty-0"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#D2BA68"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "South Australia",
+        "subtitle": [
+          "Displayed total · AUD 0.979bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'SA'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Adelaide",
+            "Regional SA"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Adelaide",
+              "Regional SA",
+              "empty-0"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#5E608B"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Australian Capital Territory",
+        "subtitle": [
+          "Displayed total · AUD 0.580bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'ACT'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "ACT (all)"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "ACT (all)",
+              "empty-0",
+              "empty-1"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#386453"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Northern Territory",
+        "subtitle": [
+          "Displayed total · AUD 0.394bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'NT'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Darwin",
+            "Regional NT"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Darwin",
+              "Regional NT",
+              "empty-0"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#9A8468"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "Tasmania",
+        "subtitle": [
+          "Displayed total · AUD 0.347bn"
+        ],
+        "anchor": "start",
+        "fontSize": 16,
+        "subtitleFontSize": 14,
+        "offset": 18
+      },
+      "width": 260,
+      "height": 186,
+      "transform": [
+        {
+          "filter": "datum.parent == 'TAS'"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "name",
+          "type": "nominal",
+          "sort": [
+            "Hobart & south",
+            "Regional TAS"
+          ],
+          "axis": null,
+          "scale": {
+            "domain": [
+              "Hobart & south",
+              "Regional TAS",
+              "empty-0"
+            ]
+          }
+        },
+        "x": {
+          "field": "share",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0,
+              0.5,
+              1
+            ],
+            "format": ".0%",
+            "title": null,
+            "labelFontSize": 14,
+            "grid": true
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 12,
+            "yOffset": 12,
+            "color": "#4F7F91"
+          },
+          "encoding": {
+            "opacity": {
+              "condition": {
+                "test": "stateFocus == 'All states' || datum.parent == stateFocus",
+                "value": 1
+              },
+              "value": 0.4
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Destination"
+              },
+              {
+                "field": "share",
+                "type": "quantitative",
+                "format": ".1%",
+                "title": "Share of displayed state spending"
+              },
+              {
+                "field": "value",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Spending (AUD)"
+              },
+              {
+                "field": "state_total",
+                "type": "quantitative",
+                "format": "$,.0f",
+                "title": "Displayed state total (AUD)"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -16,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "destination_label"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dy": -2,
+            "fontSize": 14,
+            "color": "#000000"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "text": {
+              "field": "value_label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "columns": 2,
+  "spacing": {
+    "row": 30,
+    "column": 28
+  },
+  "resolve": {
+    "scale": {
+      "x": "shared",
+      "y": "independent"
+    }
+  }
+}

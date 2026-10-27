@@ -1,0 +1,215 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#000000",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  "width": 260,
+  "height": 145,
+  "data": {
+    "url": "data/markets.json"
+  },
+  "params": [
+    {
+      "name": "year",
+      "value": 2025
+    },
+    {
+      "name": "focus",
+      "value": "All markets"
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.year == year"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "visitors",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          200000
+        ],
+        "nice": false
+      },
+      "axis": {
+        "values": [
+          0,
+          100000,
+          200000
+        ],
+        "format": "~s",
+        "title": "Visitor trips",
+        "titleFontSize": 12,
+        "labelFontSize": 12
+      }
+    },
+    "y": {
+      "field": "spend",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          400000000
+        ],
+        "nice": false
+      },
+      "axis": {
+        "values": [
+          0,
+          200000000,
+          400000000
+        ],
+        "labelExpr": "format(datum.value/1e6,'.0f')",
+        "title": "AUD millions",
+        "titleFontSize": 12,
+        "labelFontSize": 12
+      }
+    }
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {
+            "x0": 0,
+            "x1": 40000,
+            "y0": 0,
+            "y1": 120000000
+          }
+        ]
+      },
+      "mark": {
+        "type": "rect",
+        "fill": "#2457D6",
+        "fillOpacity": 0.07,
+        "stroke": "#162B4D",
+        "strokeWidth": 2,
+        "strokeDash": [
+          4,
+          3
+        ]
+      },
+      "encoding": {
+        "x": {
+          "field": "x0",
+          "type": "quantitative"
+        },
+        "x2": {
+          "field": "x1"
+        },
+        "y": {
+          "field": "y0",
+          "type": "quantitative"
+        },
+        "y2": {
+          "field": "y1"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 40,
+        "color": "#2457D6",
+        "opacity": 0.65
+      },
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "country",
+            "title": "Origin"
+          },
+          {
+            "field": "visitors",
+            "format": ",.0f",
+            "title": "Visitor trips"
+          },
+          {
+            "field": "spend",
+            "format": "$,.0f",
+            "title": "Spending (AUD)"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.country == focus"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 100,
+        "filled": false,
+        "stroke": "#162B4D",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.country == focus && focus != 'All markets'"
+        },
+        {
+          "calculate": "datum.country == 'USA' ? 'United States' : datum.country == 'UK' ? 'United Kingdom' : datum.country",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "dy": -10,
+        "dx": {
+          "expr": "datum.visitors > 130000 ? -6 : 6"
+        },
+        "align": {
+          "expr": "datum.visitors > 130000 ? 'right' : 'left'"
+        }
+      },
+      "encoding": {
+        "text": {
+          "field": "label"
+        }
+      }
+    }
+  ]
+}
