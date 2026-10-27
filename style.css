@@ -349,6 +349,22 @@ body p,.methods li,body figcaption:not(.story-note),
 }
 @media print{.chapter-nav{display:none}}
 
+/* Keep the existing data alternatives together in one discoverable disclosure. */
+.has-chart-actions{position:relative}
+.has-chart-actions>.plot-title,.has-chart-actions>h3,.state-mix-content.has-chart-actions>.semantic-legend{padding-right:48px}
+.chart-tools,.story-row .chart-tools{position:absolute;top:0;right:0;display:block;margin:0;z-index:5}
+.story-plot>.chart-tools{top:14px;right:14px}
+.chart-action-menu{position:relative}
+.chart-action-menu>summary{display:flex;align-items:center;justify-content:center;width:36px;height:36px;list-style:none;border:1px solid var(--line);border-radius:50%;background:white;color:#000;cursor:pointer;font-size:26px;line-height:1}
+.chart-action-menu>summary::-webkit-details-marker{display:none}
+.chart-action-menu>summary:hover,.chart-action-menu[open]>summary{background:var(--pale);border-color:var(--blue)}
+.chart-action-panel{position:absolute;top:calc(100% + 6px);right:0;min-width:196px;padding:6px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 5px 18px #00000024}
+.chart-action-panel>button,.chart-action-panel>a{display:block;width:100%;padding:10px 12px;border:0;border-radius:4px;background:white;color:#000;text-align:left;text-decoration:none;font:inherit;font-size:var(--type-small);line-height:1.4;white-space:nowrap;cursor:pointer}
+.chart-action-panel>button:hover,.chart-action-panel>a:hover{background:var(--pale);color:#000}
+.chart-action-panel>button:focus-visible,.chart-action-panel>a:focus-visible{outline-offset:-3px}
+@media(max-width:800px){.story-plot>.chart-tools{top:10px;right:10px}}
+@media print{.chart-tools{display:none}}
+
 /* Week 10 juxtaposition: equal-width panels keep both state compositions visible. */
 .state-mix-panel{grid-template-columns:minmax(0,1fr)}
 .state-mix-panel>div:first-child{max-width:76ch}

@@ -166,7 +166,33 @@ async function showTable(name){
  document.getElementById('table-wrap').replaceChildren(table);document.getElementById('data-title').textContent=name.replaceAll('-',' ')+' · chart data';document.getElementById('data-dialog').showModal();
 }
 // INTERVIEW: Create a table button, CSV download and specification link for each figure, using its HTML data-table/data-chart attributes.
-document.querySelectorAll('.chart-tools').forEach(el=>{const b=document.createElement('button');b.textContent='Read data table';b.addEventListener('click',()=>showTable(el.dataset.table));const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv';csv.textContent='Download data';csv.setAttribute('download','');const spec=document.createElement('a');spec.href='specs/'+el.dataset.chart+'.json';spec.textContent='Chart specification';el.append(b,csv,spec)});
+document.querySelectorAll('.chart-tools').forEach(el=>{
+ const host=el.parentElement;host.classList.add('has-chart-actions');
+ const details=document.createElement('details');details.className='chart-action-menu';
+ const summary=document.createElement('summary');summary.title='Chart actions';
+ const label=host.querySelector('.plot-title,h3')?.textContent||'Traveller mix comparison';
+ summary.setAttribute('aria-label','Chart actions: '+label);
+ const dots=document.createElement('span');dots.setAttribute('aria-hidden','true');dots.textContent='⋯';summary.append(dots);
+ const panel=document.createElement('div');panel.className='chart-action-panel';
+ const close=()=>{details.open=false;summary.focus()};
+ const b=document.createElement('button');b.type='button';b.textContent='Read data table';
+ b.addEventListener('click',()=>{close();showTable(el.dataset.table)});
+ const csv=document.createElement('a');csv.href='data/'+el.dataset.table+'.csv';csv.textContent='Download data';csv.setAttribute('download','');csv.addEventListener('click',close);
+ const spec=document.createElement('a');spec.href='specs/'+el.dataset.chart+'.json';spec.textContent='Chart specification';
+ panel.append(b,csv,spec);details.append(summary,panel);el.append(details);
+ details.addEventListener('toggle',()=>{
+  if(details.open)document.querySelectorAll('.chart-action-menu[open]').forEach(other=>{if(other!==details)other.open=false});
+ });
+});
+// Native disclosure controls retain ordinary Tab/Enter access to links and buttons.
+document.addEventListener('pointerdown',event=>{
+ document.querySelectorAll('.chart-action-menu[open]').forEach(menu=>{if(!menu.contains(event.target))menu.open=false});
+});
+document.addEventListener('keydown',event=>{
+ if(event.key!=='Escape')return;
+ const menu=document.querySelector('.chart-action-menu[open]');
+ if(menu){event.preventDefault();menu.open=false;menu.querySelector('summary').focus()}
+});
 // INTERVIEW: Close the dialog using its button or a click on the backdrop. The native dialog also supports Escape.
 document.getElementById('close-dialog').addEventListener('click',()=>document.getElementById('data-dialog').close());
 document.getElementById('data-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});

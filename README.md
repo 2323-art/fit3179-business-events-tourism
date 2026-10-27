@@ -182,3 +182,9 @@ The 17 JSON/GeoJSON inputs referenced by the charts and page controls total abou
 Statistical content: © Commonwealth of Australia, licensed CC BY 4.0, except excluded third-party material and branding. Natural Earth data are public domain. No institutional endorsement is implied. Vendor licence notices are included in `vendor/`.
 
 **AI acknowledgement:** OpenAI Codex assisted extensively with source review, data processing, analysis, narrative, visualisation specifications, web implementation and testing. The student must review and understand the work, check its accuracy and acknowledge this assistance in the submission. No tutor feedback, hand sketch or interview attendance is claimed.
+
+### Chart action menus
+
+All 13 existing chart action groups now use a three-dot disclosure at the top-right of their chart panel. Each retains Read data table, Download data and Chart specification. The shared state comparison keeps its shared actions. This layout follows the user-supplied [reference](https://jlin0169-prog.github.io/FIT3179/); grouping is informed by S8 *Layout*, physical PDF pp. 4–6. The native disclosure, dismissal and focus behaviour are implementation choices.
+
+Browser checks verified all 13 menus, the three retained actions, one-open-at-a-time behaviour, outside-click and Escape dismissal, keyboard activation, data-dialog opening and focus restoration. Desktop and 390-pixel mobile appearances were inspected without horizontal page overflow. All referenced CSV, JSON data and chart specification files exist. No chart data or specifications changed.
