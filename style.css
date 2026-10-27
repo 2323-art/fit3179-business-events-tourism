@@ -407,10 +407,14 @@ body p,.methods li,body figcaption:not(.story-note),
 .waffle-reset{font:inherit;font-size:var(--type-small);color:#000;background:white;border:1px solid var(--line);border-radius:4px;padding:6px 10px;cursor:pointer}
 @media(max-width:450px){.waffle-key>.waffle-group{flex-wrap:wrap}.waffle-stat-values span:first-child{font-size:42px}}
 
-/* A rank chart needs horizontal room for labelled endpoints and yearly checkpoints. */
-.story-row.story-row--bump{grid-template-columns:minmax(0,1fr)}
-.story-row--bump .story-note{max-width:78ch}
+/* S8 pp.4–6: align the chart and explanation in the page's existing columns. */
+.story-row.story-row--bump{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
 .story-row--bump .control-hint{margin:0 0 16px;max-width:80ch}
+@media(max-width:800px){
+ .story-row.story-row--bump{grid-template-columns:minmax(0,1fr)}
+ .story-row--bump>.story-plot{grid-column:1;grid-row:1}
+ .story-row--bump>.story-note{grid-column:1;grid-row:2}
+}
 
 /* The Sankey reserves label columns inside the responsive plot. */
 #chart03 .vega-embed{width:100%;max-width:100%}
