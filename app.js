@@ -107,11 +107,11 @@ async function bindSpendingMap(view){
  let shown=null;
  const show=code=>{
   if(code===shown)return;shown=code;
-  const row=rows.find(r=>r.code===code);
-  view.signal('mapFocus',row?row.code:'').runAsync().catch(console.error);
-  document.getElementById('spending-state-name').textContent=row?row.state:'Hover a state to compare spending.';
-  document.getElementById('spending-state-rate').textContent=row?'AUD '+Math.round(row.spend_per_resident).toLocaleString('en-AU')+' per resident':'Exact figures appear here.';
-  document.getElementById('spending-state-detail').textContent=row?'AUD '+(row.spend/1e9).toFixed(2)+'bn spending / '+(row.population/1e6).toFixed(2)+'m residents':'You can also use the dropdown.';
+  const row=rows.find(r=>r.code===code)||rows.find(r=>r.code==='NT');
+  view.signal('mapFocus',code||'').runAsync().catch(console.error);
+  document.getElementById('spending-state-name').textContent=row.state;
+  document.getElementById('spending-state-rate').textContent='$'+Math.round(row.spend_per_resident).toLocaleString('en-AU');
+  document.getElementById('spending-state-detail').textContent='AUD '+(row.spend/1e9).toFixed(2)+'bn spending / '+(row.population/1e6).toFixed(2)+'m residents';
  };
  const codeOf=item=>item?.datum?.properties?.code||item?.datum?.code;
  view.addEventListener('mouseover',(_,item)=>{const code=codeOf(item);if(code)show(code)});

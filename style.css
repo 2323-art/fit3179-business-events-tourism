@@ -387,6 +387,7 @@ body p,.methods li,body figcaption:not(.story-note),
 .map-explorer{margin-top:14px}
 .map-explorer>label{display:block;font-weight:600;margin-bottom:6px}
 .map-explorer>select{max-width:100%;width:100%;padding:8px;background:white;color:#000;border:1px solid var(--line);border-radius:4px;font:inherit}
-.map-feedback{display:grid;gap:4px;margin-top:10px;padding:12px;border-left:3px solid var(--blue);background:white;color:#000;font-size:var(--type-small);min-height:100px;align-content:center}
-.map-feedback>span{display:block}
-#spending-state-rate{font-size:18px;font-weight:600}
+.map-stat-card{margin:0 0 28px;padding:0 0 22px;border-bottom:1px solid var(--line);min-height:190px;color:#000}
+.map-stat-card #spending-state-rate{display:block;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:clamp(48px,5vw,64px);font-weight:400;line-height:1.1;letter-spacing:-.03em;color:#2e7055;margin-bottom:10px}
+.map-stat-card .map-stat-caption{font-size:16px;line-height:1.5;margin:0 0 10px;max-width:none}
+.map-stat-card #spending-state-detail{font-size:var(--type-small);line-height:1.5;margin:0;max-width:none}
