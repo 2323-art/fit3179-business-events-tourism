@@ -14,7 +14,7 @@
       "gridColor": "#DFE6EE",
       "domain": false,
       "tickColor": "#B3C2D3",
-      "labelColor": "#4E6078",
+      "labelColor": "#000000",
       "titleColor": "#162B4D",
       "titlePadding": 14,
       "labelLimit": 150,

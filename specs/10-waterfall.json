@@ -12,7 +12,7 @@
       "gridColor": "#DFE6EE",
       "domain": false,
       "tickColor": "#B3C2D3",
-      "labelColor": "#4E6078",
+      "labelColor": "#000000",
       "titleColor": "#162B4D",
       "titlePadding": 14,
       "labelLimit": 170,
@@ -33,7 +33,7 @@
       "lineHeight": 20,
       "subtitleFontSize": 15,
       "subtitleLineHeight": 20,
-      "subtitleColor": "#4E6078",
+      "subtitleColor": "#000000",
       "offset": 14
     },
     "text": {

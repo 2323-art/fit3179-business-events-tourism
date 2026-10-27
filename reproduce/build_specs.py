@@ -249,7 +249,7 @@ for path in OUT.glob('*.json'):
  s=json.loads(path.read_text(encoding='utf-8'));readable_type(s);n=path.name[:2]
  if n!='06':
   s['config']['text']={'fontSize':16,'lineHeight':20,'color':INK}
-  s['config']['axis'].update(labelFontSize=15,titleFontSize=15,labelColor='#4E6078',labelPadding=7,titlePadding=14,labelOverlap=True)
+  s['config']['axis'].update(labelFontSize=15,titleFontSize=15,labelColor='#000000',labelPadding=7,titlePadding=14,labelOverlap=True)
   s['config']['legend'].update(labelFontSize=15,titleFontSize=15,labelLimit=240)
   s['config']['title'].update(fontSize=16,lineHeight=20)
  if n=='01':s['hconcat'][1]['title']=['Spending in','Australia']
