@@ -409,3 +409,13 @@ body p,.methods li,body figcaption:not(.story-note),
 .story-row.story-row--bump{grid-template-columns:minmax(0,1fr)}
 .story-row--bump .story-note{max-width:78ch}
 .story-row--bump .control-hint{margin:0 0 16px;max-width:80ch}
+
+/* Equal-sized coin symbols encode spending shares, never traveller counts. */
+#chart03{display:flex;justify-content:center;text-align:center}
+#chart03 .vega-embed{width:auto;max-width:100%}
+.coin-headline{margin:4px 0 12px;font-size:16px;color:#000}
+.coin-key{display:grid;gap:8px;margin:14px 0 10px;font-size:var(--type-small);color:#000}
+.coin-key>div{display:flex;align-items:center;gap:8px}
+.coin-key i{display:inline-block;width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.coin-australia{background:#2457D6}.coin-overseas{background:#D6DCE3;border:1px solid #7B8797}
+.coin-note{font-size:var(--type-small);margin:0;color:#000}

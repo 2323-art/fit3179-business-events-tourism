@@ -1,0 +1,177 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "100 coin symbols represent the location of international business-event trip spending. Whole icons are rounded; tooltips show source-derived shares.",
+  "width": 380,
+  "height": 380,
+  "config": {
+    "font": "IBM Plex Sans",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "titleFontWeight": "normal",
+      "gridColor": "#DFE6EE",
+      "domain": false,
+      "tickColor": "#B3C2D3",
+      "labelColor": "#000000",
+      "titleColor": "#162B4D",
+      "titlePadding": 14,
+      "labelLimit": 150,
+      "labelPadding": 7,
+      "labelOverlap": true
+    },
+    "legend": {
+      "labelFontSize": 15,
+      "titleFontSize": 15,
+      "orient": "bottom",
+      "title": null,
+      "labelLimit": 240
+    },
+    "title": {
+      "fontSize": 16,
+      "anchor": "start",
+      "color": "#162B4D",
+      "lineHeight": 20
+    },
+    "text": {
+      "fontSize": 16,
+      "lineHeight": 20,
+      "color": "#162B4D"
+    }
+  },
+  "data": {
+    "url": "data/national.json"
+  },
+  "transform": [
+    {
+      "filter": "datum.year == 2025 && datum.traveller == 'International'"
+    },
+    {
+      "calculate": "datum.spend / datum.total_spend",
+      "as": "australia_share"
+    },
+    {
+      "calculate": "sequence(0,100)",
+      "as": "units"
+    },
+    {
+      "flatten": [
+        "units"
+      ],
+      "as": [
+        "unit"
+      ]
+    },
+    {
+      "calculate": "datum.unit % 10",
+      "as": "column"
+    },
+    {
+      "calculate": "floor(datum.unit / 10)",
+      "as": "row"
+    },
+    {
+      "calculate": "datum.unit < round(datum.australia_share * 100) ? 'In Australia' : 'Overseas'",
+      "as": "location"
+    },
+    {
+      "calculate": "datum.location == 'In Australia' ? datum.australia_share : 1-datum.australia_share",
+      "as": "share"
+    },
+    {
+      "calculate": "datum.location == 'In Australia' ? datum.spend : datum.total_spend-datum.spend",
+      "as": "amount"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "column",
+      "type": "ordinal",
+      "axis": null
+    },
+    "y": {
+      "field": "row",
+      "type": "ordinal",
+      "axis": null
+    },
+    "tooltip": [
+      {
+        "field": "location",
+        "title": "Spending location",
+        "type": "nominal"
+      },
+      {
+        "field": "share",
+        "title": "Share of trip spending",
+        "type": "quantitative",
+        "format": ".1%"
+      },
+      {
+        "field": "amount",
+        "title": "Spending (AUD)",
+        "type": "quantitative",
+        "format": "$,.0f"
+      },
+      {
+        "field": "total_spend",
+        "title": "Whole-trip spending (AUD)",
+        "type": "quantitative",
+        "format": "$,.0f"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "size": {
+          "expr": "pow(width / 10 * 0.72, 2)"
+        },
+        "opacity": 1,
+        "strokeWidth": 1,
+        "stroke": "#FFFFFF"
+      },
+      "encoding": {
+        "color": {
+          "field": "location",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "In Australia",
+              "Overseas"
+            ],
+            "range": [
+              "#2457D6",
+              "#D6DCE3"
+            ]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "text": "$",
+        "font": "IBM Plex Sans",
+        "fontWeight": 600,
+        "fontSize": {
+          "expr": "max(12, width / 10 * 0.48)"
+        },
+        "baseline": "middle",
+        "dy": 1
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "test": "datum.location == 'In Australia'",
+            "value": "#FFFFFF"
+          },
+          "value": "#162B4D"
+        }
+      }
+    }
+  ]
+}

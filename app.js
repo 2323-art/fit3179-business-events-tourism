@@ -2,7 +2,7 @@
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
 // INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The destination treemap uses rectangle area for AUD spending.
-const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
+const charts=['01-waffle','02-spend-per-trip','03-spending-icons','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
@@ -79,7 +79,7 @@ async function renderChart(name,index){
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
   if(index===1)spec.height=240;
-  if(index===2)spec.height=300;
+  if(index===2){spec.width=Math.min(width-12,380);spec.height=spec.width;}
   if(index===3)spec.height=Math.min(400,width*.98);
   if(index===4)spec.height=Math.min(360,width*.9);
   if(index===10)spec.height=380;
