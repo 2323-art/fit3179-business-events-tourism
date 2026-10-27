@@ -38,13 +38,13 @@ function updateComparison(focus){
  // Derived rates connect visitor volume to spending without claiming causes (S1 p.10; S9 pp.2–4).
  const tripBefore=before.spend/before.visitors,tripAfter=after.spend/after.visitors;
  const money=n=>'AUD '+Math.round(n).toLocaleString('en-AU');
- document.getElementById('market-insight-title').textContent=displayName(country)+' · spending per trip';
+ document.getElementById('market-insight-title').textContent=displayName(country)+' · average spending per trip';
  document.getElementById('market-rate-change').textContent=formatChange(tripAfter/tripBefore-1);
  document.getElementById('market-rate-values').textContent=`${money(tripBefore)} → ${money(tripAfter)} · 2024–2025`;
  const tripGrowth=after.visitors/before.visitors-1,spendGrowth=after.spend/before.spend-1;
  const interpretation=tripGrowth>0&&tripAfter<tripBefore?'Lower average spending offsets some of the visitor growth.':tripGrowth<0&&tripAfter>tripBefore?'Higher average spending offsets some of the fall in visits.':tripGrowth>0&&tripAfter>tripBefore?'More trips and higher averages reinforce spending growth.':tripGrowth<0&&tripAfter<tripBefore?'Fewer trips and lower averages both reduce total spending.':'Both visitor volume and spending per trip shape the total.';
- document.getElementById('market-insight').textContent=interpretation;
- document.getElementById('market-rate-detail').textContent=`Nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. Calculations use unrounded estimates; change factors multiply. Different annual visitor groups are compared, not causes.`;
+ document.getElementById('market-insight').textContent='Heatmap: total spending; card: average spending per trip. '+interpretation;
+ document.getElementById('market-rate-detail').textContent=`Nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. All spending here is within Australia. Average spending per trip = total spending ÷ visitor trips. Calculations use published estimates before display rounding; change factors multiply. Different annual visitor groups are compared, not causes.`;
  const changeStory=tripGrowth>0&&spendGrowth>0?`gained visitors, while spending grew ${spendGrowth<tripGrowth?'more slowly':'faster'}`:tripGrowth<0&&spendGrowth<0?`lost visitors, while spending fell ${spendGrowth<tripGrowth?'faster':'more slowly'}`:tripGrowth>0&&spendGrowth<0?'gained visitors while spending fell':tripGrowth<0&&spendGrowth>0?'lost visitors while spending rose':'shows different changes in visits and spending';
  const changeSummary=`${displayName(country)} ${changeStory} from 2024 to 2025.`;
 // INTERVIEW: LINKING: send the same country to the heatmap signal. runAsync() evaluates the chart update.

@@ -201,7 +201,7 @@ body{width:100%;max-width:1100px;margin-inline:auto;background:#fff;box-shadow:0
 .caption-detail summary{cursor:pointer;color:var(--ink);font-weight:600;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
 .caption-detail p{margin:8px 0 0}
 .caption-detail[open]{padding-bottom:8px}
-.market-insight{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.market-insight{margin-top:16px;padding-top:16px;border-top:0}
 .market-insight h3{font-size:1.25rem;line-height:1.45;margin:0 0 12px}
 .market-insight{margin-top:32px;padding:24px;background:transparent}
 .market-insight p{font-size:var(--type-small);line-height:1.6;max-width:76ch}

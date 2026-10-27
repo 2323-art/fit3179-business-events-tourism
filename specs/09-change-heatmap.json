@@ -55,7 +55,8 @@
       "title": null,
       "axis": {
         "orient": "top",
-        "labelAngle": 0
+        "labelAngle": 0,
+        "labelExpr": "datum.label == 'Spend' ? 'Total spend' : datum.label"
       }
     },
     "y": {
