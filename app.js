@@ -1,7 +1,7 @@
 /* Local Vega/Vega-Lite specifications; viewport changes preserve control values. */
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
-// INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. Destination panels use a shared percentage scale.
+// INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. Destination stacks use a shared percentage scale.
 const charts=['01-waffle','02-spend-per-trip','03-sankey','04-choropleth','05-symbol-map','06-destination-shares','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
@@ -74,7 +74,7 @@ async function renderChart(name,index){
   if(index===8&&width<400)spec.layer[2].mark.fontSize=13;
   if(index===7&&width<360)spec.layer[0].encoding.x.axis.values={expr:"marketScale == 'Smaller markets' ? [0,20000,40000] : [0,100000,200000]"};
   if(index===0){spec.hconcat.forEach(p=>{p.width=Math.floor((width-38)/2);p.height=p.width});delete spec.width;delete spec.height;spec.config.legend.disable=true}
-  else if(index===5){spec.columns=width>=540?2:1;const panelWidth=Math.floor((width-(spec.columns-1)*28)/spec.columns)-12;for(const panel of spec.concat){panel.width=panelWidth;if(spec.columns===1){panel.height={step:62};panel.encoding.y.scale.domain=panel.encoding.y.sort}}}
+  else if(index===5){spec.width=width-12}
   else if(index===6){spec.height=width<500?260:440;if(width<600)spec.layer[4].transform=[{filter:"originFocus == 'All origins' ? (datum.country == 'Malaysia' || datum.country == 'New Zealand') : datum.country == originFocus"},...spec.layer[4].transform.filter(t=>!t.filter)]}
   else if(index===9){for(const panel of spec.vconcat)panel.width=Math.max(110,width-(width<500?144:190));if(width<500){spec.vconcat[1].encoding.y.axis.labelExpr="datum.label == 'New Zealand' ? ['New','Zealand'] : datum.label == 'United States' ? ['United','States'] : datum.label == 'Other published markets' ? ['Other published','markets'] : datum.label == 'Unpublished + rounding' ? ['Unpublished','+ rounding'] : datum.label";spec.vconcat[1].encoding.y.axis.labelLimit=110;spec.vconcat[1].encoding.x.axis.tickCount=3;spec.vconcat[0].encoding.x.title=['Spending in Australia','(AUD billions)'];spec.vconcat[1].encoding.x.title=['Cumulative spending','(AUD billions)'];spec.vconcat[1].title.subtitle=['Enlarged scale: gains and losses.','Labels: change in AUD millions.'];}}
   // Give the explanatory idioms more area than their contextual comparisons.
@@ -146,7 +146,7 @@ function updateStateMix(){
  const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
  if(rows.some(r=>!r))return;
  document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'. Choose a different comparison state to see the contrast.':`Domestic overnight visitors account for ${pct(rows[0].visitor_share)} of visits and ${pct(rows[0].spend_share)} of spending in ${displayName(referenceState)}, versus ${pct(rows[1].visitor_share)} of visits and ${pct(rows[1].spend_share)} of spending in ${displayName(comparisonState)}.`;
- document.getElementById('state-mix-context').textContent='The reference stays fixed. Selecting a state in either legend changes the comparison state and highlights the visit map and destination panels.';
+ document.getElementById('state-mix-context').textContent='The reference stays fixed. Selecting a state in either legend changes the comparison state and highlights the visit map and destination bars.';
 }
 function buildStateComparison(){
  for(const id of ['reference-state','comparison-state']){
@@ -267,7 +267,7 @@ function buildColourLegends(){
   }
  }
 }
-// INTERVIEW: COORDINATED STATE SELECTION: send one state to BOTH the symbol map and destination panels, then show its regions below.
+// INTERVIEW: COORDINATED STATE SELECTION: send one state to BOTH the symbol map and destination bars, then show its regions below.
 // INTERVIEW: The optional ?. call skips a View that has not loaded yet. Promise.all waits for both available updates.
 async function selectState(state){
  selectedState=state;
