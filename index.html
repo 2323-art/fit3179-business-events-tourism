@@ -7,9 +7,9 @@
 <title>Tourism and Business · Australia's business-event visitors</title>
 <!-- INTERVIEW: CSS styles the page; chart marks and axes are configured separately in their Vega/Vega-Lite specifications. -->
 <!-- Refresh the stylesheet version whenever its contents change, so cached CSS cannot mismatch new HTML. -->
-<link rel="stylesheet" href="style.css?v=d5f10c0128f5"><link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css?v=93065d3c684b"><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- INTERVIEW: Load Vega, Vega-Lite, Vega-Embed and then app.js in that order. defer waits until HTML parsing finishes before execution. -->
-<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=4860aad79710"></script>
+<script defer src="vendor/vega.min.js"></script><script defer src="vendor/vega-lite.min.js"></script><script defer src="vendor/vega-embed.min.js"></script><script defer src="app.js?v=ded6d7a9d135"></script>
 <script defer src="typography.js?v=54bcdddcdc6f"></script>
 </head>
 <body>
@@ -62,8 +62,8 @@
  <div class="story-series">
 <!-- INTERVIEW: Figure 04: chart04 is the mount point for specification 04. The chart-tools data attributes select its data table and specification links. -->
  <figure class="story-row story-row--map">
- <div class="story-plot"><p class="plot-title">Spending per resident · 2025</p><div id="chart04" class="chart"></div><div class="chart-tools" data-chart="04-choropleth" data-table="states"></div></div>
- <figcaption class="story-note"><h3>Spending relative to population is highest in the Northern Territory</h3><p class="chart-intro">The Northern Territory recorded <strong>AUD 1,478 per resident</strong> and the Australian Capital Territory AUD 1,197, compared with AUD 681 in New South Wales.</p><div class="figure-method"><p>04 / Darker areas show more 2025 spending per June 2025 resident. This measures market scale, not household income, spending by locals or payments to residents. Sources: Tourism Research Australia + Australian Bureau of Statistics; Natural Earth.</p><details class="caption-detail"><summary>How the map is calculated</summary><p>State spending is divided by the number of residents. The equal-area projection preserves relative geographic areas.</p></details></div></figcaption>
+ <div class="story-plot"><p class="plot-title">Spending per resident · 2025</p><div id="chart04" class="chart"></div><div class="map-explorer"><label for="spending-state">Explore a state</label><select id="spending-state"><option value="">Hover the map or choose here</option></select><div id="spending-feedback" class="map-feedback" aria-live="polite" aria-atomic="true"><strong id="spending-state-name">Hover a state to compare spending.</strong><span id="spending-state-rate">Exact figures appear here.</span><span id="spending-state-detail">You can also use the dropdown.</span></div></div><div class="chart-tools" data-chart="04-choropleth" data-table="states"></div></div>
+ <figcaption class="story-note"><h3>Spending relative to population is highest in the Northern Territory</h3><p class="chart-intro">The Northern Territory recorded <strong>AUD 1,478 per resident</strong> and the Australian Capital Territory AUD 1,197, compared with AUD 681 in New South Wales.</p><div class="figure-method"><p>04 / Darker areas show more 2025 spending per June 2025 resident. This measures market scale, not household income, spending by locals or payments to residents. Sources: Tourism Research Australia + Australian Bureau of Statistics; Natural Earth.</p><details class="caption-detail"><summary>How the map is calculated</summary><p>State spending is divided by the number of residents. The equal-area projection preserves relative geographic areas. Colour bands use unequal ranges to reveal state differences. Breaks are AUD 550, 600, 650, 1,000 and 1,300. Each band includes its lower bound, excluding its upper bound. Outlines identify the hovered or chosen state.</p></details></div></figcaption>
  </figure>
 <!-- INTERVIEW: Figure 05: chart05 is the mount point for specification 05. The chart-tools data attributes select its data table and specification links. -->
  <figure class="story-row story-row--map">

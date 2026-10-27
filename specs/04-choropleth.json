@@ -68,7 +68,8 @@
       "mark": {
         "type": "geoshape",
         "stroke": "white",
-        "strokeWidth": 1
+        "strokeWidth": 1,
+        "cursor": "pointer"
       },
       "encoding": {
         "tooltip": [
@@ -97,28 +98,57 @@
           }
         ],
         "color": {
-          "field": "properties.spend_per_resident",
-          "type": "quantitative",
+          "field": "spending_band",
+          "type": "ordinal",
           "scale": {
             "domain": [
-              0,
-              1600
+              "Below $550",
+              "$550–<600",
+              "$600–<650",
+              "$650–<1,000",
+              "$1,000–<1,300",
+              "$1,300+"
             ],
             "range": [
-              "#F0F0F0",
-              "#343434"
+              "#ffffcc",
+              "#c7e9b4",
+              "#7fcdbb",
+              "#41b6c4",
+              "#2c7fb8",
+              "#253494"
             ]
           },
           "legend": {
-            "title": [
-              "AUD",
-              "per resident"
-            ],
-            "format": "$,.0f",
-            "gradientLength": 220
+            "title": "AUD per resident",
+            "symbolType": "square",
+            "columns": 2,
+            "direction": "vertical",
+            "rowPadding": 6,
+            "columnPadding": 22,
+            "labelLimit": 180
           }
+        },
+        "stroke": {
+          "condition": {
+            "test": "datum.properties.code == mapFocus",
+            "value": "#000000"
+          },
+          "value": "#ffffff"
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "datum.properties.code == mapFocus",
+            "value": 3
+          },
+          "value": 1
         }
-      }
+      },
+      "transform": [
+        {
+          "calculate": "datum.properties.spend_per_resident < 550 ? \"Below $550\" : datum.properties.spend_per_resident < 600 ? \"$550\\u2013<600\" : datum.properties.spend_per_resident < 650 ? \"$600\\u2013<650\" : datum.properties.spend_per_resident < 1000 ? \"$650\\u2013<1,000\" : datum.properties.spend_per_resident < 1300 ? \"$1,000\\u2013<1,300\" : \"$1,300+\"",
+          "as": "spending_band"
+        }
+      ]
     },
     {
       "data": {
@@ -214,12 +244,7 @@
     },
     {
       "data": {
-        "values": [
-          {
-            "longitude": 148.983,
-            "latitude": -35.4618
-          }
-        ]
+        "url": "data/states.json"
       },
       "mark": {
         "type": "circle",
@@ -237,8 +262,39 @@
         "latitude": {
           "field": "latitude",
           "type": "quantitative"
+        },
+        "stroke": {
+          "condition": {
+            "test": "mapFocus == 'ACT'",
+            "value": "#000000"
+          },
+          "value": "#162B4D"
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "mapFocus == 'ACT'",
+            "value": 3
+          },
+          "value": 1.6
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "spend_per_resident",
+            "type": "quantitative",
+            "title": "AUD per resident",
+            "format": "$,.0f"
+          }
+        ]
+      },
+      "transform": [
+        {
+          "filter": "datum.code == 'ACT'"
         }
-      }
+      ]
     },
     {
       "data": {
@@ -288,6 +344,12 @@
           }
         ]
       }
+    }
+  ],
+  "params": [
+    {
+      "name": "mapFocus",
+      "value": ""
     }
   ]
 }

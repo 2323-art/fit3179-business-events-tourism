@@ -116,8 +116,19 @@
   ],
   "quantitative": {
     "spendingPerResident": [
-      "#F0F0F0",
-      "#343434"
+      "#ffffcc",
+      "#c7e9b4",
+      "#7fcdbb",
+      "#41b6c4",
+      "#2c7fb8",
+      "#253494"
+    ],
+    "spendingPerResidentThresholds": [
+      550,
+      600,
+      650,
+      1000,
+      1300
     ]
   },
   "note": "UI text, basemaps, borders and selection outlines are structural, not category colours."

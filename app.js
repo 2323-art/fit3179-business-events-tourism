@@ -90,11 +90,35 @@ async function renderChart(name,index){
 // INTERVIEW: Store the View, restore state selection, and register listeners only for the scatterplot year/focus parameters.
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
+  if(index===3)await bindSpendingMap(result.view);
   if(index===4||index===5)await result.view.signal('stateFocus',selectedState).runAsync();
   if(index===7){result.view.addSignalListener('year',updateMarketSummary);result.view.addSignalListener('focus',updateMarketSummary);result.view.addSignalListener('marketScale',updateMarketSummary);updateMarketSummary()}
 // INTERVIEW: Catch errors thrown by fetch/embed and show a useful fallback. Some internal Vega data warnings may not throw; visual checks still matter.
  }catch(error){window.chartFailures.push({name,message:error.message});el.innerHTML='<p class="chart-error">This chart could not load. Please use its data table or downloadable data below.</p>';console.error(name,error)}
  finally{el.setAttribute('aria-busy','false')}
+}
+// Hover outlines preserve the spending colour. The dropdown offers keyboard/touch access.
+async function bindSpendingMap(view){
+ const rows=await (await fetch('data/states.json')).json();
+ const select=document.getElementById('spending-state');
+ if(select.options.length===1)for(const row of [...rows].sort((a,b)=>a.state.localeCompare(b.state))){
+  const option=document.createElement('option');option.value=row.code;option.textContent=row.state;select.append(option);
+ }
+ let shown=null;
+ const show=code=>{
+  if(code===shown)return;shown=code;
+  const row=rows.find(r=>r.code===code);
+  view.signal('mapFocus',row?row.code:'').runAsync().catch(console.error);
+  document.getElementById('spending-state-name').textContent=row?row.state:'Hover a state to compare spending.';
+  document.getElementById('spending-state-rate').textContent=row?'AUD '+Math.round(row.spend_per_resident).toLocaleString('en-AU')+' per resident':'Exact figures appear here.';
+  document.getElementById('spending-state-detail').textContent=row?'AUD '+(row.spend/1e9).toFixed(2)+'bn spending / '+(row.population/1e6).toFixed(2)+'m residents':'You can also use the dropdown.';
+ };
+ const codeOf=item=>item?.datum?.properties?.code||item?.datum?.code;
+ view.addEventListener('mouseover',(_,item)=>{const code=codeOf(item);if(code)show(code)});
+ view.addEventListener('mouseout',()=>show(select.value));
+ view.addEventListener('click',(_,item)=>{const code=codeOf(item);if(code){select.value=code;show(code)}});
+ select.onchange=()=>show(select.value);
+ show(select.value);
 }
 // Linked composition extends the visit map: same geography, a new traveller-type dimension.
 async function renderStateMix(){

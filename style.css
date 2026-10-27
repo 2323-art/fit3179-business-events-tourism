@@ -382,3 +382,11 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-overview-panel .chart{min-height:0}
 .market-overview-panel p{font-size:13px;line-height:1.5;margin:8px 0 0}
 @media(max-width:650px){.state-mix-pair{grid-template-columns:minmax(0,1fr);gap:16px}.mix-card{padding:14px}}
+
+/* Stable detail area: hover changes values without shifting the map. */
+.map-explorer{margin-top:14px}
+.map-explorer>label{display:block;font-weight:600;margin-bottom:6px}
+.map-explorer>select{max-width:100%;width:100%;padding:8px;background:white;color:#000;border:1px solid var(--line);border-radius:4px;font:inherit}
+.map-feedback{display:grid;gap:4px;margin-top:10px;padding:12px;border-left:3px solid var(--blue);background:white;color:#000;font-size:var(--type-small);min-height:100px;align-content:center}
+.map-feedback>span{display:block}
+#spending-state-rate{font-size:18px;font-weight:600}
