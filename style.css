@@ -376,7 +376,8 @@ body p,.methods li,body figcaption:not(.story-note),
 .mix-card .chart{min-height:160px}
 .mix-values p{font-size:14px;margin:3px 0;font-variant-numeric:tabular-nums}
 .mix-values p:first-child{font-weight:600;margin-top:8px}
-#reset-state-comparison{font:inherit;font-size:14px;background:white;border:1px solid var(--line);padding:8px 12px;margin:16px 0;cursor:pointer}
+#reset-state-comparison{display:block;font:inherit;font-size:14px;background:white;border:1px solid var(--line);padding:8px 12px;margin:16px 0 16px auto;cursor:pointer}
+.state-mix-content>.comparison-note{max-width:none}
 .market-overview-panel{padding:16px 12px;margin:16px 0;background:var(--pale);border:1px solid var(--line)}
 .market-overview-panel[hidden]{display:none}
 .market-overview-panel h4{font-size:15px;margin:0 0 12px}
