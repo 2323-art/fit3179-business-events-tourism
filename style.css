@@ -552,3 +552,8 @@ body p,.methods li,body figcaption:not(.story-note),
 .activity-feedback strong{flex-basis:100%}
 #chart11:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
 #chart11 .vega-bindings:empty{display:none}
+
+/* Frame the calculation disclosure with a high-contrast heading. */
+.market-calculation>summary{background:#162B4D;color:#fff;padding:10px 14px;border-radius:4px;width:fit-content;max-width:100%;box-sizing:border-box;text-decoration:none}
+.market-calculation>summary:hover{background:#23436F}
+.market-calculation>summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
