@@ -277,12 +277,23 @@ function updateStateMix(){
  const pct=n=>(n*100).toFixed(1)+'%';
  document.getElementById('reference-state').value=referenceState;
  document.getElementById('comparison-state').value=comparisonState;
- for(const [code,id] of [[referenceState,'state-reference-values'],[comparisonState,'state-mix-values']]){
+ // Cards sit beside the explanation; the charts retain the same state controls.
+ for(const [code,id,role] of [[referenceState,'state-reference-values','Reference state'],[comparisonState,'state-mix-values','Comparison state']]){
   const host=document.getElementById(id);host.replaceChildren();
-  const label=document.createElement('p');label.textContent='Visit share / spending share';host.append(label);
+  const label=document.createElement('p');label.className='share-card-role';label.textContent=role;
+  const title=document.createElement('h4');title.id=id+'-title';title.textContent=displayName(code);host.setAttribute('aria-labelledby',title.id);
+  const table=document.createElement('table'),head=document.createElement('thead'),body=document.createElement('tbody'),header=document.createElement('tr');
+  for(const text of ['Traveller','Visits','Spending']){const th=document.createElement('th');th.scope='col';th.textContent=text;header.append(th)}
+  head.append(header);
   for(const row of stateMixRows.filter(r=>r.code===code)){
-   const line=document.createElement('p');line.textContent=row.traveller+': '+pct(row.visitor_share)+' / '+pct(row.spend_share);host.append(line);
+   const tr=document.createElement('tr'),th=document.createElement('th');th.scope='row';
+   const group=document.createElement('span');group.className='share-traveller';
+   const swatch=document.createElement('i');swatch.className=({'Domestic day':'day','Domestic overnight':'overnight','International':'international'})[row.traveller];swatch.setAttribute('aria-hidden','true');
+   const name=document.createElement('span');name.textContent=row.traveller;group.append(swatch,name);th.append(group);tr.append(th);
+   for(const value of [row.visitor_share,row.spend_share]){const td=document.createElement('td');td.textContent=pct(value);tr.append(td)}
+   body.append(tr);
   }
+  table.append(head,body);host.append(label,title,table);
  }
  const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
  if(rows.some(r=>!r))return;

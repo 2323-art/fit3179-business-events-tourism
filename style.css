@@ -438,3 +438,22 @@ body p,.methods li,body figcaption:not(.story-note),
 .markets-row>figure>.story-explanation{margin-inline-end:48px;margin-bottom:18px;padding-inline-end:14px}
 .story-note .story-explanation .chart-intro{line-height:1.65}
 @media(max-width:760px){.story-explanation{padding-inline-end:14px}.markets-row>figure>.story-explanation{margin-inline-end:44px}}
+
+/* S8 pp.4–6: align the selected-state cards with the explanatory column. */
+.state-mix-panel{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:start}
+.state-mix-content{grid-column:1/-1}
+.state-share-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}
+.state-share-card{min-width:0;background:var(--plot-ground);border:1px solid var(--line);border-top:3px solid var(--blue);padding:14px 12px}
+.state-share-card .share-card-role{font-size:12px;font-weight:600;margin:0 0 5px}
+.state-share-card h4{font-size:18px;line-height:1.3;margin:0 0 8px;min-height:2.6em}
+.state-share-card table{width:100%;min-width:0;table-layout:fixed;font-size:13px;color:#000}
+.state-share-card th,.state-share-card td{padding:6px 2px;background:transparent;position:static;white-space:normal;vertical-align:middle}
+.state-share-card thead th{font-size:12px;text-align:right;font-weight:600}
+.state-share-card thead th:first-child{width:48%;text-align:left}
+.state-share-card tbody th{font-size:13px;text-align:left;font-weight:400}
+.state-share-card td{font-size:15px;font-weight:600;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.state-share-card tbody tr:last-child>*{border-bottom:0}
+.share-traveller{display:flex;gap:5px;align-items:center}
+.share-traveller i{width:7px;height:7px;flex-shrink:0}
+@media(max-width:980px){.state-mix-panel{grid-template-columns:minmax(0,1fr)}.state-share-cards{max-width:660px;width:100%}}
+@media(max-width:540px){.state-share-cards{grid-template-columns:minmax(0,1fr)}.state-share-card h4{min-height:0}.state-share-card{padding:16px}.state-share-card tbody th{font-size:14px}.state-share-card td{font-size:18px}}
