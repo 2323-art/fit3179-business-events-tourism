@@ -1,1 +1,164 @@
-[{"activity":"Dine out","year":2025,"share":0.9315490140040011},{"activity":"Dine out","year":2024,"share":0.950972855318783},{"activity":"Go shopping","year":2025,"share":0.5987339239782795},{"activity":"Go shopping","year":2024,"share":0.6406025682586518},{"activity":"Go to the beach","year":2025,"share":0.34625750214346956},{"activity":"Go to the beach","year":2024,"share":0.40499229257771924},{"activity":"National/state parks","year":2025,"share":0.22199485567304944},{"activity":"National/state parks","year":2024,"share":0.2586769696929601},{"activity":"Sightseeing","year":2025,"share":0.584821377536439},{"activity":"Sightseeing","year":2024,"share":0.6699953027726873}]
+[
+  {
+    "activity": "Dining",
+    "year": 2023,
+    "share": 0.92,
+    "rank": 1,
+    "participation": "About 92%",
+    "source": "TRA State of the Industry 2023, p. 41",
+    "precision": "Published whole percentage"
+  },
+  {
+    "activity": "Shopping",
+    "year": 2023,
+    "share": 0.65,
+    "rank": 2,
+    "participation": "About 65%",
+    "source": "TRA State of the Industry 2023, p. 41",
+    "precision": "Published whole percentage"
+  },
+  {
+    "activity": "Sightseeing",
+    "year": 2023,
+    "share": 0.64,
+    "rank": 3,
+    "participation": "About 64%",
+    "source": "TRA State of the Industry 2023, p. 41",
+    "precision": "Published whole percentage"
+  },
+  {
+    "activity": "Gardens",
+    "year": 2023,
+    "share": 0.31,
+    "rank": 4,
+    "participation": "About 31%",
+    "source": "TRA State of the Industry 2023, p. 41",
+    "precision": "Published whole percentage"
+  },
+  {
+    "activity": "National/state parks",
+    "year": 2023,
+    "share": 0.27,
+    "rank": 5,
+    "participation": "About 27%",
+    "source": "TRA State of the Industry 2023, p. 41",
+    "precision": "Published whole percentage"
+  },
+  {
+    "activity": "Museums & galleries",
+    "year": 2023,
+    "share": 0.26,
+    "rank": 6,
+    "participation": "About 26%",
+    "source": "TRA State of the Industry 2023, p. 41",
+    "precision": "Published whole percentage"
+  },
+  {
+    "activity": "Dining",
+    "year": 2024,
+    "share": 0.950972855318783,
+    "rank": 1,
+    "participation": "95.1%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Sightseeing",
+    "year": 2024,
+    "share": 0.6699953027726873,
+    "rank": 2,
+    "participation": "67.0%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Shopping",
+    "year": 2024,
+    "share": 0.6406025682586518,
+    "rank": 3,
+    "participation": "64.1%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Gardens",
+    "year": 2024,
+    "share": 0.31774691868504096,
+    "rank": 4,
+    "participation": "31.8%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "National/state parks",
+    "year": 2024,
+    "share": 0.2586769696929601,
+    "rank": 5,
+    "participation": "25.9%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Museums & galleries",
+    "year": 2024,
+    "share": 0.23922912545566413,
+    "rank": 6,
+    "participation": "23.9%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Dining",
+    "year": 2025,
+    "share": 0.9315490140040011,
+    "rank": 1,
+    "participation": "93.2%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Shopping",
+    "year": 2025,
+    "share": 0.5987339239782795,
+    "rank": 2,
+    "participation": "59.9%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Sightseeing",
+    "year": 2025,
+    "share": 0.584821377536439,
+    "rank": 3,
+    "participation": "58.5%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Gardens",
+    "year": 2025,
+    "share": 0.27203058016576165,
+    "rank": 4,
+    "participation": "27.2%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "National/state parks",
+    "year": 2025,
+    "share": 0.22199485567304944,
+    "rank": 5,
+    "participation": "22.2%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  },
+  {
+    "activity": "Museums & galleries",
+    "year": 2025,
+    "share": 0.2134209774221206,
+    "rank": 6,
+    "participation": "21.3%",
+    "source": "TRA business-events dashboard",
+    "precision": "Dashboard estimate"
+  }
+]

@@ -1,11 +1,19 @@
-﻿activity,year,share
-Dine out,2025,0.9315490140040011
-Dine out,2024,0.950972855318783
-Go shopping,2025,0.5987339239782795
-Go shopping,2024,0.6406025682586518
-Go to the beach,2025,0.34625750214346956
-Go to the beach,2024,0.40499229257771924
-National/state parks,2025,0.22199485567304944
-National/state parks,2024,0.2586769696929601
-Sightseeing,2025,0.584821377536439
-Sightseeing,2024,0.6699953027726873
+activity,year,share,rank,participation,source,precision
+Dining,2023,0.92,1,About 92%,"TRA State of the Industry 2023, p. 41",Published whole percentage
+Shopping,2023,0.65,2,About 65%,"TRA State of the Industry 2023, p. 41",Published whole percentage
+Sightseeing,2023,0.64,3,About 64%,"TRA State of the Industry 2023, p. 41",Published whole percentage
+Gardens,2023,0.31,4,About 31%,"TRA State of the Industry 2023, p. 41",Published whole percentage
+National/state parks,2023,0.27,5,About 27%,"TRA State of the Industry 2023, p. 41",Published whole percentage
+Museums & galleries,2023,0.26,6,About 26%,"TRA State of the Industry 2023, p. 41",Published whole percentage
+Dining,2024,0.950972855318783,1,95.1%,TRA business-events dashboard,Dashboard estimate
+Sightseeing,2024,0.6699953027726873,2,67.0%,TRA business-events dashboard,Dashboard estimate
+Shopping,2024,0.6406025682586518,3,64.1%,TRA business-events dashboard,Dashboard estimate
+Gardens,2024,0.31774691868504096,4,31.8%,TRA business-events dashboard,Dashboard estimate
+National/state parks,2024,0.2586769696929601,5,25.9%,TRA business-events dashboard,Dashboard estimate
+Museums & galleries,2024,0.23922912545566413,6,23.9%,TRA business-events dashboard,Dashboard estimate
+Dining,2025,0.9315490140040011,1,93.2%,TRA business-events dashboard,Dashboard estimate
+Shopping,2025,0.5987339239782795,2,59.9%,TRA business-events dashboard,Dashboard estimate
+Sightseeing,2025,0.584821377536439,3,58.5%,TRA business-events dashboard,Dashboard estimate
+Gardens,2025,0.27203058016576165,4,27.2%,TRA business-events dashboard,Dashboard estimate
+National/state parks,2025,0.22199485567304944,5,22.2%,TRA business-events dashboard,Dashboard estimate
+Museums & galleries,2025,0.2134209774221206,6,21.3%,TRA business-events dashboard,Dashboard estimate

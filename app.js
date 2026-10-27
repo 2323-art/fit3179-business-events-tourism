@@ -2,13 +2,14 @@
 // INTERVIEW: START HERE: HTML provides chart01 to chart12 containers; each name below selects a JSON specification.
 // INTERVIEW: The order matters: array index 0 goes into chart01, index 7 into chart08 (the scatterplot).
 // INTERVIEW: Vega-Lite describes the marks and encodings; Vega renders them. The destination treemap uses rectangle area for AUD spending.
-const charts=['01-waffle','02-spend-per-trip','03-spending-icons','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-slope','12-per-night'];
+const charts=['01-waffle','02-spend-per-trip','03-spending-icons','04-choropleth','05-symbol-map','06-treemap','07-flow-map','08-market-scatter','09-change-heatmap','10-waterfall','11-activity-bump','12-per-night'];
 // Vega appends data paths, so its base must exclude the page filename, query and chapter hash.
 const chartBaseURL=new URL('.',document.baseURI).href;
 // INTERVIEW: Keep each running chart View so other controls can change its signals later. chartFailures records caught loading errors.
 window.chartViews={};window.chartFailures=[];
 // INTERVIEW: Cache data used by the HTML summaries and controls. selectedState persists across chart redraws.
 let marketRows=[];
+let activityFocus='Shopping';
 let colourSemantics,regionRows=[],stateMixRows=[],selectedState='All states',referenceState='NSW',comparisonState='VIC';
 // INTERVIEW: These helpers format numbers and expand abbreviations for readers; they do not change the underlying observations.
 const formatTrips=n=>new Intl.NumberFormat('en-AU').format(n);
@@ -82,7 +83,7 @@ async function renderChart(name,index){
   if(index===2){spec.width=Math.min(width-12,380);spec.height=spec.width;}
   if(index===3)spec.height=Math.min(400,width*.98);
   if(index===4)spec.height=Math.min(360,width*.9);
-  if(index===10)spec.height=380;
+  if(index===10){spec.width=width;spec.height=390}
   if(index===11)spec.height=240;
 // INTERVIEW: Embed the specification into the container. SVG gives scalable vector marks; actions:false hides the default editor menu.
 // INTERVIEW: The loader base is the site directory, excluding a chapter hash, so relative data URLs remain valid.
@@ -90,6 +91,7 @@ async function renderChart(name,index){
 // INTERVIEW: Store the View, restore state selection, and register listeners only for the scatterplot year/focus parameters.
 // INTERVIEW: A parameter in Vega-Lite becomes a signal in the running Vega View.
   window.chartViews[name]=result.view;
+  if(index===10){await result.view.signal('activityFocus',activityFocus).runAsync();result.view.addSignalListener('activityFocus',(_,value)=>{activityFocus=value})}
   if(index===0)await bindWaffleFeedback(result.view);
   if(index===3)await bindSpendingMap(result.view);
   if(index===4)await bindVisitsMap(result.view);
@@ -235,13 +237,13 @@ async function showTable(name){
  let rows=await (await fetch('data/'+name+'.json')).json();
  if(name==='national')rows=rows.filter(r=>r.year===2025);
  if(name==='regions')rows=rows.filter(r=>r.value>0).map(r=>({region:r.name,state:r.parent,spend:r.value}));
- const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
+ const labels={spend:'Spending in Australia (Australian dollars)',total_spend:'Total trip spending (Australian dollars)',spend_per_trip:'Spending per trip (Australian dollars)',population:'Residents (June 2025)',spend_per_resident:'Australian dollars per resident',visitors:['states','state-mix'].includes(name)?'State visits':'Visitor trips',share:'Participation',rank:'Rank among these six',visitor_share:'Share of state visits',spend_share:'Share of state spending',change:'Change (%)',other:'Other visitors (Australian dollars per night)',business:'Business-event visitors (Australian dollars per night)',value:'Change / total (Australian dollars billions)',start:'Start (Australian dollars billions)',end:'End (Australian dollars billions)',nights:'Visitor nights'};
 // INTERVIEW: Hide coordinates and layout-order columns from this reader-facing table; retain them in the underlying download.
  const hidden=new Set(['longitude','latitude','label_lon','label_lat','order']);
  const table=document.createElement('table');const head=document.createElement('thead'),body=document.createElement('tbody');
  const keys=Object.keys(rows[0]||{}).filter(k=>!hidden.has(k));const hr=document.createElement('tr');keys.forEach(key=>{const th=document.createElement('th');th.textContent=labels[key]||key.replaceAll('_',' ');th.scope='col';hr.append(th)});head.append(hr);
  rows.forEach(row=>{const tr=document.createElement('tr');keys.forEach(key=>{const td=document.createElement('td');td.textContent=row[key]===null?'Not available':typeof row[key]==='number'?new Intl.NumberFormat('en-AU',{maximumFractionDigits:['share','change','visitor_share','spend_share'].includes(key)?1:4,...(['share','change','visitor_share','spend_share'].includes(key)?{style:'percent'}:{})}).format(row[key]):displayName(row[key]);tr.append(td)});body.append(tr)});table.append(head,body);
- document.getElementById('data-note').textContent=(name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='state-mix'?'2025 business-event totals by traveller group, not all tourism. Shares use the sum of the three published components within each state; rounding may differ from the separate state total. ':name==='activities'?'Includes all five supplied activities; the chart selects four to keep the comparison readable. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
+ document.getElementById('data-note').textContent=(name==='national'?'2025 snapshot only. The downloadable source also contains 2024 domestic estimates, which cannot be compared directly because the survey changed. ':name==='state-mix'?'2025 business-event totals by traveller group, not all tourism. Shares use the sum of the three published components within each state; rounding may differ from the separate state total. ':name==='activities'?'Six activities with values in all three years. Rank is among these six only. 2023 percentages are published whole numbers; later values are dashboard estimates. Activities can overlap. ':name==='regions'?'Destination regions only; parent groups are not added again. ':'')+'Use the downloadable data link for the full reusable dataset. All amounts are recorded in Australian dollars, without adjusting for inflation.';
  document.getElementById('table-wrap').replaceChildren(table);document.getElementById('data-title').textContent=name.replaceAll('-',' ')+' · chart data';document.getElementById('data-dialog').showModal();
 }
 // INTERVIEW: Create a table button, CSV download and specification link for each figure, using its HTML data-table/data-chart attributes.

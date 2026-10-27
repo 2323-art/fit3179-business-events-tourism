@@ -28,6 +28,14 @@ Chart 10 retains the six largest absolute changes among the 18 published origin 
 
 The 18 published markets sum to AUD 2,025.405 million in 2024 and AUD 1,986.791 million in 2025. Subtracting those amounts from national totals gives AUD 486.503 million and AUD 352.688 million respectively. The six named changes, other published markets and the unrepresented-origin residual together equal the national AUD -172.429 million change. Calculations accumulate whole AUD before converting to display billions.
 
+## Verify or rebuild chart 11 only
+
+`python reproduce/activity_data.py --check` verifies all 18 saved observations against the preserved sources. Without `--check`, it rebuilds only `data/activities.json` and `.csv`. The full data builder also calls this helper.
+
+The six 2023 attendee rates are transcribed from TRA's *State of the Industry 2023*, printed page 41 (physical PDF page 43), into `data/source/tra-activities-2023.json`. The second percentage in each published accompanying-versus-attending comparison is used. The existing dashboard snapshot supplies `Percentage_attend` for 2024 and 2025. Name mappings and precision are recorded in provenance; beach visits are excluded because the report has no corresponding 2023 rate. Ranks are calculated within the same six activities each year, never from the dashboard's overall-rank field.
+
+Five comparable annual observations could not be verified. Austrade's [THRIVE recovery report](https://www.austrade.gov.au/content/dam/austrade-assets/global/wip/austrade/documents/Thrive/final-report-phase-1-recovery-2022-24-thrive-2030.pdf) states that the expanded business-event collection commenced in 2023. Earlier general-tourism or business-travel statistics are not substituted for event-attendee activity rates.
+
 ## Retrieve the original public tables separately
 
 `fetch_tra.py` uses the public Power BI report resource key and the six entity names documented in the script. Its column contracts come from the preserved `data/source/tra-*.json` snapshots, including the original source's spelling `International BE Actitivies`. No `research/schema.json`, credentials or separately installed Python packages are required.

@@ -1,0 +1,438 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 950,
+  "height": 390,
+  "padding": {
+    "top": 20,
+    "bottom": 65,
+    "left": 0,
+    "right": 0
+  },
+  "autosize": "none",
+  "description": "Ranks among six selected activities of international business-event attendees, 2023\u20132025. 2023 shares are rounded published percentages. Rank 1 is most common within this fixed set, not among all surveyed activities.",
+  "signals": [
+    {
+      "name": "activityFocus",
+      "value": "Shopping",
+      "bind": {
+        "input": "select",
+        "name": "Highlight activity: ",
+        "options": [
+          "Dining",
+          "Shopping",
+          "Sightseeing",
+          "Gardens",
+          "National/state parks",
+          "Museums & galleries"
+        ]
+      }
+    },
+    {
+      "name": "compact",
+      "update": "width < 600"
+    },
+    {
+      "name": "plotLeft",
+      "update": "compact ? 26 : 170"
+    },
+    {
+      "name": "plotRight",
+      "update": "width - (compact ? 125 : 185)"
+    }
+  ],
+  "data": [
+    {
+      "name": "activities",
+      "url": "data/activities.json",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.activity == 'National/state parks' ? 'National/state\\nparks' : datum.activity == 'Museums & galleries' ? 'Museums &\\ngalleries' : datum.activity",
+          "as": "label"
+        }
+      ]
+    },
+    {
+      "name": "first",
+      "source": "activities",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.year == 2023"
+        }
+      ]
+    },
+    {
+      "name": "last",
+      "source": "activities",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.year == 2025"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "year",
+      "type": "linear",
+      "domain": [
+        2023,
+        2025
+      ],
+      "range": [
+        {
+          "signal": "plotLeft"
+        },
+        {
+          "signal": "plotRight"
+        }
+      ],
+      "zero": false,
+      "nice": false
+    },
+    {
+      "name": "rank",
+      "type": "linear",
+      "domain": [
+        1,
+        6
+      ],
+      "range": [
+        10,
+        {
+          "signal": "height-10"
+        }
+      ],
+      "zero": false,
+      "nice": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "year",
+      "orient": "bottom",
+      "values": [
+        2023,
+        2024,
+        2025
+      ],
+      "format": "d",
+      "title": "Year",
+      "domain": false,
+      "ticks": false,
+      "labelPadding": 14,
+      "grid": true,
+      "gridColor": "#E5E9EE",
+      "labelFont": "IBM Plex Sans",
+      "labelFontSize": 14,
+      "labelColor": "#162B4D",
+      "titleFont": "IBM Plex Sans",
+      "titleFontSize": 13,
+      "titleFontWeight": "normal",
+      "titlePadding": 12
+    },
+    {
+      "scale": "rank",
+      "orient": "left",
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "domain": false,
+      "ticks": false,
+      "labelPadding": 6,
+      "offset": {
+        "signal": "-plotLeft+10"
+      },
+      "labelFont": "IBM Plex Sans",
+      "labelFontSize": 12,
+      "labelColor": "#59626D",
+      "encode": {
+        "labels": {
+          "update": {
+            "opacity": {
+              "signal": "compact ? 1 : 0"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "marks": [
+    {
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "series",
+          "data": "activities",
+          "groupby": "activity"
+        }
+      },
+      "marks": [
+        {
+          "type": "line",
+          "from": {
+            "data": "series"
+          },
+          "sort": {
+            "field": "datum.year"
+          },
+          "encode": {
+            "update": {
+              "x": {
+                "scale": "year",
+                "field": "year"
+              },
+              "y": {
+                "scale": "rank",
+                "field": "rank"
+              },
+              "stroke": {
+                "signal": "datum.activity == activityFocus ? '#2E7055' : '#A8ADB4'"
+              },
+              "strokeWidth": {
+                "signal": "datum.activity == activityFocus ? 3 : 2"
+              },
+              "interpolate": {
+                "value": "monotone"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "symbol",
+      "name": "activity_points",
+      "from": {
+        "data": "activities"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "scale": "year",
+            "field": "year"
+          },
+          "y": {
+            "scale": "rank",
+            "field": "rank"
+          },
+          "fill": {
+            "signal": "datum.activity == activityFocus ? '#2E7055' : '#A8ADB4'"
+          },
+          "stroke": {
+            "value": "white"
+          },
+          "strokeWidth": {
+            "value": 1.5
+          },
+          "size": {
+            "signal": "datum.activity == activityFocus ? 95 : 70"
+          },
+          "tooltip": {
+            "signal": "{'Activity':datum.activity,'Year':datum.year,'Rank among these six':datum.rank,'Participation':datum.participation,'Precision':datum.precision,'Source':datum.source}"
+          },
+          "description": {
+            "signal": "datum.activity + ', ' + datum.year + ': rank ' + datum.rank + ' of these six, participation ' + datum.participation"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "left_labels",
+      "from": {
+        "data": "first"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "plotLeft - 24"
+          },
+          "y": {
+            "scale": "rank",
+            "field": "rank"
+          },
+          "dy": {
+            "value": -5
+          },
+          "text": {
+            "field": "label"
+          },
+          "align": {
+            "value": "right"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "signal": "compact ? 13 : 14"
+          },
+          "lineBreak": {
+            "value": "\n"
+          },
+          "lineHeight": {
+            "value": 15
+          },
+          "fill": {
+            "signal": "datum.activity == activityFocus ? '#2E7055' : '#59626D'"
+          },
+          "fontWeight": {
+            "signal": "datum.activity == activityFocus ? 600 : 400"
+          },
+          "opacity": {
+            "signal": "compact ? 0 : 1"
+          },
+          "tooltip": {
+            "signal": "{'Activity':datum.activity,'Year':datum.year,'Rank among these six':datum.rank,'Participation':datum.participation,'Precision':datum.precision,'Source':datum.source}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "first"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "plotLeft - 24"
+          },
+          "y": {
+            "scale": "rank",
+            "field": "rank"
+          },
+          "dy": {
+            "signal": "indexof(datum.label,'\\n') >= 0 ? 25 : 15"
+          },
+          "text": {
+            "field": "participation"
+          },
+          "align": {
+            "value": "right"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fill": {
+            "value": "#2E7055"
+          },
+          "opacity": {
+            "signal": "!compact && datum.activity == activityFocus ? 1 : 0"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "name": "right_labels",
+      "from": {
+        "data": "last"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "plotRight + 12"
+          },
+          "y": {
+            "scale": "rank",
+            "field": "rank"
+          },
+          "dy": {
+            "value": -5
+          },
+          "text": {
+            "field": "label"
+          },
+          "align": {
+            "value": "left"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "signal": "compact ? 13 : 14"
+          },
+          "lineBreak": {
+            "value": "\n"
+          },
+          "lineHeight": {
+            "value": 15
+          },
+          "fill": {
+            "signal": "datum.activity == activityFocus ? '#2E7055' : '#59626D'"
+          },
+          "fontWeight": {
+            "signal": "datum.activity == activityFocus ? 600 : 400"
+          },
+          "opacity": {
+            "signal": "1"
+          },
+          "tooltip": {
+            "signal": "{'Activity':datum.activity,'Year':datum.year,'Rank among these six':datum.rank,'Participation':datum.participation,'Precision':datum.precision,'Source':datum.source}"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "last"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "plotRight + 12"
+          },
+          "y": {
+            "scale": "rank",
+            "field": "rank"
+          },
+          "dy": {
+            "signal": "indexof(datum.label,'\\n') >= 0 ? 25 : 15"
+          },
+          "text": {
+            "field": "participation"
+          },
+          "align": {
+            "value": "left"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "font": {
+            "value": "IBM Plex Sans"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fill": {
+            "value": "#2E7055"
+          },
+          "opacity": {
+            "signal": "datum.activity == activityFocus ? 1 : 0"
+          }
+        }
+      }
+    }
+  ]
+}

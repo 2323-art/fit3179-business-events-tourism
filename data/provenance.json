@@ -1,1 +1,38 @@
-[{"id":"TRA","title":"Tourism Research Australia: Business events data","url":"https://www.tra.gov.au/en/tourism-statistics/business-events-data","reference":"Calendar years 2024 and 2025; public report refreshed 21 May 2026","retrieved":"2026-10-05","licence":"Commonwealth of Australia, CC BY 4.0","transform":"Selected attendance-or-accompaniment union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break. International total spending split into Australian and overseas amounts. State traveller shares use 2025 Category Total components, normalised within each jurisdiction; State Total all-tourism rows are excluded."},{"id":"ABS","title":"ABS National, state and territory population, March 2026","url":"https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026","reference":"June 2025 population from Table 4, Data1 row 187 columns T:AA","retrieved":"2026-10-05","licence":"Commonwealth of Australia, CC BY 4.0","transform":"Joined eight jurisdictions to TRA spending; spending divided by residents."},{"id":"NE","title":"Natural Earth vector map data","url":"https://www.naturalearthdata.com/","reference":"1:110m countries and populated places; 1:50m Australian states","retrieved":"2026-10-05","licence":"Public domain","transform":"Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows."}]
+[
+  {
+    "id": "TRA",
+    "title": "Tourism Research Australia: Business events data",
+    "url": "https://www.tra.gov.au/en/tourism-statistics/business-events-data",
+    "reference": "Calendar years 2024 and 2025; public report refreshed 21 May 2026",
+    "retrieved": "2026-10-05",
+    "licence": "Commonwealth of Australia, CC BY 4.0",
+    "transform": "Selected attendance-or-accompaniment union totals; monetary source units converted to AUD; domestic comparisons excluded across 2025 method break. International total spending split into Australian and overseas amounts. State traveller shares use 2025 Category Total components, normalised within each jurisdiction; State Total all-tourism rows are excluded."
+  },
+  {
+    "id": "ABS",
+    "title": "ABS National, state and territory population, March 2026",
+    "url": "https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/mar-2026",
+    "reference": "June 2025 population from Table 4, Data1 row 187 columns T:AA",
+    "retrieved": "2026-10-05",
+    "licence": "Commonwealth of Australia, CC BY 4.0",
+    "transform": "Joined eight jurisdictions to TRA spending; spending divided by residents."
+  },
+  {
+    "id": "NE",
+    "title": "Natural Earth vector map data",
+    "url": "https://www.naturalearthdata.com/",
+    "reference": "1:110m countries and populated places; 1:50m Australian states",
+    "retrieved": "2026-10-05",
+    "licence": "Public domain",
+    "transform": "Selected features; coordinates rounded to three decimals; representative capitals used for schematic flows."
+  },
+  {
+    "id": "TRA-SOTI-2023",
+    "title": "TRA State of the Industry: Australia's tourism sector in 2023",
+    "url": "https://www.tra.gov.au/content/dam/austrade-assets/global/wip/tra/documents/soti/tra-state-of-the-industry-2023.pdf#page=43",
+    "reference": "Calendar 2023; printed page 41 / PDF page 43, Business events data",
+    "retrieved": "2026-10-27",
+    "licence": "Commonwealth of Australia, CC BY 4.0",
+    "transform": "Transcribed the attending (second) value from six accompanying-versus-attending percentage pairs. Original whole-percentage precision retained. Matched six activity categories to the preserved 2024/2025 Percentage_attend dashboard rows; ranked within the same six categories each year. Beach is excluded for lack of a published 2023 value. Shortened report wording is mapped explicitly; no pre-2023 activity rates inferred."
+  }
+]

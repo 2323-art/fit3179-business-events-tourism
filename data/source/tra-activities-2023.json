@@ -1,0 +1,20 @@
+{
+  "title": "State of the Industry: Australia's tourism sector in 2023",
+  "author": "Tourism Research Australia / Austrade",
+  "url": "https://www.tra.gov.au/content/dam/austrade-assets/global/wip/tra/documents/soti/tra-state-of-the-industry-2023.pdf",
+  "printed_page": 41,
+  "pdf_page": 43,
+  "section": "Business events data",
+  "retrieved": "2026-10-27",
+  "population": "International business-event attendees, excluding the separately reported accompanying-person estimates",
+  "precision": "Published whole percentages; no additional decimal precision is available",
+  "verification": "Transcribed from the attending value (second number) of each accompanying-versus-attending pair; verified against the rendered original PDF page.",
+  "rows": [
+    {"Activity": "Dine out", "published_label": "eating out", "Year": 2023, "Percentage_attend": 0.92},
+    {"Activity": "Go shopping", "published_label": "shopping", "Year": 2023, "Percentage_attend": 0.65},
+    {"Activity": "Sightseeing", "published_label": "sightseeing", "Year": 2023, "Percentage_attend": 0.64},
+    {"Activity": "Botanical / public gardens", "published_label": "visits to botanical gardens", "Year": 2023, "Percentage_attend": 0.31},
+    {"Activity": "National parks / state parks", "published_label": "visits to national parks", "Year": 2023, "Percentage_attend": 0.27},
+    {"Activity": "Museums or art galleries", "published_label": "visits to museums and galleries", "Year": 2023, "Percentage_attend": 0.26}
+  ]
+}

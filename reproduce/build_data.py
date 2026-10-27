@@ -181,13 +181,11 @@ table('changes',changes)
 # Accumulate whole AUD and convert to billions only for display, preserving exact reconciliation.
 waterfall=make_waterfall(national,market)
 table('waterfall',waterfall)
-# INTERVIEW: ACTIVITIES: retain the published attendee-only shares. The display specification selects four from these five activities.
-activities=[]
-for r in read('tra-international-be-actitivies'):
- if r['Activity'] in ['Dine out','Go shopping','Sightseeing','Go to the beach','National parks / state parks']:
-  activities.append(dict(activity=r['Activity'].replace('National parks / state parks','National/state parks'),year=r['Year'],share=r['Percentage_attend']))
-assert len(activities)==10
-table('activities',activities)
+# Same six activities in each year, with 2023 source rounding retained.
+from activity_data import build_activities, output_text
+activities=build_activities()
+for suffix, text in zip(('json','csv'),output_text(activities)):
+ (D/f'activities.{suffix}').write_text(text,encoding='utf-8')
 # INTERVIEW: PER NIGHT: retain the published rounded comparison between business-event and other international visitors.
 night=[]
 for r in read('tra-per-person-night-spend'):
