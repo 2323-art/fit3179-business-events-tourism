@@ -367,7 +367,8 @@ body p,.methods li,body figcaption:not(.story-note),
 
 /* Week 10 juxtaposition: equal-width panels keep both state compositions visible. */
 .state-mix-panel{grid-template-columns:minmax(0,1fr)}
-.state-mix-panel>div:first-child{max-width:76ch}
+/* Keep the explanation rule on its text column (S8 pp.4–6). */
+.state-mix-panel>.story-explanation{font-size:var(--type-small);width:100%;max-width:min(100%,calc(var(--prose-measure) + 21px));justify-self:start}
 .state-mix-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
 .mix-card{min-width:0;border:1px solid var(--line);padding:18px;background:white}
 .mix-card label{display:block;font-weight:600;margin-bottom:8px}
