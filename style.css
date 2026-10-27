@@ -430,3 +430,10 @@ body p,.methods li,body figcaption:not(.story-note),
 .market-insight #market-rate-values{font-size:var(--type-small)}
 .market-insight #market-insight{margin:0 0 12px;font-size:1rem}
 .methods .caption-detail{margin-top:16px}
+
+/* A consistent blue rule distinguishes explanation from the data cards. */
+.story-explanation{border-inline-end:3px solid var(--blue);padding-inline-end:18px;min-width:0;box-sizing:border-box}
+.story-explanation>:last-child{margin-bottom:0}
+.markets-row>figure>.story-explanation{margin-inline-end:48px;margin-bottom:18px;padding-inline-end:14px}
+.story-note .story-explanation .chart-intro{line-height:1.65}
+@media(max-width:760px){.story-explanation{padding-inline-end:14px}.markets-row>figure>.story-explanation{margin-inline-end:44px}}

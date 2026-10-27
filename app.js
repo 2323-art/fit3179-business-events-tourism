@@ -43,9 +43,12 @@ function updateComparison(focus){
  document.getElementById('market-rate-values').textContent=`${money(tripBefore)} → ${money(tripAfter)} · 2024–2025`;
  const tripDirection=after.visitors>before.visitors?'More':after.visitors<before.visitors?'Fewer':'Similar';
  const rateDirection=tripAfter>tripBefore?'higher':tripAfter<tripBefore?'lower':'similar';
- document.getElementById('market-insight').textContent=`${tripDirection} trips, ${rateDirection} average spending per trip. Volume and spending intensity both shape the total.`;
+ const tripGrowth=after.visitors/before.visitors-1,spendGrowth=after.spend/before.spend-1;
+ const interpretation=tripGrowth>0&&tripAfter<tripBefore?'Lower average spending offsets some of the visitor growth.':tripGrowth<0&&tripAfter>tripBefore?'Higher average spending offsets some of the fall in visits.':tripGrowth>0&&tripAfter>tripBefore?'More trips and higher averages reinforce spending growth.':tripGrowth<0&&tripAfter<tripBefore?'Fewer trips and lower averages both reduce total spending.':'Both visitor volume and spending per trip shape the total.';
+ document.getElementById('market-insight').textContent=`${tripDirection} trips, ${rateDirection} average spending per trip. ${interpretation}`;
  document.getElementById('market-rate-detail').textContent=`Nights per trip: ${(before.nights/before.visitors).toFixed(1)} → ${(after.nights/after.visitors).toFixed(1)}. Spending per night: ${money(before.spend/before.nights)} → ${money(after.spend/after.nights)}. Total spending = trips × nights per trip × spending per night. Calculations use unrounded estimates; change factors multiply. Different annual visitor groups are compared, not causes.`;
- document.getElementById('change-summary').textContent=`${displayName(country)}: compare changes across the three measures.`;
+ const changeStory=tripGrowth>0&&spendGrowth>0?`gained visitors, while spending grew ${spendGrowth<tripGrowth?'more slowly':'faster'}`:tripGrowth<0&&spendGrowth<0?`lost visitors, while spending fell ${spendGrowth<tripGrowth?'faster':'more slowly'}`:tripGrowth>0&&spendGrowth<0?'gained visitors while spending fell':tripGrowth<0&&spendGrowth>0?'lost visitors while spending rose':'shows different changes in visits and spending';
+ document.getElementById('change-summary').textContent=`${displayName(country)} ${changeStory}. Read across the highlighted row to compare nights as well.`;
 // INTERVIEW: LINKING: send the same country to the heatmap signal. runAsync() evaluates the chart update.
 // INTERVIEW: The signal controls the outline/text layer; it does not remove the other heatmap rows.
  const heatmap=window.chartViews['09-change-heatmap'];
@@ -58,7 +61,7 @@ function updateMarketSummary(){
  const spendLeader=rows.reduce((a,b)=>a.spend>b.spend?a:b),tripLeader=rows.reduce((a,b)=>a.visitors>b.visitors?a:b);
  const row=rows.find(r=>r.country===focus);
  document.getElementById('market-heading').textContent=year+' · '+(row?displayName(row.country)+' in focus':'trips versus spending');
- document.getElementById('market-summary').textContent=row?`Compare ${displayName(row.country)} with nearby markets.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending.`;
+ document.getElementById('market-summary').textContent=row?`Compare ${displayName(row.country)} with markets at a similar visitor level. A higher position means more spending for a similar trip volume.`:tripLeader.country===spendLeader.country?`${displayName(tripLeader.country)} leads both trips and spending. Compare the remaining markets to see how spending differs at similar visitor volumes.`:`${displayName(tripLeader.country)} leads trips; ${displayName(spendLeader.country)} leads spending. Their different positions show why visitor volume alone does not identify the highest-spending market.`;
  const detail=view.signal('marketScale')==='Smaller markets',inside=r=>r.visitors<=40000&&r.spend<=120000000;
  document.getElementById('market-scale-note').textContent=detail?`${rows.filter(inside).length} of ${rows.length} markets shown; fixed bounds across years. ${row&&!inside(row)?displayName(row.country)+' appears only in the overview.':''}`:'Choose Smaller markets to enlarge the crowded cluster.';
  syncMarketOverview(year,focus,detail);updateComparison(focus);scheduleProse();
@@ -284,7 +287,7 @@ function updateStateMix(){
  const rows=[referenceState,comparisonState].map(code=>stateMixRows.find(r=>r.code===code&&r.traveller==='Domestic overnight'));
  if(rows.some(r=>!r))return;
  document.getElementById('state-mix-summary').textContent=referenceState===comparisonState?'Both panels show '+displayName(referenceState)+'.':`Overnight visitors hold a larger spending share in ${displayName(rows[0].spend_share>rows[1].spend_share?referenceState:comparisonState)}.`;
- document.getElementById('state-mix-context').textContent='Map selections update the comparison state.';
+ document.getElementById('state-mix-context').textContent='Compare the visit and spending bars within each state. A larger spending share reveals a greater contribution than visit counts alone suggest. Map selections update the comparison state.';
 }
 function buildStateComparison(){
  for(const id of ['reference-state','comparison-state']){
